@@ -67,6 +67,7 @@ void motor_sine_demo() {
 }
 
 void main_mode_loop() {
+  reg8_table[REG8_MODE] = IMODE_IDLE;
   radio_add_reg_callback(register_handler);
   while (1) {
     switch (reg8_table[REG8_MODE]) {

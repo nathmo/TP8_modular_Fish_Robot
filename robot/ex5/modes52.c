@@ -19,6 +19,20 @@
 
 const uint8_t MOTOR_ADDR = 21; // Motor address
 
+static int8_t register_handler(uint8_t operation, uint8_t address,
+                               RadioData *radio_data) {
+
+  switch (operation) {
+  case ROP_READ_8:
+    radio_data->byte = reg8_table[address];
+    return TRUE;
+  case ROP_WRITE_8:
+    reg8_table[address] = radio_data->byte; // Allow writing to register
+    return TRUE;
+  }
+  return FALSE;
+}
+
 // Function to initialize default parameters
 void init_sine_params(void) {
   // Set default values for frequency and amplitude
@@ -110,6 +124,9 @@ void main_mode_loop(void) {
 
   // Set initial mode
   reg8_table[REG8_MODE] = IMODE_IDLE;
+
+  // Add the register handler
+  radio_add_reg_callback(register_handler);
 
   while (1) {
     switch (reg8_table[REG8_MODE]) {
