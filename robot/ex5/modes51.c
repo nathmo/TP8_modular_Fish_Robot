@@ -8,6 +8,20 @@
 const float FREQ = 1.0;        // Hz
 const uint8_t MOTOR_ADDR = 21; // Motor address
 
+static int8_t register_handler(uint8_t operation, uint8_t address,
+                               RadioData *radio_data) {
+
+  switch (operation) {
+  case ROP_READ_8:
+    radio_data->byte = reg8_table[address];
+    return TRUE;
+  case ROP_WRITE_8:
+    reg8_table[address] = radio_data->byte; // Allow writing to register
+    return TRUE;
+  }
+  return FALSE;
+}
+
 void sine_demo_mode() {
   uint32_t dt, cycletimer;
   float my_time, delta_t, angle;
@@ -62,6 +76,8 @@ void sine_demo_mode() {
 
 void main_mode_loop() {
   reg8_table[REG8_MODE] = IMODE_IDLE;
+
+  radio_add_reg_callback(register_handler);
 
   while (1) {
     switch (reg8_table[REG8_MODE]) {

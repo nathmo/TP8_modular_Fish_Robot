@@ -5,7 +5,10 @@ PROGRAMS = ex6
 LIBS = -lwsock32
 
 # Dependencies for the program(s) to build
-ex6: ../common/netutil.o ../common/wperror.o ../common/trkcli.o ../common/utils.o ex6.o
+# Default
+# ex6: ../common/netutil.o ../common/wperror.o ../common/trkcli.o ../common/utils.o ex6.o
+# 6.1
+ex6: ../common/netutil.o ../common/wperror.o ../common/trkcli.o ../common/utils.o ex61.o
 
 # Includes the common Makefile with the various rules
 include ../common/Makefile.inc
