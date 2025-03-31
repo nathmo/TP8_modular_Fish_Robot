@@ -19,6 +19,12 @@ the business logic:
   Mode A -> implement the robot behaviour (steering (sinus offset),phase lag (between tail element), speed/frequency, amplitude)
 */
 
+// Define registers for frequency, lag, offset and amplitude control
+#define REG8_SINE_FREQ 10 // Register for sine wave frequency
+#define REG8_SINE_AMP 11  // Register for sine wave amplitude
+#define REG8_SINE_LAG 12  // Register for sine wave lag between elements
+#define REG8_SINE_OFF 13  // Register for sine wave offset 
+
 const char *TRACKING_PC_NAME = "biorobpc6"; ///< host name of the tracking PC
 const uint16_t TRACKING_PORT = 10502;        ///< port number of the tracking PC
 const uint8_t RADIO_CHANNEL = 201;           ///< robot radio channel
@@ -53,18 +59,10 @@ int main() {
     return 1;
   }
 
-  cout << "Connected to tracking system. Turn off other module LEDs and place "
-          "the robot in the aquarium."
+  cout << "Connected to tracking system. set the robot to ready mode "
+          "then place it in the aquarium."
        << endl;
-  cout << "Press any key to exit." << endl;
-
-  // Turn off the LED of another module (assuming module address 21)
-  const uint8_t MOTOR_ADDR = 21;
-  // This code doesn't work directly from PC, needs to be on the robot side
-  // Will be handled in the robot part of the solution
-
-  // Fixed green component for tracking
-  const uint8_t GREEN_COMPONENT = 64;
+  cout << "Press q to exit at any time" << endl;
 
   while (!kbhit()) {
     uint32_t frame_time;
@@ -81,20 +79,8 @@ int main() {
 
     // Reads its coordinates (if (id == -1), then no spot is detected)
     if (id != -1 && trk.get_pos(id, x, y)) {
-      // Calculate LED color based on position
-      // Red increases with x (left to right)
-      uint8_t r = (uint8_t)map_value(x, 0, AQUARIUM_WIDTH, 0, 255);
-
-      // Blue increases with y (bottom to top)
-      uint8_t b = (uint8_t)map_value(y, 0, AQUARIUM_HEIGHT, 0, 255);
-
-      // Keep green fixed for tracking
-      uint8_t g = GREEN_COMPONENT;
-
-      // Set the LED color
-      uint32_t rgb = ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
-      regs.set_reg_dw(REG32_LED, rgb);
-
+      regs.get_reg_b(REG8_SINE_FREQ)
+      regs.get_reg_b(REG8_SINE_FREQ)
       cout << "Position: (" << fixed << x << ", " << y << ") m  |  Color: RGB("
            << (int)r << ", " << (int)g << ", " << (int)b << ")      \r";
       cout.flush();
@@ -109,7 +95,6 @@ int main() {
 
   // Clears the console input buffer (as kbhit() doesn't)
   FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-
   cout << endl << "Program terminated." << endl;
 
   return 0;
