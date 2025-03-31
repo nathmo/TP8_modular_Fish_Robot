@@ -1,0 +1,481 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"modes.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  18              	register_handler:
+  19              	.LFB0:
+  20              		.file 1 "modes.c"
+   1:modes.c       **** #include "modes.h"
+   2:modes.c       **** #include "config.h"
+   3:modes.c       **** #include "hardware.h"
+   4:modes.c       **** #include "module.h"
+   5:modes.c       **** #include "regdefs.h"
+   6:modes.c       **** #include "registers.h"
+   7:modes.c       **** #include "robot.h"
+   8:modes.c       **** #include "sysTime.h"
+   9:modes.c       **** 
+  10:modes.c       **** const uint8_t MOTOR_ADDR = 21;
+  11:modes.c       **** volatile int8_t motor_position = 0;
+  12:modes.c       **** 
+  13:modes.c       **** static int8_t register_handler(uint8_t operation, uint8_t address,
+  14:modes.c       ****                                RadioData *radio_data) {
+  21              		.loc 1 14 0
+  22              		.cfi_startproc
+  23              		@ Function supports interworking.
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27              	.LVL0:
+  15:modes.c       **** 
+  16:modes.c       ****   if (address == REG8_MODE) {
+  28              		.loc 1 16 0
+  29 0000 000051E3 		cmp	r1, #0
+  30              	.LVL1:
+  31 0004 0900001A 		bne	.L2
+  17:modes.c       ****     switch (operation) {
+  32              		.loc 1 17 0
+  33 0008 000050E3 		cmp	r0, #0
+  34 000c 0200000A 		beq	.L4
+  35 0010 040050E3 		cmp	r0, #4
+  36 0014 1600001A 		bne	.L3
+  37 0018 010000EA 		b	.L5
+  38              	.L4:
+  18:modes.c       ****     case ROP_READ_8:
+  19:modes.c       ****       radio_data->byte = reg8_table[REG8_MODE];
+  39              		.loc 1 19 0
+  40 001c 5C309FE5 		ldr	r3, .L17
+  41 0020 0A0000EA 		b	.L16
+  42              	.L5:
+  20:modes.c       ****       return TRUE;
+  21:modes.c       ****     case ROP_WRITE_8:
+  22:modes.c       ****       reg8_table[REG8_MODE] = radio_data->byte; // Allow writing to register
+  43              		.loc 1 22 0
+  44 0024 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  45              	.LVL2:
+  46 0028 50309FE5 		ldr	r3, .L17
+  47 002c 0C0000EA 		b	.L15
+  48              	.LVL3:
+  49              	.L2:
+  23:modes.c       ****       return TRUE;
+  24:modes.c       ****     }
+  25:modes.c       ****   }
+  26:modes.c       ****   if (address == 0x06) {
+  50              		.loc 1 26 0
+  51 0030 060051E3 		cmp	r1, #6
+  52 0034 0D00001A 		bne	.L10
+  53              	.LVL4:
+  54              	.LBB4:
+  55              	.LBB5:
+  27:modes.c       ****     switch (operation) {
+  56              		.loc 1 27 0
+  57 0038 000050E3 		cmp	r0, #0
+  58 003c 0200000A 		beq	.L7
+  59 0040 040050E3 		cmp	r0, #4
+  60 0044 0900001A 		bne	.L10
+  61 0048 030000EA 		b	.L8
+  62              	.L7:
+  28:modes.c       ****     case ROP_READ_8:
+  29:modes.c       ****       radio_data->byte = motor_position;
+  63              		.loc 1 29 0
+  64 004c 30309FE5 		ldr	r3, .L17+4
+  65              	.LVL5:
+  66              	.L16:
+  67 0050 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  68 0054 0030C2E5 		strb	r3, [r2, #0]
+  69 0058 020000EA 		b	.L14
+  70              	.LVL6:
+  71              	.L8:
+  30:modes.c       ****       return TRUE;
+  31:modes.c       ****     case ROP_WRITE_8:
+  32:modes.c       ****       motor_position = radio_data->byte; // Allow writing to register
+  72              		.loc 1 32 0
+  73 005c 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  74              	.LVL7:
+  75 0060 1C309FE5 		ldr	r3, .L17+4
+  76              	.LVL8:
+  77              	.L15:
+  78 0064 0020C3E5 		strb	r2, [r3, #0]
+  79              	.L14:
+  33:modes.c       ****       return TRUE;
+  80              		.loc 1 33 0
+  81 0068 0110A0E3 		mov	r1, #1
+  82 006c 000000EA 		b	.L3
+  83              	.LVL9:
+  84              	.L10:
+  85              	.LBE5:
+  86              	.LBE4:
+  34:modes.c       ****     }
+  35:modes.c       ****   }
+  36:modes.c       ****   return FALSE;
+  87              		.loc 1 36 0
+  88 0070 0010A0E3 		mov	r1, #0
+  89              	.LVL10:
+  90              	.L3:
+  91 0074 010CA0E1 		mov	r0, r1, asl #24
+  92              	.LVL11:
+  37:modes.c       **** }
+  93              		.loc 1 37 0
+  94 0078 400CA0E1 		mov	r0, r0, asr #24
+  95 007c 1EFF2FE1 		bx	lr
+  96              	.L18:
+  97              		.align	2
+  98              	.L17:
+  99 0080 00000000 		.word	reg8_table
+ 100 0084 00000000 		.word	.LANCHOR0
+ 101              		.cfi_endproc
+ 102              	.LFE0:
+ 104              		.align	2
+ 105              		.global	motor_demo_mode
+ 107              	motor_demo_mode:
+ 108              	.LFB1:
+  38:modes.c       **** 
+  39:modes.c       **** void motor_demo_mode() {
+ 109              		.loc 1 39 0
+ 110              		.cfi_startproc
+ 111              		@ Function supports interworking.
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114 0088 10402DE9 		stmfd	sp!, {r4, lr}
+ 115              	.LCFI0:
+ 116              		.cfi_def_cfa_offset 8
+ 117              		.cfi_offset 4, -8
+ 118              		.cfi_offset 14, -4
+  40:modes.c       ****   init_body_module(MOTOR_ADDR);
+ 119              		.loc 1 40 0
+ 120 008c 1500A0E3 		mov	r0, #21
+ 121 0090 FEFFFFEB 		bl	init_body_module
+ 122              	.LVL12:
+  41:modes.c       ****   start_pid(MOTOR_ADDR);
+ 123              		.loc 1 41 0
+ 124 0094 1500A0E3 		mov	r0, #21
+ 125 0098 FEFFFFEB 		bl	start_pid
+ 126              	.LVL13:
+  42:modes.c       ****   set_color(4);
+ 127              		.loc 1 42 0
+ 128 009c 0400A0E3 		mov	r0, #4
+ 129 00a0 FEFFFFEB 		bl	set_color
+ 130              	.LVL14:
+  43:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_MOTOR_DEMO) {
+ 131              		.loc 1 43 0
+ 132 00a4 6C409FE5 		ldr	r4, .L22
+ 133 00a8 090000EA 		b	.L20
+ 134              	.L21:
+  44:modes.c       ****     bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(21.0));
+ 135              		.loc 1 44 0
+ 136 00ac 1F20A0E3 		mov	r2, #31
+ 137 00b0 FEFFFFEB 		bl	bus_set
+ 138              	.LVL15:
+  45:modes.c       ****     pause(ONE_SEC);
+ 139              		.loc 1 45 0
+ 140 00b4 60009FE5 		ldr	r0, .L22+4
+ 141 00b8 FEFFFFEB 		bl	pause
+ 142              	.LVL16:
+  46:modes.c       ****     bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-21.0));
+ 143              		.loc 1 46 0
+ 144 00bc 1500A0E3 		mov	r0, #21
+ 145 00c0 2F10A0E3 		mov	r1, #47
+ 146 00c4 E120A0E3 		mov	r2, #225
+ 147 00c8 FEFFFFEB 		bl	bus_set
+ 148              	.LVL17:
+  47:modes.c       ****     pause(ONE_SEC);
+ 149              		.loc 1 47 0
+ 150 00cc 48009FE5 		ldr	r0, .L22+4
+ 151 00d0 FEFFFFEB 		bl	pause
+ 152              	.LVL18:
+ 153              	.L20:
+  43:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_MOTOR_DEMO) {
+ 154              		.loc 1 43 0 discriminator 1
+ 155 00d4 0030D4E5 		ldrb	r3, [r4, #0]	@ zero_extendqisi2
+ 156 00d8 010053E3 		cmp	r3, #1
+  44:modes.c       ****     bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(21.0));
+ 157              		.loc 1 44 0 discriminator 1
+ 158 00dc 1500A0E3 		mov	r0, #21
+ 159 00e0 2F10A0E3 		mov	r1, #47
+  43:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_MOTOR_DEMO) {
+ 160              		.loc 1 43 0 discriminator 1
+ 161 00e4 F0FFFF0A 		beq	.L21
+  48:modes.c       ****   }
+  49:modes.c       ****   bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(0.0));
+ 162              		.loc 1 49 0
+ 163 00e8 0020A0E3 		mov	r2, #0
+ 164 00ec FEFFFFEB 		bl	bus_set
+ 165              	.LVL19:
+  50:modes.c       ****   pause(ONE_SEC);
+ 166              		.loc 1 50 0
+ 167 00f0 24009FE5 		ldr	r0, .L22+4
+ 168 00f4 FEFFFFEB 		bl	pause
+ 169              	.LVL20:
+  51:modes.c       ****   bus_set(MOTOR_ADDR, MREG_MODE, MODE_IDLE);
+ 170              		.loc 1 51 0
+ 171 00f8 1500A0E3 		mov	r0, #21
+ 172 00fc 2810A0E3 		mov	r1, #40
+ 173 0100 0020A0E3 		mov	r2, #0
+ 174 0104 FEFFFFEB 		bl	bus_set
+ 175              	.LVL21:
+  52:modes.c       ****   set_color(2);
+ 176              		.loc 1 52 0
+ 177 0108 0200A0E3 		mov	r0, #2
+ 178 010c FEFFFFEB 		bl	set_color
+ 179              	.LVL22:
+  53:modes.c       **** }
+ 180              		.loc 1 53 0
+ 181 0110 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 182 0114 1EFF2FE1 		bx	lr
+ 183              	.L23:
+ 184              		.align	2
+ 185              	.L22:
+ 186 0118 00000000 		.word	reg8_table
+ 187 011c 80969800 		.word	10000000
+ 188              		.cfi_endproc
+ 189              	.LFE1:
+ 191              		.global	__aeabi_i2f
+ 192              		.global	__aeabi_fmul
+ 193              		.global	__aeabi_f2iz
+ 194              		.align	2
+ 195              		.global	motor_sine_demo
+ 197              	motor_sine_demo:
+ 198              	.LFB2:
+  54:modes.c       **** 
+  55:modes.c       **** void motor_sine_demo() {
+ 199              		.loc 1 55 0
+ 200              		.cfi_startproc
+ 201              		@ Function supports interworking.
+ 202              		@ args = 0, pretend = 0, frame = 0
+ 203              		@ frame_needed = 0, uses_anonymous_args = 0
+ 204 0120 38402DE9 		stmfd	sp!, {r3, r4, r5, lr}
+ 205              	.LCFI1:
+ 206              		.cfi_def_cfa_offset 16
+ 207              		.cfi_offset 3, -16
+ 208              		.cfi_offset 4, -12
+ 209              		.cfi_offset 5, -8
+ 210              		.cfi_offset 14, -4
+  56:modes.c       ****   init_body_module(MOTOR_ADDR);
+ 211              		.loc 1 56 0
+ 212 0124 1500A0E3 		mov	r0, #21
+ 213 0128 FEFFFFEB 		bl	init_body_module
+ 214              	.LVL23:
+  57:modes.c       ****   start_pid(MOTOR_ADDR);
+ 215              		.loc 1 57 0
+ 216 012c 1500A0E3 		mov	r0, #21
+ 217 0130 FEFFFFEB 		bl	start_pid
+ 218              	.LVL24:
+  58:modes.c       ****   set_color(3);
+ 219              		.loc 1 58 0
+ 220 0134 0300A0E3 		mov	r0, #3
+ 221 0138 FEFFFFEB 		bl	set_color
+ 222              	.LVL25:
+  59:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_SINE_DEMO) {
+ 223              		.loc 1 59 0
+ 224 013c 7C409FE5 		ldr	r4, .L27
+  60:modes.c       ****     bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(motor_position));
+ 225              		.loc 1 60 0
+ 226 0140 7C509FE5 		ldr	r5, .L27+4
+  59:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_SINE_DEMO) {
+ 227              		.loc 1 59 0
+ 228 0144 0C0000EA 		b	.L25
+ 229              	.L26:
+ 230              		.loc 1 60 0
+ 231 0148 0000D5E5 		ldrb	r0, [r5, #0]	@ zero_extendqisi2
+ 232 014c 000CA0E1 		mov	r0, r0, asl #24
+ 233 0150 400CA0E1 		mov	r0, r0, asr #24
+ 234 0154 FEFFFFEB 		bl	__aeabi_i2f
+ 235              	.LVL26:
+ 236 0158 FF15A0E3 		mov	r1, #1069547520
+ 237 015c FEFFFFEB 		bl	__aeabi_fmul
+ 238              	.LVL27:
+ 239 0160 FEFFFFEB 		bl	__aeabi_f2iz
+ 240              	.LVL28:
+ 241 0164 2F10A0E3 		mov	r1, #47
+ 242 0168 FF2000E2 		and	r2, r0, #255
+ 243 016c 1500A0E3 		mov	r0, #21
+ 244 0170 FEFFFFEB 		bl	bus_set
+ 245              	.LVL29:
+  61:modes.c       ****     pause(TEN_MS);
+ 246              		.loc 1 61 0
+ 247 0174 4C009FE5 		ldr	r0, .L27+8
+ 248 0178 FEFFFFEB 		bl	pause
+ 249              	.LVL30:
+ 250              	.L25:
+  59:modes.c       ****   while (reg8_table[REG8_MODE] == IMODE_SINE_DEMO) {
+ 251              		.loc 1 59 0 discriminator 1
+ 252 017c 0030D4E5 		ldrb	r3, [r4, #0]	@ zero_extendqisi2
+ 253 0180 020053E3 		cmp	r3, #2
+ 254 0184 EFFFFF0A 		beq	.L26
+  62:modes.c       ****   }
+  63:modes.c       ****   bus_set(MOTOR_ADDR, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(0.0));
+ 255              		.loc 1 63 0
+ 256 0188 2F10A0E3 		mov	r1, #47
+ 257 018c 0020A0E3 		mov	r2, #0
+ 258 0190 1500A0E3 		mov	r0, #21
+ 259 0194 FEFFFFEB 		bl	bus_set
+ 260              	.LVL31:
+  64:modes.c       ****   pause(ONE_SEC);
+ 261              		.loc 1 64 0
+ 262 0198 2C009FE5 		ldr	r0, .L27+12
+ 263 019c FEFFFFEB 		bl	pause
+ 264              	.LVL32:
+  65:modes.c       ****   bus_set(MOTOR_ADDR, MREG_MODE, MODE_IDLE);
+ 265              		.loc 1 65 0
+ 266 01a0 1500A0E3 		mov	r0, #21
+ 267 01a4 2810A0E3 		mov	r1, #40
+ 268 01a8 0020A0E3 		mov	r2, #0
+ 269 01ac FEFFFFEB 		bl	bus_set
+ 270              	.LVL33:
+  66:modes.c       ****   set_color(2);
+ 271              		.loc 1 66 0
+ 272 01b0 0200A0E3 		mov	r0, #2
+ 273 01b4 FEFFFFEB 		bl	set_color
+ 274              	.LVL34:
+  67:modes.c       **** }
+ 275              		.loc 1 67 0
+ 276 01b8 3840BDE8 		ldmfd	sp!, {r3, r4, r5, lr}
+ 277 01bc 1EFF2FE1 		bx	lr
+ 278              	.L28:
+ 279              		.align	2
+ 280              	.L27:
+ 281 01c0 00000000 		.word	reg8_table
+ 282 01c4 00000000 		.word	.LANCHOR0
+ 283 01c8 A0860100 		.word	100000
+ 284 01cc 80969800 		.word	10000000
+ 285              		.cfi_endproc
+ 286              	.LFE2:
+ 288              		.align	2
+ 289              		.global	main_mode_loop
+ 291              	main_mode_loop:
+ 292              	.LFB3:
+  68:modes.c       **** 
+  69:modes.c       **** void main_mode_loop() {
+ 293              		.loc 1 69 0
+ 294              		.cfi_startproc
+ 295              		@ Function supports interworking.
+ 296              		@ args = 0, pretend = 0, frame = 0
+ 297              		@ frame_needed = 0, uses_anonymous_args = 0
+ 298 01d0 38402DE9 		stmfd	sp!, {r3, r4, r5, lr}
+ 299              	.LCFI2:
+ 300              		.cfi_def_cfa_offset 16
+ 301              		.cfi_offset 3, -16
+ 302              		.cfi_offset 4, -12
+ 303              		.cfi_offset 5, -8
+ 304              		.cfi_offset 14, -4
+  70:modes.c       ****   reg8_table[REG8_MODE] = IMODE_IDLE;
+ 305              		.loc 1 70 0
+ 306 01d4 40409FE5 		ldr	r4, .L40
+ 307 01d8 0050A0E3 		mov	r5, #0
+  71:modes.c       ****   radio_add_reg_callback(register_handler);
+ 308              		.loc 1 71 0
+ 309 01dc 3C009FE5 		ldr	r0, .L40+4
+  70:modes.c       ****   reg8_table[REG8_MODE] = IMODE_IDLE;
+ 310              		.loc 1 70 0
+ 311 01e0 0050C4E5 		strb	r5, [r4, #0]
+ 312              		.loc 1 71 0
+ 313 01e4 FEFFFFEB 		bl	radio_add_reg_callback
+ 314              	.LVL35:
+ 315              	.L38:
+  72:modes.c       ****   while (1) {
+  73:modes.c       ****     switch (reg8_table[REG8_MODE]) {
+ 316              		.loc 1 73 0
+ 317 01e8 0030D4E5 		ldrb	r3, [r4, #0]	@ zero_extendqisi2
+ 318 01ec FF3003E2 		and	r3, r3, #255
+ 319 01f0 010053E3 		cmp	r3, #1
+ 320 01f4 0400000A 		beq	.L33
+ 321 01f8 FAFFFF3A 		bcc	.L38
+ 322 01fc 020053E3 		cmp	r3, #2
+  74:modes.c       ****     case IMODE_IDLE:
+  75:modes.c       ****       break;
+  76:modes.c       ****     case IMODE_MOTOR_DEMO:
+  77:modes.c       ****       motor_demo_mode();
+  78:modes.c       ****       break;
+  79:modes.c       ****     case IMODE_SINE_DEMO:
+  80:modes.c       ****       motor_sine_demo();
+  81:modes.c       ****       break;
+  82:modes.c       ****     default:
+  83:modes.c       ****       reg8_table[REG8_MODE] = IMODE_IDLE;
+ 323              		.loc 1 83 0
+ 324 0200 0050C415 		strneb	r5, [r4, #0]
+  73:modes.c       ****     switch (reg8_table[REG8_MODE]) {
+ 325              		.loc 1 73 0
+ 326 0204 F7FFFF1A 		bne	.L38
+ 327 0208 010000EA 		b	.L34
+ 328              	.L33:
+  77:modes.c       ****       motor_demo_mode();
+ 329              		.loc 1 77 0
+ 330 020c FEFFFFEB 		bl	motor_demo_mode
+ 331              	.LVL36:
+  78:modes.c       ****       break;
+ 332              		.loc 1 78 0
+ 333 0210 F4FFFFEA 		b	.L38
+ 334              	.L34:
+  80:modes.c       ****       motor_sine_demo();
+ 335              		.loc 1 80 0
+ 336 0214 FEFFFFEB 		bl	motor_sine_demo
+ 337              	.LVL37:
+  81:modes.c       ****       break;
+ 338              		.loc 1 81 0
+ 339 0218 F2FFFFEA 		b	.L38
+ 340              	.L41:
+ 341              		.align	2
+ 342              	.L40:
+ 343 021c 00000000 		.word	reg8_table
+ 344 0220 00000000 		.word	register_handler
+ 345              		.cfi_endproc
+ 346              	.LFE3:
+ 348              		.global	motor_position
+ 349              		.global	MOTOR_ADDR
+ 350              		.section	.rodata
+ 353              	MOTOR_ADDR:
+ 354 0000 15       		.byte	21
+ 355              		.bss
+ 356              		.set	.LANCHOR0,. + 0
+ 359              	motor_position:
+ 360 0000 00       		.space	1
+ 361              		.text
+ 362              	.Letext0:
+ 363              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 364              		.file 3 "../firmware/radio.h"
+ 365              		.file 4 "../firmware/registers.h"
+ 366              		.file 5 "../firmware/robot.h"
+ 367              		.file 6 "../firmware/hardware.h"
+ 368              		.file 7 "../firmware/sysTime.h"
+ 369              		.file 8 "../../common/regdefs.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 modes.c
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:18     .text:00000000 register_handler
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:99     .text:00000080 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:104    .text:00000088 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:107    .text:00000088 motor_demo_mode
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:186    .text:00000118 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:194    .text:00000120 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:197    .text:00000120 motor_sine_demo
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:281    .text:000001c0 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:288    .text:000001d0 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:291    .text:000001d0 main_mode_loop
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:343    .text:0000021c $d
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:359    .bss:00000000 motor_position
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:353    .rodata:00000000 MOTOR_ADDR
+C:\Users\ncmorand\AppData\Local\Temp\ccdzpQDp.s:360    .bss:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+reg8_table
+init_body_module
+start_pid
+set_color
+bus_set
+pause
+__aeabi_i2f
+__aeabi_fmul
+__aeabi_f2iz
+radio_add_reg_callback

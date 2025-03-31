@@ -19,18 +19,44 @@
 
 const uint8_t MOTOR_ADDR = 21; // Motor address
 
+uint8_t freq_enc = DEFAULT_FREQ;
+uint8_t amp_enc = DEFAULT_AMP;
+
+
 static int8_t register_handler(uint8_t operation, uint8_t address,
                                RadioData *radio_data) {
 
-  switch (operation) {
-  case ROP_READ_8:
-    radio_data->byte = reg8_table[address];
-    return TRUE;
-  case ROP_WRITE_8:
-    reg8_table[address] = radio_data->byte; // Allow writing to register
-    return TRUE;
+  switch (address) {
+    case REG8_MODE:
+      switch (operation) {
+      case ROP_READ_8:
+        radio_data->byte = reg8_table[REG8_MODE];
+        return TRUE;
+      case ROP_WRITE_8:
+        reg8_table[REG8_MODE] = radio_data->byte; // Allow writing to register
+        return TRUE;
+      }
+    case REG8_SINE_FREQ:
+      switch (operation) {
+      case ROP_READ_8:
+        radio_data->byte = freq_enc;
+        return TRUE;
+      case ROP_WRITE_8:
+        freq_enc = radio_data->byte; // Allow writing to register
+        return TRUE;
+      }
+    case REG8_SINE_AMP:
+      switch (operation) {
+      case ROP_READ_8:
+        radio_data->byte = amp_enc;
+        return TRUE;
+      case ROP_WRITE_8:
+        amp_enc = radio_data->byte; // Allow writing to register
+        return TRUE;
+      }
   }
   return FALSE;
+
 }
 
 // Function to initialize default parameters
@@ -58,15 +84,15 @@ void sine_demo_mode(void) {
   my_time = 0;
 
   // Make sure parameters are initialized
-  if (reg8_table[REG8_SINE_FREQ] == 0)
-    reg8_table[REG8_SINE_FREQ] = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
-  if (reg8_table[REG8_SINE_AMP] == 0)
-    reg8_table[REG8_SINE_AMP] = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
+  if (freq_enc == 0)
+    freq_enc = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
+  if (amp_enc == 0)
+    amp_enc = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
 
   do {
     // Decode current parameters from registers
-    freq = DECODE_PARAM_8(reg8_table[REG8_SINE_FREQ], 0.1f, MAX_FREQ);
-    amplitude = DECODE_PARAM_8(reg8_table[REG8_SINE_AMP], 1.0f, MAX_AMP);
+    freq = DECODE_PARAM_8(freq_enc, 0.1f, MAX_FREQ);
+    amplitude = DECODE_PARAM_8(amp_enc, 1.0f, MAX_AMP);
 
     // Apply limits to ensure safety
     if (freq > MAX_FREQ)
@@ -124,6 +150,7 @@ void main_mode_loop(void) {
 
   // Set initial mode
   reg8_table[REG8_MODE] = IMODE_IDLE;
+
 
   // Add the register handler
   radio_add_reg_callback(register_handler);

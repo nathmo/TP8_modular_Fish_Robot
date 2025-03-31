@@ -8,7 +8,7 @@ LIBS = -lwsock32
 # Default
 # ex6: ../common/netutil.o ../common/wperror.o ../common/trkcli.o ../common/utils.o ex6.o
 # 6.1
-ex6: ../common/netutil.o ../common/wperror.o ../common/trkcli.o ../common/utils.o ex61.o
+ex6: ../common/remregs.o ../common/netutil.o ../common/wperror.o ../common/robot.o ../common/trkcli.o ../common/utils.o ex61.o
 
 # Includes the common Makefile with the various rules
 include ../common/Makefile.inc

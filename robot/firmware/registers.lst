@@ -1,0 +1,76 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"registers.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  17              		.global	registers_init
+  19              	registers_init:
+  20              	.LFB0:
+  21              		.file 1 "../firmware/registers.c"
+   1:../firmware/registers.c **** #include "registers.h"
+   2:../firmware/registers.c **** 
+   3:../firmware/registers.c **** void registers_init()
+   4:../firmware/registers.c **** {
+  22              		.loc 1 4 0
+  23              		.cfi_startproc
+  24              		@ Function supports interworking.
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27              		@ link register save eliminated.
+  28              	.LVL0:
+   5:../firmware/registers.c ****   uint8_t i;
+   6:../firmware/registers.c **** 
+   7:../firmware/registers.c ****   for (i = 0; i < REG8_MAX; i++) {
+   8:../firmware/registers.c ****     reg8_table[i] = 0;
+  29              		.loc 1 8 0
+  30 0000 18209FE5 		ldr	r2, .L2
+  31 0004 0030A0E3 		mov	r3, #0
+  32 0008 0030C2E5 		strb	r3, [r2, #0]
+  33              	.LVL1:
+   9:../firmware/registers.c ****   }
+  10:../firmware/registers.c ****   for (i = 0; i < REG16_MAX; i++) {
+  11:../firmware/registers.c ****     reg16_table[i] = 0;
+  34              		.loc 1 11 0
+  35 000c 10209FE5 		ldr	r2, .L2+4
+  36 0010 B030C2E1 		strh	r3, [r2, #0]	@ movhi
+  12:../firmware/registers.c ****   }
+  13:../firmware/registers.c ****   for (i = 0; i < REG32_MAX; i++) {
+  14:../firmware/registers.c ****     reg32_table[i] = 0;
+  37              		.loc 1 14 0
+  38 0014 0C209FE5 		ldr	r2, .L2+8
+  39 0018 003082E5 		str	r3, [r2, #0]
+  40 001c 1EFF2FE1 		bx	lr
+  41              	.L3:
+  42              		.align	2
+  43              	.L2:
+  44 0020 00000000 		.word	reg8_table
+  45 0024 00000000 		.word	reg16_table
+  46 0028 00000000 		.word	reg32_table
+  47              		.cfi_endproc
+  48              	.LFE0:
+  50              	.Letext0:
+  51              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+  52              		.file 3 "../../common/regdefs.h"
+  53              		.file 4 "../firmware/registers.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 registers.c
+C:\Users\ncmorand\AppData\Local\Temp\ccw6FEKx.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccw6FEKx.s:19     .text:00000000 registers_init
+C:\Users\ncmorand\AppData\Local\Temp\ccw6FEKx.s:44     .text:00000020 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+reg8_table
+reg16_table
+reg32_table

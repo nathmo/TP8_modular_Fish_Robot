@@ -8,7 +8,7 @@
 #include "sysTime.h"
 
 const uint8_t MOTOR_ADDR = 21;
-int8_t motor_position = 0;
+volatile int8_t motor_position = 0;
 
 static int8_t register_handler(uint8_t operation, uint8_t address,
                                RadioData *radio_data) {
@@ -78,6 +78,7 @@ void main_mode_loop() {
       break;
     case IMODE_SINE_DEMO:
       motor_sine_demo();
+      break;
     default:
       reg8_table[REG8_MODE] = IMODE_IDLE;
     }

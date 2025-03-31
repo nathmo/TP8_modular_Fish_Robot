@@ -1,0 +1,760 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"modes52.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  18              	register_handler:
+  19              	.LFB0:
+  20              		.file 1 "modes52.c"
+   1:modes52.c     **** #include "config.h"
+   2:modes52.c     **** #include "hardware.h"
+   3:modes52.c     **** #include "modes.h"
+   4:modes52.c     **** #include "module.h"
+   5:modes52.c     **** #include "registers.h"
+   6:modes52.c     **** #include "robot.h"
+   7:modes52.c     **** 
+   8:modes52.c     **** // Define registers for frequency and amplitude control
+   9:modes52.c     **** #define REG8_SINE_FREQ 10 // Register for sine wave frequency
+  10:modes52.c     **** #define REG8_SINE_AMP 11  // Register for sine wave amplitude
+  11:modes52.c     **** 
+  12:modes52.c     **** // Define limits for frequency and amplitude
+  13:modes52.c     **** #define MAX_FREQ 2.0f // Maximum frequency in Hz
+  14:modes52.c     **** #define MAX_AMP 60.0f // Maximum amplitude in degrees
+  15:modes52.c     **** 
+  16:modes52.c     **** // Default values
+  17:modes52.c     **** #define DEFAULT_FREQ 1.0f // Default frequency in Hz
+  18:modes52.c     **** #define DEFAULT_AMP 40.0f // Default amplitude in degrees
+  19:modes52.c     **** 
+  20:modes52.c     **** const uint8_t MOTOR_ADDR = 21; // Motor address
+  21:modes52.c     **** 
+  22:modes52.c     **** uint8_t freq_enc = DEFAULT_FREQ;
+  23:modes52.c     **** uint8_t amp_enc = DEFAULT_AMP;
+  24:modes52.c     **** 
+  25:modes52.c     **** 
+  26:modes52.c     **** static int8_t register_handler(uint8_t operation, uint8_t address,
+  27:modes52.c     ****                                RadioData *radio_data) {
+  21              		.loc 1 27 0
+  22              		.cfi_startproc
+  23              		@ Function supports interworking.
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27              	.LVL0:
+  28:modes52.c     **** 
+  29:modes52.c     ****   switch (address) {
+  28              		.loc 1 29 0
+  29 0000 000051E3 		cmp	r1, #0
+  30              	.LVL1:
+  31 0004 0400000A 		beq	.L3
+  32 0008 0A0051E3 		cmp	r1, #10
+  33 000c 0C00000A 		beq	.L4
+  34 0010 0B0051E3 		cmp	r1, #11
+  35 0014 2400001A 		bne	.L21
+  36 0018 150000EA 		b	.L5
+  37              	.L3:
+  30:modes52.c     ****     case REG8_MODE:
+  31:modes52.c     ****       switch (operation) {
+  38              		.loc 1 31 0
+  39 001c 000050E3 		cmp	r0, #0
+  40 0020 0200000A 		beq	.L6
+  41 0024 040050E3 		cmp	r0, #4
+  42 0028 0500001A 		bne	.L4
+  43 002c 010000EA 		b	.L7
+  44              	.L6:
+  32:modes52.c     ****       case ROP_READ_8:
+  33:modes52.c     ****         radio_data->byte = reg8_table[REG8_MODE];
+  45              		.loc 1 33 0
+  46 0030 7C309FE5 		ldr	r3, .L27
+  47 0034 080000EA 		b	.L26
+  48              	.L7:
+  34:modes52.c     ****         return TRUE;
+  35:modes52.c     ****       case ROP_WRITE_8:
+  36:modes52.c     ****         reg8_table[REG8_MODE] = radio_data->byte; // Allow writing to register
+  49              		.loc 1 36 0
+  50 0038 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  51              	.LVL2:
+  52 003c 70309FE5 		ldr	r3, .L27
+  53 0040 090000EA 		b	.L25
+  54              	.LVL3:
+  55              	.L4:
+  37:modes52.c     ****         return TRUE;
+  38:modes52.c     ****       }
+  39:modes52.c     ****     case REG8_SINE_FREQ:
+  40:modes52.c     ****       switch (operation) {
+  56              		.loc 1 40 0
+  57 0044 000050E3 		cmp	r0, #0
+  58 0048 0200000A 		beq	.L8
+  59 004c 040050E3 		cmp	r0, #4
+  60 0050 0700001A 		bne	.L5
+  61 0054 020000EA 		b	.L9
+  62              	.L8:
+  41:modes52.c     ****       case ROP_READ_8:
+  42:modes52.c     ****         radio_data->byte = freq_enc;
+  63              		.loc 1 42 0
+  64 0058 58309FE5 		ldr	r3, .L27+4
+  65              	.L26:
+  66 005c 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  67 0060 0A0000EA 		b	.L24
+  68              	.L9:
+  43:modes52.c     ****         return TRUE;
+  44:modes52.c     ****       case ROP_WRITE_8:
+  45:modes52.c     ****         freq_enc = radio_data->byte; // Allow writing to register
+  69              		.loc 1 45 0
+  70 0064 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  71              	.LVL4:
+  72 0068 48309FE5 		ldr	r3, .L27+4
+  73              	.L25:
+  74 006c 0020C3E5 		strb	r2, [r3, #0]
+  75 0070 0B0000EA 		b	.L23
+  76              	.LVL5:
+  77              	.L5:
+  78              	.LBB4:
+  79              	.LBB5:
+  46:modes52.c     ****         return TRUE;
+  47:modes52.c     ****       }
+  48:modes52.c     ****     case REG8_SINE_AMP:
+  49:modes52.c     ****       switch (operation) {
+  80              		.loc 1 49 0
+  81 0074 000050E3 		cmp	r0, #0
+  82 0078 0200000A 		beq	.L11
+  83 007c 040050E3 		cmp	r0, #4
+  84 0080 0900001A 		bne	.L21
+  85 0084 030000EA 		b	.L12
+  86              	.L11:
+  50:modes52.c     ****       case ROP_READ_8:
+  51:modes52.c     ****         radio_data->byte = amp_enc;
+  87              		.loc 1 51 0
+  88 0088 28309FE5 		ldr	r3, .L27+4
+  89 008c 0130D3E5 		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  90              	.LVL6:
+  91              	.L24:
+  92 0090 0030C2E5 		strb	r3, [r2, #0]
+  93 0094 020000EA 		b	.L23
+  94              	.LVL7:
+  95              	.L12:
+  52:modes52.c     ****         return TRUE;
+  53:modes52.c     ****       case ROP_WRITE_8:
+  54:modes52.c     ****         amp_enc = radio_data->byte; // Allow writing to register
+  96              		.loc 1 54 0
+  97 0098 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  98              	.LVL8:
+  99 009c 14309FE5 		ldr	r3, .L27+4
+ 100 00a0 0120C3E5 		strb	r2, [r3, #1]
+ 101              	.LVL9:
+ 102              	.L23:
+  55:modes52.c     ****         return TRUE;
+ 103              		.loc 1 55 0
+ 104 00a4 0100A0E3 		mov	r0, #1
+ 105              	.LVL10:
+ 106 00a8 1EFF2FE1 		bx	lr
+ 107              	.LVL11:
+ 108              	.L21:
+ 109              	.LBE5:
+ 110              	.LBE4:
+  56:modes52.c     ****       }
+  57:modes52.c     ****   }
+  58:modes52.c     ****   return FALSE;
+ 111              		.loc 1 58 0
+ 112 00ac 0000A0E3 		mov	r0, #0
+ 113              	.LVL12:
+  59:modes52.c     **** 
+  60:modes52.c     **** }
+ 114              		.loc 1 60 0
+ 115 00b0 1EFF2FE1 		bx	lr
+ 116              	.L28:
+ 117              		.align	2
+ 118              	.L27:
+ 119 00b4 00000000 		.word	reg8_table
+ 120 00b8 00000000 		.word	.LANCHOR0
+ 121              		.cfi_endproc
+ 122              	.LFE0:
+ 124              		.align	2
+ 125              		.global	init_sine_params
+ 127              	init_sine_params:
+ 128              	.LFB1:
+  61:modes52.c     **** 
+  62:modes52.c     **** // Function to initialize default parameters
+  63:modes52.c     **** void init_sine_params(void) {
+ 129              		.loc 1 63 0
+ 130              		.cfi_startproc
+ 131              		@ Function supports interworking.
+ 132              		@ args = 0, pretend = 0, frame = 0
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134              		@ link register save eliminated.
+  64:modes52.c     ****   // Set default values for frequency and amplitude
+  65:modes52.c     ****   reg8_table[REG8_SINE_FREQ] = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
+ 135              		.loc 1 65 0
+ 136 00bc 10309FE5 		ldr	r3, .L30
+ 137 00c0 7820A0E3 		mov	r2, #120
+ 138 00c4 0A20C3E5 		strb	r2, [r3, #10]
+  66:modes52.c     ****   reg8_table[REG8_SINE_AMP] = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
+ 139              		.loc 1 66 0
+ 140 00c8 5720E0E3 		mvn	r2, #87
+ 141 00cc 0B20C3E5 		strb	r2, [r3, #11]
+ 142 00d0 1EFF2FE1 		bx	lr
+ 143              	.L31:
+ 144              		.align	2
+ 145              	.L30:
+ 146 00d4 00000000 		.word	reg8_table
+ 147              		.cfi_endproc
+ 148              	.LFE1:
+ 150              		.global	__aeabi_ui2f
+ 151              		.global	__aeabi_fmul
+ 152              		.global	__aeabi_f2d
+ 153              		.global	__aeabi_ddiv
+ 154              		.global	__aeabi_dadd
+ 155              		.global	__aeabi_d2f
+ 156              		.global	__aeabi_fcmpgt
+ 157              		.global	__aeabi_fdiv
+ 158              		.global	__aeabi_fadd
+ 159              		.global	__aeabi_dmul
+ 160              		.global	__aeabi_f2iz
+ 161              		.global	__aeabi_f2uiz
+ 162              		.global	__aeabi_fcmpge
+ 163              		.align	2
+ 164              		.global	sine_demo_mode
+ 166              	sine_demo_mode:
+ 167              	.LFB2:
+  67:modes52.c     **** }
+  68:modes52.c     **** 
+  69:modes52.c     **** void sine_demo_mode(void) {
+ 168              		.loc 1 69 0
+ 169              		.cfi_startproc
+ 170              		@ Function supports interworking.
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 173 00d8 F0472DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
+ 174              	.LCFI0:
+ 175              		.cfi_def_cfa_offset 32
+ 176              		.cfi_offset 4, -32
+ 177              		.cfi_offset 5, -28
+ 178              		.cfi_offset 6, -24
+ 179              		.cfi_offset 7, -20
+ 180              		.cfi_offset 8, -16
+ 181              		.cfi_offset 9, -12
+ 182              		.cfi_offset 10, -8
+ 183              		.cfi_offset 14, -4
+  70:modes52.c     ****   uint32_t dt, cycletimer;
+  71:modes52.c     ****   float my_time, delta_t, angle;
+  72:modes52.c     ****   float freq, amplitude;
+  73:modes52.c     ****   int8_t angle_rounded;
+  74:modes52.c     **** 
+  75:modes52.c     ****   // Initialize and start the motor's PID controller
+  76:modes52.c     ****   init_body_module(MOTOR_ADDR);
+ 184              		.loc 1 76 0
+ 185 00dc 1500A0E3 		mov	r0, #21
+ 186 00e0 FEFFFFEB 		bl	init_body_module
+ 187              	.LVL13:
+  77:modes52.c     ****   start_pid(MOTOR_ADDR);
+ 188              		.loc 1 77 0
+ 189 00e4 1500A0E3 		mov	r0, #21
+ 190 00e8 FEFFFFEB 		bl	start_pid
+ 191              	.LVL14:
+  78:modes52.c     **** 
+  79:modes52.c     ****   // Set visual indicator that motor is active
+  80:modes52.c     ****   set_color(4); // Set LED to red
+ 192              		.loc 1 80 0
+ 193 00ec 0400A0E3 		mov	r0, #4
+ 194 00f0 FEFFFFEB 		bl	set_color
+ 195              	.LVL15:
+  81:modes52.c     **** 
+  82:modes52.c     ****   // Initialize sine wave time
+  83:modes52.c     ****   cycletimer = getSysTICs();
+ 196              		.loc 1 83 0
+ 197 00f4 FEFFFFEB 		bl	getSysTICs
+ 198              	.LVL16:
+  84:modes52.c     ****   my_time = 0;
+  85:modes52.c     **** 
+  86:modes52.c     ****   // Make sure parameters are initialized
+  87:modes52.c     ****   if (freq_enc == 0)
+ 199              		.loc 1 87 0
+ 200 00f8 24329FE5 		ldr	r3, .L50
+ 201 00fc 0020D3E5 		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 202 0100 000052E3 		cmp	r2, #0
+  88:modes52.c     ****     freq_enc = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
+ 203              		.loc 1 88 0
+ 204 0104 7820A003 		moveq	r2, #120
+ 205 0108 0020C305 		streqb	r2, [r3, #0]
+  89:modes52.c     ****   if (amp_enc == 0)
+ 206              		.loc 1 89 0
+ 207 010c 0130D3E5 		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 208 0110 000053E3 		cmp	r3, #0
+  90:modes52.c     ****     amp_enc = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
+ 209              		.loc 1 90 0
+ 210 0114 08329F05 		ldreq	r3, .L50
+ 211 0118 5720E003 		mvneq	r2, #87
+ 212 011c 0120C305 		streqb	r2, [r3, #1]
+  83:modes52.c     ****   cycletimer = getSysTICs();
+ 213              		.loc 1 83 0
+ 214 0120 00A0A0E1 		mov	sl, r0
+ 215              	.LVL17:
+  69:modes52.c     **** void sine_demo_mode(void) {
+ 216              		.loc 1 69 0
+ 217 0124 0080A0E3 		mov	r8, #0
+ 218              	.LVL18:
+ 219              	.L40:
+ 220              	.LBB6:
+  91:modes52.c     **** 
+  92:modes52.c     ****   do {
+  93:modes52.c     ****     // Decode current parameters from registers
+  94:modes52.c     ****     freq = DECODE_PARAM_8(freq_enc, 0.1f, MAX_FREQ);
+ 221              		.loc 1 94 0
+ 222 0128 F4419FE5 		ldr	r4, .L50
+ 223 012c 0000D4E5 		ldrb	r0, [r4, #0]	@ zero_extendqisi2
+ 224 0130 FEFFFFEB 		bl	__aeabi_ui2f
+ 225              	.LVL19:
+ 226 0134 EC119FE5 		ldr	r1, .L50+4
+ 227 0138 FEFFFFEB 		bl	__aeabi_fmul
+ 228              	.LVL20:
+ 229 013c FEFFFFEB 		bl	__aeabi_f2d
+ 230              	.LVL21:
+ 231 0140 0020A0E3 		mov	r2, #0
+ 232 0144 E0319FE5 		ldr	r3, .L50+8
+ 233 0148 FEFFFFEB 		bl	__aeabi_ddiv
+ 234              	.LVL22:
+ 235 014c 0A22A0E3 		mov	r2, #-1610612736
+ 236 0150 D8319FE5 		ldr	r3, .L50+12
+ 237 0154 FEFFFFEB 		bl	__aeabi_dadd
+ 238              	.LVL23:
+ 239 0158 FEFFFFEB 		bl	__aeabi_d2f
+ 240              	.LVL24:
+ 241 015c 0070A0E1 		mov	r7, r0
+ 242              	.LVL25:
+  95:modes52.c     ****     amplitude = DECODE_PARAM_8(amp_enc, 1.0f, MAX_AMP);
+ 243              		.loc 1 95 0
+ 244 0160 0100D4E5 		ldrb	r0, [r4, #1]	@ zero_extendqisi2
+ 245              	.LVL26:
+ 246 0164 FEFFFFEB 		bl	__aeabi_ui2f
+ 247              	.LVL27:
+ 248 0168 C4119FE5 		ldr	r1, .L50+16
+ 249 016c FEFFFFEB 		bl	__aeabi_fmul
+ 250              	.LVL28:
+ 251 0170 FEFFFFEB 		bl	__aeabi_f2d
+ 252              	.LVL29:
+ 253 0174 0020A0E3 		mov	r2, #0
+ 254 0178 AC319FE5 		ldr	r3, .L50+8
+ 255 017c FEFFFFEB 		bl	__aeabi_ddiv
+ 256              	.LVL30:
+ 257 0180 0020A0E3 		mov	r2, #0
+ 258 0184 AC319FE5 		ldr	r3, .L50+20
+ 259 0188 FEFFFFEB 		bl	__aeabi_dadd
+ 260              	.LVL31:
+ 261 018c FEFFFFEB 		bl	__aeabi_d2f
+ 262              	.LVL32:
+  96:modes52.c     **** 
+  97:modes52.c     ****     // Apply limits to ensure safety
+  98:modes52.c     ****     if (freq > MAX_FREQ)
+ 263              		.loc 1 98 0
+ 264 0190 0111A0E3 		mov	r1, #1073741824
+  95:modes52.c     ****     amplitude = DECODE_PARAM_8(amp_enc, 1.0f, MAX_AMP);
+ 265              		.loc 1 95 0
+ 266 0194 0060A0E1 		mov	r6, r0
+ 267              	.LVL33:
+ 268              		.loc 1 98 0
+ 269 0198 0700A0E1 		mov	r0, r7
+ 270              	.LVL34:
+ 271 019c FEFFFFEB 		bl	__aeabi_fcmpgt
+ 272              	.LVL35:
+  99:modes52.c     ****       freq = MAX_FREQ;
+ 100:modes52.c     ****     if (amplitude > MAX_AMP)
+ 273              		.loc 1 100 0
+ 274 01a0 94119FE5 		ldr	r1, .L50+24
+  98:modes52.c     ****     if (freq > MAX_FREQ)
+ 275              		.loc 1 98 0
+ 276 01a4 000050E3 		cmp	r0, #0
+ 277              		.loc 1 100 0
+ 278 01a8 0600A0E1 		mov	r0, r6
+  99:modes52.c     ****       freq = MAX_FREQ;
+ 279              		.loc 1 99 0
+ 280 01ac 0171A013 		movne	r7, #1073741824
+ 281              	.LVL36:
+ 282              		.loc 1 100 0
+ 283 01b0 FEFFFFEB 		bl	__aeabi_fcmpgt
+ 284              	.LVL37:
+ 285 01b4 000050E3 		cmp	r0, #0
+ 101:modes52.c     ****       amplitude = MAX_AMP;
+ 102:modes52.c     **** 
+ 103:modes52.c     ****     // Calculate elapsed time
+ 104:modes52.c     ****     dt = getElapsedSysTICs(cycletimer);
+ 286              		.loc 1 104 0
+ 287 01b8 0A00A0E1 		mov	r0, sl
+ 101:modes52.c     ****       amplitude = MAX_AMP;
+ 288              		.loc 1 101 0
+ 289 01bc 78619F15 		ldrne	r6, .L50+24
+ 290              	.LVL38:
+ 291              		.loc 1 104 0
+ 292 01c0 FEFFFFEB 		bl	getElapsedSysTICs
+ 293              	.LVL39:
+ 294 01c4 0040A0E1 		mov	r4, r0
+ 295              	.LVL40:
+ 105:modes52.c     ****     cycletimer = getSysTICs();
+ 296              		.loc 1 105 0
+ 297 01c8 FEFFFFEB 		bl	getSysTICs
+ 298              	.LVL41:
+ 299 01cc 00A0A0E1 		mov	sl, r0
+ 300              	.LVL42:
+ 106:modes52.c     ****     delta_t = (float)dt / sysTICSperSEC;
+ 301              		.loc 1 106 0
+ 302 01d0 0400A0E1 		mov	r0, r4
+ 303              	.LVL43:
+ 304 01d4 FEFFFFEB 		bl	__aeabi_ui2f
+ 305              	.LVL44:
+ 306 01d8 60119FE5 		ldr	r1, .L50+28
+ 307 01dc FEFFFFEB 		bl	__aeabi_fdiv
+ 308              	.LVL45:
+ 309 01e0 0010A0E1 		mov	r1, r0
+ 107:modes52.c     ****     my_time += delta_t;
+ 310              		.loc 1 107 0
+ 311 01e4 0800A0E1 		mov	r0, r8
+ 312 01e8 FEFFFFEB 		bl	__aeabi_fadd
+ 313              	.LVL46:
+ 314 01ec 0080A0E1 		mov	r8, r0
+ 315              	.LVL47:
+ 108:modes52.c     **** 
+ 109:modes52.c     ****     // Calculate the sine wave for motor angle
+ 110:modes52.c     ****     angle = amplitude * sin(M_TWOPI * freq * my_time);
+ 316              		.loc 1 110 0
+ 317 01f0 0700A0E1 		mov	r0, r7
+ 318              	.LVL48:
+ 319 01f4 FEFFFFEB 		bl	__aeabi_f2d
+ 320              	.LVL49:
+ 321 01f8 44219FE5 		ldr	r2, .L50+32
+ 322 01fc 44319FE5 		ldr	r3, .L50+36
+ 323 0200 FEFFFFEB 		bl	__aeabi_dmul
+ 324              	.LVL50:
+ 325 0204 0040A0E1 		mov	r4, r0
+ 326              	.LVL51:
+ 327 0208 0800A0E1 		mov	r0, r8
+ 328 020c 0150A0E1 		mov	r5, r1
+ 329 0210 FEFFFFEB 		bl	__aeabi_f2d
+ 330              	.LVL52:
+ 331 0214 0020A0E1 		mov	r2, r0
+ 332 0218 0130A0E1 		mov	r3, r1
+ 333 021c 0400A0E1 		mov	r0, r4
+ 334 0220 0510A0E1 		mov	r1, r5
+ 335 0224 FEFFFFEB 		bl	__aeabi_dmul
+ 336              	.LVL53:
+ 337 0228 FEFFFFEB 		bl	sin
+ 338              	.LVL54:
+ 339 022c 0040A0E1 		mov	r4, r0
+ 340 0230 0150A0E1 		mov	r5, r1
+ 341 0234 0600A0E1 		mov	r0, r6
+ 342 0238 FEFFFFEB 		bl	__aeabi_f2d
+ 343              	.LVL55:
+ 344 023c 0530A0E1 		mov	r3, r5
+ 345 0240 0420A0E1 		mov	r2, r4
+ 346 0244 FEFFFFEB 		bl	__aeabi_dmul
+ 347              	.LVL56:
+ 348 0248 FEFFFFEB 		bl	__aeabi_d2f
+ 349              	.LVL57:
+ 111:modes52.c     **** 
+ 112:modes52.c     ****     // Convert angle to motor units
+ 113:modes52.c     ****     angle_rounded = DEG_TO_OUTPUT_BODY(angle);
+ 350              		.loc 1 113 0
+ 351 024c FF15A0E3 		mov	r1, #1069547520
+ 110:modes52.c     ****     angle = amplitude * sin(M_TWOPI * freq * my_time);
+ 352              		.loc 1 110 0
+ 353 0250 0090A0E1 		mov	r9, r0
+ 354              	.LVL58:
+ 355              		.loc 1 113 0
+ 356 0254 FEFFFFEB 		bl	__aeabi_fmul
+ 357              	.LVL59:
+ 358 0258 FEFFFFEB 		bl	__aeabi_f2iz
+ 359              	.LVL60:
+ 114:modes52.c     **** 
+ 115:modes52.c     ****     // Send the angle to the motor
+ 116:modes52.c     ****     bus_set(MOTOR_ADDR, MREG_SETPOINT, angle_rounded);
+ 360              		.loc 1 116 0
+ 361 025c 2F10A0E3 		mov	r1, #47
+ 362 0260 FF2000E2 		and	r2, r0, #255
+ 363 0264 1500A0E3 		mov	r0, #21
+ 364 0268 FEFFFFEB 		bl	bus_set
+ 365              	.LVL61:
+ 117:modes52.c     **** 
+ 118:modes52.c     ****     // Update LED for visual feedback - color indicates frequency,
+ 119:modes52.c     ****     // brightness indicates amplitude
+ 120:modes52.c     ****     uint8_t red = (uint8_t)(freq * 127.0f / MAX_FREQ);
+ 366              		.loc 1 120 0
+ 367 026c D8109FE5 		ldr	r1, .L50+40
+ 368 0270 0700A0E1 		mov	r0, r7
+ 369 0274 FEFFFFEB 		bl	__aeabi_fmul
+ 370              	.LVL62:
+ 371 0278 3F14A0E3 		mov	r1, #1056964608
+ 372 027c FEFFFFEB 		bl	__aeabi_fmul
+ 373              	.LVL63:
+ 374 0280 FEFFFFEB 		bl	__aeabi_f2uiz
+ 375              	.LVL64:
+ 121:modes52.c     ****     uint8_t green = (uint8_t)(amplitude * 127.0f / MAX_AMP);
+ 376              		.loc 1 121 0
+ 377 0284 C0109FE5 		ldr	r1, .L50+40
+ 120:modes52.c     ****     uint8_t red = (uint8_t)(freq * 127.0f / MAX_FREQ);
+ 378              		.loc 1 120 0
+ 379 0288 FF5000E2 		and	r5, r0, #255
+ 380              	.LVL65:
+ 381              		.loc 1 121 0
+ 382 028c 0600A0E1 		mov	r0, r6
+ 383 0290 FEFFFFEB 		bl	__aeabi_fmul
+ 384              	.LVL66:
+ 385 0294 A0109FE5 		ldr	r1, .L50+24
+ 386 0298 FEFFFFEB 		bl	__aeabi_fdiv
+ 387              	.LVL67:
+ 388 029c FEFFFFEB 		bl	__aeabi_f2uiz
+ 389              	.LVL68:
+ 122:modes52.c     **** 
+ 123:modes52.c     ****     if (angle >= 0) {
+ 390              		.loc 1 123 0
+ 391 02a0 0010A0E3 		mov	r1, #0
+ 121:modes52.c     ****     uint8_t green = (uint8_t)(amplitude * 127.0f / MAX_AMP);
+ 392              		.loc 1 121 0
+ 393 02a4 FF4000E2 		and	r4, r0, #255
+ 394              	.LVL69:
+ 395              		.loc 1 123 0
+ 396 02a8 0900A0E1 		mov	r0, r9
+ 397 02ac FEFFFFEB 		bl	__aeabi_fcmpge
+ 398              	.LVL70:
+ 399 02b0 000050E3 		cmp	r0, #0
+ 124:modes52.c     ****       // Positive angle - more green
+ 125:modes52.c     ****       set_rgb(red, green + 20, 20);
+ 126:modes52.c     ****     } else {
+ 127:modes52.c     ****       // Negative angle - more red
+ 128:modes52.c     ****       set_rgb(red + 20, green, 20);
+ 400              		.loc 1 128 0
+ 401 02b4 14008502 		addeq	r0, r5, #20
+ 125:modes52.c     ****       set_rgb(red, green + 20, 20);
+ 402              		.loc 1 125 0
+ 403 02b8 14108412 		addne	r1, r4, #20
+ 404 02bc 0500A011 		movne	r0, r5
+ 405              		.loc 1 128 0
+ 406 02c0 FF000002 		andeq	r0, r0, #255
+ 125:modes52.c     ****       set_rgb(red, green + 20, 20);
+ 407              		.loc 1 125 0
+ 408 02c4 FF100112 		andne	r1, r1, #255
+ 409              		.loc 1 128 0
+ 410 02c8 0410A001 		moveq	r1, r4
+ 411 02cc 1420A0E3 		mov	r2, #20
+ 412 02d0 FEFFFFEB 		bl	set_rgb
+ 413              	.LVL71:
+ 129:modes52.c     ****     }
+ 130:modes52.c     **** 
+ 131:modes52.c     ****     // Small delay to ensure timer updates properly
+ 132:modes52.c     ****     pause(ONE_MS);
+ 414              		.loc 1 132 0
+ 415 02d4 74009FE5 		ldr	r0, .L50+44
+ 416 02d8 FEFFFFEB 		bl	pause
+ 417              	.LVL72:
+ 418              	.LBE6:
+ 133:modes52.c     **** 
+ 134:modes52.c     ****   } while (reg8_table[REG8_MODE] == IMODE_SINE_DEMO);
+ 419              		.loc 1 134 0
+ 420 02dc 70309FE5 		ldr	r3, .L50+48
+ 421 02e0 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 422 02e4 020053E3 		cmp	r3, #2
+ 423 02e8 8EFFFF0A 		beq	.L40
+ 135:modes52.c     **** 
+ 136:modes52.c     ****   // Clean up: return motor to zero position
+ 137:modes52.c     ****   bus_set(MOTOR_ADDR, MREG_SETPOINT, 0);
+ 424              		.loc 1 137 0
+ 425 02ec 2F10A0E3 		mov	r1, #47
+ 426 02f0 0020A0E3 		mov	r2, #0
+ 427 02f4 1500A0E3 		mov	r0, #21
+ 428 02f8 FEFFFFEB 		bl	bus_set
+ 429              	.LVL73:
+ 138:modes52.c     ****   pause(ONE_SEC); // Give the motor time to return to center
+ 430              		.loc 1 138 0
+ 431 02fc 54009FE5 		ldr	r0, .L50+52
+ 432 0300 FEFFFFEB 		bl	pause
+ 433              	.LVL74:
+ 139:modes52.c     **** 
+ 140:modes52.c     ****   // Stop the motor
+ 141:modes52.c     ****   bus_set(MOTOR_ADDR, MREG_MODE, MODE_IDLE);
+ 434              		.loc 1 141 0
+ 435 0304 1500A0E3 		mov	r0, #21
+ 436 0308 2810A0E3 		mov	r1, #40
+ 437 030c 0020A0E3 		mov	r2, #0
+ 438 0310 FEFFFFEB 		bl	bus_set
+ 439              	.LVL75:
+ 142:modes52.c     **** 
+ 143:modes52.c     ****   // Return LED to normal state
+ 144:modes52.c     ****   set_color(2);
+ 440              		.loc 1 144 0
+ 441 0314 0200A0E3 		mov	r0, #2
+ 442 0318 FEFFFFEB 		bl	set_color
+ 443              	.LVL76:
+ 145:modes52.c     **** }
+ 444              		.loc 1 145 0
+ 445 031c F047BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
+ 446 0320 1EFF2FE1 		bx	lr
+ 447              	.L51:
+ 448              		.align	2
+ 449              	.L50:
+ 450 0324 00000000 		.word	.LANCHOR0
+ 451 0328 3333F33F 		.word	1072902963
+ 452 032c 00E06F40 		.word	1081073664
+ 453 0330 9999B93F 		.word	1069128089
+ 454 0334 00006C42 		.word	1114374144
+ 455 0338 0000F03F 		.word	1072693248
+ 456 033c 00007042 		.word	1114636288
+ 457 0340 8096184B 		.word	1259902592
+ 458 0344 182D4454 		.word	1413754136
+ 459 0348 FB211940 		.word	1075388923
+ 460 034c 0000FE42 		.word	1123942400
+ 461 0350 10270000 		.word	10000
+ 462 0354 00000000 		.word	reg8_table
+ 463 0358 80969800 		.word	10000000
+ 464              		.cfi_endproc
+ 465              	.LFE2:
+ 467              		.align	2
+ 468              		.global	main_mode_loop
+ 470              	main_mode_loop:
+ 471              	.LFB3:
+ 146:modes52.c     **** 
+ 147:modes52.c     **** void main_mode_loop(void) {
+ 472              		.loc 1 147 0
+ 473              		.cfi_startproc
+ 474              		@ Function supports interworking.
+ 475              		@ args = 0, pretend = 0, frame = 0
+ 476              		@ frame_needed = 0, uses_anonymous_args = 0
+ 477 035c 38402DE9 		stmfd	sp!, {r3, r4, r5, lr}
+ 478              	.LCFI1:
+ 479              		.cfi_def_cfa_offset 16
+ 480              		.cfi_offset 3, -16
+ 481              		.cfi_offset 4, -12
+ 482              		.cfi_offset 5, -8
+ 483              		.cfi_offset 14, -4
+ 148:modes52.c     ****   // Initialize the default parameters
+ 149:modes52.c     ****   init_sine_params();
+ 150:modes52.c     **** 
+ 151:modes52.c     ****   // Set initial mode
+ 152:modes52.c     ****   reg8_table[REG8_MODE] = IMODE_IDLE;
+ 484              		.loc 1 152 0
+ 485 0360 30509FE5 		ldr	r5, .L65
+ 149:modes52.c     ****   init_sine_params();
+ 486              		.loc 1 149 0
+ 487 0364 FEFFFFEB 		bl	init_sine_params
+ 488              	.LVL77:
+ 489              		.loc 1 152 0
+ 490 0368 0040A0E3 		mov	r4, #0
+ 153:modes52.c     **** 
+ 154:modes52.c     **** 
+ 155:modes52.c     ****   // Add the register handler
+ 156:modes52.c     ****   radio_add_reg_callback(register_handler);
+ 491              		.loc 1 156 0
+ 492 036c 28009FE5 		ldr	r0, .L65+4
+ 152:modes52.c     ****   reg8_table[REG8_MODE] = IMODE_IDLE;
+ 493              		.loc 1 152 0
+ 494 0370 0040C5E5 		strb	r4, [r5, #0]
+ 495              		.loc 1 156 0
+ 496 0374 FEFFFFEB 		bl	radio_add_reg_callback
+ 497              	.LVL78:
+ 498              	.L63:
+ 157:modes52.c     **** 
+ 158:modes52.c     ****   while (1) {
+ 159:modes52.c     ****     switch (reg8_table[REG8_MODE]) {
+ 499              		.loc 1 159 0
+ 500 0378 0030D5E5 		ldrb	r3, [r5, #0]	@ zero_extendqisi2
+ 501 037c FF3013E2 		ands	r3, r3, #255
+ 502 0380 FCFFFF0A 		beq	.L63
+ 503 0384 020053E3 		cmp	r3, #2
+ 160:modes52.c     ****     case IMODE_IDLE:
+ 161:modes52.c     ****       break;
+ 162:modes52.c     ****     case IMODE_SINE_DEMO:
+ 163:modes52.c     ****       sine_demo_mode();
+ 164:modes52.c     ****       break;
+ 165:modes52.c     ****     default:
+ 166:modes52.c     ****       reg8_table[REG8_MODE] = IMODE_IDLE;
+ 504              		.loc 1 166 0
+ 505 0388 0040C515 		strneb	r4, [r5, #0]
+ 159:modes52.c     ****     switch (reg8_table[REG8_MODE]) {
+ 506              		.loc 1 159 0
+ 507 038c F9FFFF1A 		bne	.L63
+ 163:modes52.c     ****       sine_demo_mode();
+ 508              		.loc 1 163 0
+ 509 0390 FEFFFFEB 		bl	sine_demo_mode
+ 510              	.LVL79:
+ 164:modes52.c     ****       break;
+ 511              		.loc 1 164 0
+ 512 0394 F7FFFFEA 		b	.L63
+ 513              	.L66:
+ 514              		.align	2
+ 515              	.L65:
+ 516 0398 00000000 		.word	reg8_table
+ 517 039c 00000000 		.word	register_handler
+ 518              		.cfi_endproc
+ 519              	.LFE3:
+ 521              		.global	amp_enc
+ 522              		.global	freq_enc
+ 523              		.global	MOTOR_ADDR
+ 524              		.section	.rodata
+ 527              	MOTOR_ADDR:
+ 528 0000 15       		.byte	21
+ 529              		.data
+ 530              		.set	.LANCHOR0,. + 0
+ 533              	freq_enc:
+ 534 0000 01       		.byte	1
+ 537              	amp_enc:
+ 538 0001 28       		.byte	40
+ 539              		.text
+ 540              	.Letext0:
+ 541              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 542              		.file 3 "../firmware/radio.h"
+ 543              		.file 4 "../firmware/registers.h"
+ 544              		.file 5 "../firmware/robot.h"
+ 545              		.file 6 "../firmware/hardware.h"
+ 546              		.file 7 "../firmware/sysTime.h"
+ 547              		.file 8 "../../common/regdefs.h"
+ 548              		.file 9 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/math.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 modes52.c
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:18     .text:00000000 register_handler
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:119    .text:000000b4 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:124    .text:000000bc $a
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:127    .text:000000bc init_sine_params
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:146    .text:000000d4 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:163    .text:000000d8 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:166    .text:000000d8 sine_demo_mode
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:450    .text:00000324 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:467    .text:0000035c $a
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:470    .text:0000035c main_mode_loop
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:516    .text:00000398 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:537    .data:00000001 amp_enc
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:533    .data:00000000 freq_enc
+C:\Users\ncmorand\AppData\Local\Temp\ccajId3n.s:527    .rodata:00000000 MOTOR_ADDR
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+reg8_table
+__aeabi_ui2f
+__aeabi_fmul
+__aeabi_f2d
+__aeabi_ddiv
+__aeabi_dadd
+__aeabi_d2f
+__aeabi_fcmpgt
+__aeabi_fdiv
+__aeabi_fadd
+__aeabi_dmul
+__aeabi_f2iz
+__aeabi_f2uiz
+__aeabi_fcmpge
+init_body_module
+start_pid
+set_color
+getSysTICs
+getElapsedSysTICs
+sin
+bus_set
+set_rgb
+pause
+radio_add_reg_callback

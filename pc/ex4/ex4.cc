@@ -3,11 +3,12 @@
 #include "robot.h"
 #include "utils.h"
 #include <cmath>
-#include <conio.h> // For kbhit() and getch()
+// #include <conio.h> // For kbhit() and getch()
 #include <iostream>
 
 #define IMODE_IDLE 0
 #define IMODE_MOTOR_DEMO 1
+#define IMODE_SINE_DEMO 2
 
 // Constants
 const uint8_t RADIO_CHANNEL = 201; // Radio channel
@@ -62,6 +63,7 @@ int main() {
     }
     case '2': {
       cout << "\nStarting Sine Wave Control Mode..." << endl;
+      regs.set_reg_b(REG8_MODE, IMODE_SINE_DEMO);
       cout << "Press any key to stop." << endl;
 
       double startTime = time_d(); // Get the start time
@@ -84,7 +86,7 @@ int main() {
         // If a key is pressed, break out of the loop
         if (kbhit()) {
           // Clear the key from the buffer.
-          getch();
+          //getch();
           running = false;
         }
 

@@ -1,0 +1,890 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"hardware.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  17              		.global	set_rgb
+  19              	set_rgb:
+  20              	.LFB1:
+  21              		.file 1 "../firmware/hardware.c"
+   1:../firmware/hardware.c **** #include "LPC21xx.h"
+   2:../firmware/hardware.c **** #include "hardware.h"
+   3:../firmware/hardware.c **** #include "registers.h"
+   4:../firmware/hardware.c **** #include "timerISR.h"
+   5:../firmware/hardware.c **** #include "can.h"
+   6:../firmware/hardware.c **** #include "irsens.h"
+   7:../firmware/hardware.c **** #include "adc.h"
+   8:../firmware/hardware.c **** #include "armVIC.h"
+   9:../firmware/hardware.c **** 
+  10:../firmware/hardware.c **** #if defined(HARDWARE_V3)
+  11:../firmware/hardware.c **** 
+  12:../firmware/hardware.c **** static const uint8_t colors_r[] = { 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 0, 0, 2, 1 };
+  13:../firmware/hardware.c **** static const uint8_t colors_g[] = { 0, 0, 2, 2, 0, 0, 2, 2, 1, 2, 1, 2, 0, 0 };
+  14:../firmware/hardware.c **** static const uint8_t colors_b[] = { 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 2, 1, 1, 2 };
+  15:../firmware/hardware.c **** 
+  16:../firmware/hardware.c **** static uint8_t led_int = 0;
+  17:../firmware/hardware.c **** 
+  18:../firmware/hardware.c **** void init_rgb_led()
+  19:../firmware/hardware.c **** {
+  20:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 0, 0x00);
+  21:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 1, 0x05);
+  22:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 6, 0xFF);
+  23:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 8, 0x3F);
+  24:../firmware/hardware.c ****   set_rgb(0, 0, 0);
+  25:../firmware/hardware.c **** }
+  26:../firmware/hardware.c **** 
+  27:../firmware/hardware.c **** void set_rgb(uint8_t r, uint8_t g, uint8_t b)
+  28:../firmware/hardware.c **** {
+  22              		.loc 1 28 0
+  23              		.cfi_startproc
+  24              		@ Function supports interworking.
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27              	.LVL0:
+  28 0000 38402DE9 		stmfd	sp!, {r3, r4, r5, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 16
+  31              		.cfi_offset 3, -16
+  32              		.cfi_offset 4, -12
+  33              		.cfi_offset 5, -8
+  34              		.cfi_offset 14, -4
+  35              		.loc 1 28 0
+  36 0004 0030A0E1 		mov	r3, r0
+  37 0008 0150A0E1 		mov	r5, r1
+  38 000c 0240A0E1 		mov	r4, r2
+  29:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 2, r);
+  39              		.loc 1 29 0
+  40 0010 0210A0E3 		mov	r1, #2
+  41              	.LVL1:
+  42 0014 0320A0E1 		mov	r2, r3
+  43              	.LVL2:
+  44 0018 6200A0E3 		mov	r0, #98
+  45              	.LVL3:
+  46 001c FEFFFFEB 		bl	i2c_set
+  47              	.LVL4:
+  30:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 3, g);
+  48              		.loc 1 30 0
+  49 0020 0520A0E1 		mov	r2, r5
+  50 0024 0310A0E3 		mov	r1, #3
+  51 0028 6200A0E3 		mov	r0, #98
+  52 002c FEFFFFEB 		bl	i2c_set
+  53              	.LVL5:
+  31:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 4, b);
+  54              		.loc 1 31 0
+  55 0030 0410A0E3 		mov	r1, #4
+  56 0034 0420A0E1 		mov	r2, r4
+  57 0038 6200A0E3 		mov	r0, #98
+  58 003c FEFFFFEB 		bl	i2c_set
+  59              	.LVL6:
+  32:../firmware/hardware.c **** }
+  60              		.loc 1 32 0
+  61 0040 3840BDE8 		ldmfd	sp!, {r3, r4, r5, lr}
+  62 0044 1EFF2FE1 		bx	lr
+  63              		.cfi_endproc
+  64              	.LFE1:
+  66              		.align	2
+  68              	led_timer_isr:
+  69              	.LFB9:
+  33:../firmware/hardware.c **** 
+  34:../firmware/hardware.c **** void set_color(uint8_t c)
+  35:../firmware/hardware.c **** {
+  36:../firmware/hardware.c ****   reg32_table[REG32_LED] = LED_MANUAL;
+  37:../firmware/hardware.c ****   set_rgb(colors_r[c] << led_int, colors_g[c] << led_int, colors_b[c] << led_int);
+  38:../firmware/hardware.c **** }
+  39:../firmware/hardware.c **** 
+  40:../firmware/hardware.c **** void set_color_i(uint8_t c, uint8_t i)
+  41:../firmware/hardware.c **** {
+  42:../firmware/hardware.c ****   led_int = i;
+  43:../firmware/hardware.c ****   set_color(c);
+  44:../firmware/hardware.c **** }
+  45:../firmware/hardware.c **** 
+  46:../firmware/hardware.c **** uint16_t get_batt_voltage()
+  47:../firmware/hardware.c **** {
+  48:../firmware/hardware.c ****   return (((uint16_t) i2c_get(BATT_ADDR, 0x0c) << 8) | i2c_get(BATT_ADDR, 0x0d)) >> 5;
+  49:../firmware/hardware.c **** }
+  50:../firmware/hardware.c **** 
+  51:../firmware/hardware.c **** int16_t get_batt_current()
+  52:../firmware/hardware.c **** {
+  53:../firmware/hardware.c ****   int16_t tmp;
+  54:../firmware/hardware.c **** 
+  55:../firmware/hardware.c ****   tmp = ((int16_t) i2c_get(BATT_ADDR, 0x0e) << 8) | i2c_get(BATT_ADDR, 0x0f);
+  56:../firmware/hardware.c ****   tmp = tmp >> 3;
+  57:../firmware/hardware.c ****   return tmp;
+  58:../firmware/hardware.c **** }
+  59:../firmware/hardware.c **** 
+  60:../firmware/hardware.c **** uint16_t get_ext_voltage()
+  61:../firmware/hardware.c **** {
+  62:../firmware/hardware.c ****   return adc_read_ch(0);
+  63:../firmware/hardware.c **** }
+  64:../firmware/hardware.c **** 
+  65:../firmware/hardware.c **** int16_t get_batt_current_acc()
+  66:../firmware/hardware.c **** {
+  67:../firmware/hardware.c ****   return ((int16_t) i2c_get(BATT_ADDR, 0x10) << 8) | i2c_get(BATT_ADDR, 0x11);
+  68:../firmware/hardware.c **** }
+  69:../firmware/hardware.c **** 
+  70:../firmware/hardware.c **** int16_t get_temperature()
+  71:../firmware/hardware.c **** {
+  72:../firmware/hardware.c ****   return (((int16_t) i2c_get(BATT_ADDR, 0x18) << 8) | i2c_get(BATT_ADDR, 0x19)) >> 5;
+  73:../firmware/hardware.c **** }
+  74:../firmware/hardware.c **** 
+  75:../firmware/hardware.c **** #elif defined(HARDWARE_V2)
+  76:../firmware/hardware.c **** 
+  77:../firmware/hardware.c **** void set_led(uint8_t i)
+  78:../firmware/hardware.c **** {
+  79:../firmware/hardware.c ****   if (i) {
+  80:../firmware/hardware.c ****     IO0SET = BIT_EXTLED;
+  81:../firmware/hardware.c ****   } else {
+  82:../firmware/hardware.c ****     IO0CLR = BIT_EXTLED;
+  83:../firmware/hardware.c ****   }
+  84:../firmware/hardware.c **** }
+  85:../firmware/hardware.c **** 
+  86:../firmware/hardware.c **** #endif // HARDWARE_V2
+  87:../firmware/hardware.c **** 
+  88:../firmware/hardware.c **** static void led_timer_isr(void)
+  89:../firmware/hardware.c **** {
+  70              		.loc 1 89 0
+  71              		.cfi_startproc
+  72              		@ Function supports interworking.
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+  75              		@ link register save eliminated.
+  90:../firmware/hardware.c ****   static volatile uint8_t ctr = 0;
+  91:../firmware/hardware.c ****   static volatile uint8_t st = 0;
+  92:../firmware/hardware.c ****   uint32_t regdw_led = reg32_table[REG32_LED];
+  76              		.loc 1 92 0
+  77 0048 78309FE5 		ldr	r3, .L10
+  78 004c 002093E5 		ldr	r2, [r3, #0]
+  79              	.LVL7:
+  93:../firmware/hardware.c **** 
+  94:../firmware/hardware.c ****   uint8_t l = (regdw_led >> 24);
+  95:../firmware/hardware.c **** 
+  96:../firmware/hardware.c ****   if (l==0) {           // 0 = ON
+  80              		.loc 1 96 0
+  81 0050 221CB0E1 		movs	r1, r2, lsr #24
+  82 0054 1400000A 		beq	.L9
+  83              	.L3:
+  97:../firmware/hardware.c **** #if defined(HARDWARE_V3)
+  98:../firmware/hardware.c ****     set_rgb(regdw_led >> 16, regdw_led >> 8, regdw_led & 0xFF);
+  99:../firmware/hardware.c **** #elif defined(HARDWARE_V2)
+ 100:../firmware/hardware.c ****     set_led((regdw_led & 0xffffff) != 0));
+ 101:../firmware/hardware.c **** #endif
+ 102:../firmware/hardware.c ****   } else if (l!=255) {  // 255 = override (ignore)
+  84              		.loc 1 102 0
+  85 0058 FF0051E3 		cmp	r1, #255
+  86 005c 1EFF2F01 		bxeq	lr
+ 103:../firmware/hardware.c ****     ctr++;
+  87              		.loc 1 103 0
+  88 0060 64309FE5 		ldr	r3, .L10+4
+  89 0064 0000D3E5 		ldrb	r0, [r3, #0]	@ zero_extendqisi2
+  90 0068 010080E2 		add	r0, r0, #1
+  91 006c FF0000E2 		and	r0, r0, #255
+  92 0070 0000C3E5 		strb	r0, [r3, #0]
+ 104:../firmware/hardware.c ****     if (ctr==l) {
+  93              		.loc 1 104 0
+  94 0074 0000D3E5 		ldrb	r0, [r3, #0]	@ zero_extendqisi2
+  95 0078 010050E1 		cmp	r0, r1
+  96 007c 1EFF2F11 		bxne	lr
+ 105:../firmware/hardware.c ****       ctr = 0;
+  97              		.loc 1 105 0
+  98 0080 0010A0E3 		mov	r1, #0
+  99 0084 0010C3E5 		strb	r1, [r3, #0]
+ 106:../firmware/hardware.c ****       st = !st;
+ 100              		.loc 1 106 0
+ 101 0088 0110D3E5 		ldrb	r1, [r3, #1]	@ zero_extendqisi2
+ 102 008c 011071E2 		rsbs	r1, r1, #1
+ 103 0090 0010A033 		movcc	r1, #0
+ 104 0094 0110C3E5 		strb	r1, [r3, #1]
+ 107:../firmware/hardware.c ****       if (st) {
+ 105              		.loc 1 107 0
+ 106 0098 0100D3E5 		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 107 009c FF0010E2 		ands	r0, r0, #255
+ 108              	.LBB4:
+ 109              	.LBB5:
+ 108:../firmware/hardware.c **** #if defined(HARDWARE_V3)
+ 109:../firmware/hardware.c ****         set_rgb(regdw_led >> 16, regdw_led >> 8, regdw_led & 0xFF);
+ 110:../firmware/hardware.c **** #elif defined(HARDWARE_V2)
+ 111:../firmware/hardware.c ****         set_led((regdw_led & 0xffffff) != 0));
+ 112:../firmware/hardware.c **** #endif
+ 113:../firmware/hardware.c ****       } else {
+ 114:../firmware/hardware.c **** #if defined(HARDWARE_V3)
+ 115:../firmware/hardware.c ****         set_rgb(0, 0, 0);
+ 110              		.loc 1 115 0
+ 111 00a0 0010A001 		moveq	r1, r0
+ 112 00a4 0020A001 		moveq	r2, r0
+ 113              	.LVL8:
+ 114              	.LBE5:
+ 115              	.LBE4:
+ 107:../firmware/hardware.c ****       if (st) {
+ 116              		.loc 1 107 0
+ 117 00a8 0500000A 		beq	.L8
+ 118              	.L9:
+ 109:../firmware/hardware.c ****         set_rgb(regdw_led >> 16, regdw_led >> 8, regdw_led & 0xFF);
+ 119              		.loc 1 109 0
+ 120 00ac 2208A0E1 		mov	r0, r2, lsr #16
+ 121 00b0 2214A0E1 		mov	r1, r2, lsr #8
+ 122 00b4 FF0000E2 		and	r0, r0, #255
+ 123 00b8 FF2002E2 		and	r2, r2, #255
+ 124 00bc FF1001E2 		and	r1, r1, #255
+ 125 00c0 FFFFFFEA 		b	.L8
+ 126              	.L8:
+ 116:../firmware/hardware.c **** #elif defined(HARDWARE_V2)
+ 117:../firmware/hardware.c ****         set_led(0);
+ 118:../firmware/hardware.c **** #endif
+ 119:../firmware/hardware.c ****       }
+ 120:../firmware/hardware.c ****     }
+ 121:../firmware/hardware.c ****   }
+ 122:../firmware/hardware.c **** }
+ 127              		.loc 1 122 0
+ 128              	.LBB7:
+ 129              	.LBB6:
+ 115:../firmware/hardware.c ****         set_rgb(0, 0, 0);
+ 130              		.loc 1 115 0
+ 131 00c4 FEFFFFEA 		b	set_rgb
+ 132              	.LVL9:
+ 133              	.L11:
+ 134              		.align	2
+ 135              	.L10:
+ 136 00c8 00000000 		.word	reg32_table
+ 137 00cc 00000000 		.word	.LANCHOR0
+ 138              	.LBE6:
+ 139              	.LBE7:
+ 140              		.cfi_endproc
+ 141              	.LFE9:
+ 143              		.align	2
+ 144              		.global	init_rgb_led
+ 146              	init_rgb_led:
+ 147              	.LFB0:
+  19:../firmware/hardware.c **** {
+ 148              		.loc 1 19 0
+ 149              		.cfi_startproc
+ 150              		@ Function supports interworking.
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+  20:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 0, 0x00);
+ 153              		.loc 1 20 0
+ 154 00d0 0010A0E3 		mov	r1, #0
+  19:../firmware/hardware.c **** {
+ 155              		.loc 1 19 0
+ 156 00d4 08402DE9 		stmfd	sp!, {r3, lr}
+ 157              	.LCFI1:
+ 158              		.cfi_def_cfa_offset 8
+ 159              		.cfi_offset 3, -8
+ 160              		.cfi_offset 14, -4
+  20:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 0, 0x00);
+ 161              		.loc 1 20 0
+ 162 00d8 0120A0E1 		mov	r2, r1
+ 163 00dc 6200A0E3 		mov	r0, #98
+ 164 00e0 FEFFFFEB 		bl	i2c_set
+ 165              	.LVL10:
+  21:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 1, 0x05);
+ 166              		.loc 1 21 0
+ 167 00e4 0110A0E3 		mov	r1, #1
+ 168 00e8 0520A0E3 		mov	r2, #5
+ 169 00ec 6200A0E3 		mov	r0, #98
+ 170 00f0 FEFFFFEB 		bl	i2c_set
+ 171              	.LVL11:
+  22:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 6, 0xFF);
+ 172              		.loc 1 22 0
+ 173 00f4 0610A0E3 		mov	r1, #6
+ 174 00f8 FF20A0E3 		mov	r2, #255
+ 175 00fc 6200A0E3 		mov	r0, #98
+ 176 0100 FEFFFFEB 		bl	i2c_set
+ 177              	.LVL12:
+  23:../firmware/hardware.c ****   i2c_set(RGB_ADDR, 8, 0x3F);
+ 178              		.loc 1 23 0
+ 179 0104 0810A0E3 		mov	r1, #8
+ 180 0108 3F20A0E3 		mov	r2, #63
+ 181 010c 6200A0E3 		mov	r0, #98
+ 182 0110 FEFFFFEB 		bl	i2c_set
+ 183              	.LVL13:
+  24:../firmware/hardware.c ****   set_rgb(0, 0, 0);
+ 184              		.loc 1 24 0
+ 185 0114 0000A0E3 		mov	r0, #0
+ 186 0118 0010A0E1 		mov	r1, r0
+ 187 011c 0020A0E1 		mov	r2, r0
+  25:../firmware/hardware.c **** }
+ 188              		.loc 1 25 0
+ 189 0120 0840BDE8 		ldmfd	sp!, {r3, lr}
+  24:../firmware/hardware.c ****   set_rgb(0, 0, 0);
+ 190              		.loc 1 24 0
+ 191 0124 FEFFFFEA 		b	set_rgb
+ 192              	.LVL14:
+ 193              		.cfi_endproc
+ 194              	.LFE0:
+ 196              		.align	2
+ 197              		.global	set_color
+ 199              	set_color:
+ 200              	.LFB2:
+  35:../firmware/hardware.c **** {
+ 201              		.loc 1 35 0
+ 202              		.cfi_startproc
+ 203              		@ Function supports interworking.
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		@ link register save eliminated.
+ 207              	.LVL15:
+  36:../firmware/hardware.c ****   reg32_table[REG32_LED] = LED_MANUAL;
+ 208              		.loc 1 36 0
+ 209 0128 38309FE5 		ldr	r3, .L14
+ 210 012c FF24A0E3 		mov	r2, #-16777216
+ 211 0130 002083E5 		str	r2, [r3, #0]
+  37:../firmware/hardware.c ****   set_rgb(colors_r[c] << led_int, colors_g[c] << led_int, colors_b[c] << led_int);
+ 212              		.loc 1 37 0
+ 213 0134 30309FE5 		ldr	r3, .L14+4
+ 214 0138 0220D3E5 		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 215 013c 2C309FE5 		ldr	r3, .L14+8
+ 216 0140 0000F3E7 		ldrb	r0, [r3, r0]!	@ zero_extendqisi2
+ 217              	.LVL16:
+ 218 0144 0E10D3E5 		ldrb	r1, [r3, #14]	@ zero_extendqisi2
+ 219 0148 1C30D3E5 		ldrb	r3, [r3, #28]	@ zero_extendqisi2
+ 220 014c 1002A0E1 		mov	r0, r0, asl r2
+ 221 0150 1112A0E1 		mov	r1, r1, asl r2
+ 222 0154 1322A0E1 		mov	r2, r3, asl r2
+ 223 0158 FF0000E2 		and	r0, r0, #255
+ 224 015c FF1001E2 		and	r1, r1, #255
+ 225 0160 FF2002E2 		and	r2, r2, #255
+  38:../firmware/hardware.c **** }
+ 226              		.loc 1 38 0
+  37:../firmware/hardware.c ****   set_rgb(colors_r[c] << led_int, colors_g[c] << led_int, colors_b[c] << led_int);
+ 227              		.loc 1 37 0
+ 228 0164 FEFFFFEA 		b	set_rgb
+ 229              	.LVL17:
+ 230              	.L15:
+ 231              		.align	2
+ 232              	.L14:
+ 233 0168 00000000 		.word	reg32_table
+ 234 016c 00000000 		.word	.LANCHOR0
+ 235 0170 00000000 		.word	.LANCHOR1
+ 236              		.cfi_endproc
+ 237              	.LFE2:
+ 239              		.align	2
+ 240              		.global	set_color_i
+ 242              	set_color_i:
+ 243              	.LFB3:
+  41:../firmware/hardware.c **** {
+ 244              		.loc 1 41 0
+ 245              		.cfi_startproc
+ 246              		@ Function supports interworking.
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 250              	.LVL18:
+  42:../firmware/hardware.c ****   led_int = i;
+ 251              		.loc 1 42 0
+ 252 0174 04309FE5 		ldr	r3, .L17
+ 253 0178 0210C3E5 		strb	r1, [r3, #2]
+  44:../firmware/hardware.c **** }
+ 254              		.loc 1 44 0
+  43:../firmware/hardware.c ****   set_color(c);
+ 255              		.loc 1 43 0
+ 256 017c FEFFFFEA 		b	set_color
+ 257              	.LVL19:
+ 258              	.L18:
+ 259              		.align	2
+ 260              	.L17:
+ 261 0180 00000000 		.word	.LANCHOR0
+ 262              		.cfi_endproc
+ 263              	.LFE3:
+ 265              		.align	2
+ 266              		.global	get_batt_voltage
+ 268              	get_batt_voltage:
+ 269              	.LFB4:
+  47:../firmware/hardware.c **** {
+ 270              		.loc 1 47 0
+ 271              		.cfi_startproc
+ 272              		@ Function supports interworking.
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275 0184 10402DE9 		stmfd	sp!, {r4, lr}
+ 276              	.LCFI2:
+ 277              		.cfi_def_cfa_offset 8
+ 278              		.cfi_offset 4, -8
+ 279              		.cfi_offset 14, -4
+  48:../firmware/hardware.c ****   return (((uint16_t) i2c_get(BATT_ADDR, 0x0c) << 8) | i2c_get(BATT_ADDR, 0x0d)) >> 5;
+ 280              		.loc 1 48 0
+ 281 0188 0C10A0E3 		mov	r1, #12
+ 282 018c 3400A0E3 		mov	r0, #52
+ 283 0190 FEFFFFEB 		bl	i2c_get
+ 284              	.LVL20:
+ 285 0194 0D10A0E3 		mov	r1, #13
+ 286 0198 0040A0E1 		mov	r4, r0
+ 287 019c 3400A0E3 		mov	r0, #52
+ 288 01a0 FEFFFFEB 		bl	i2c_get
+ 289              	.LVL21:
+ 290 01a4 040480E1 		orr	r0, r0, r4, asl #8
+ 291 01a8 8005A0E1 		mov	r0, r0, asl #11
+  49:../firmware/hardware.c **** }
+ 292              		.loc 1 49 0
+ 293 01ac 2008A0E1 		mov	r0, r0, lsr #16
+ 294 01b0 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 295 01b4 1EFF2FE1 		bx	lr
+ 296              		.cfi_endproc
+ 297              	.LFE4:
+ 299              		.align	2
+ 300              		.global	get_batt_current
+ 302              	get_batt_current:
+ 303              	.LFB5:
+  52:../firmware/hardware.c **** {
+ 304              		.loc 1 52 0
+ 305              		.cfi_startproc
+ 306              		@ Function supports interworking.
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309 01b8 10402DE9 		stmfd	sp!, {r4, lr}
+ 310              	.LCFI3:
+ 311              		.cfi_def_cfa_offset 8
+ 312              		.cfi_offset 4, -8
+ 313              		.cfi_offset 14, -4
+  55:../firmware/hardware.c ****   tmp = ((int16_t) i2c_get(BATT_ADDR, 0x0e) << 8) | i2c_get(BATT_ADDR, 0x0f);
+ 314              		.loc 1 55 0
+ 315 01bc 0E10A0E3 		mov	r1, #14
+ 316 01c0 3400A0E3 		mov	r0, #52
+ 317 01c4 FEFFFFEB 		bl	i2c_get
+ 318              	.LVL22:
+ 319 01c8 0F10A0E3 		mov	r1, #15
+ 320 01cc 0040A0E1 		mov	r4, r0
+ 321 01d0 3400A0E3 		mov	r0, #52
+ 322 01d4 FEFFFFEB 		bl	i2c_get
+ 323              	.LVL23:
+ 324 01d8 040480E1 		orr	r0, r0, r4, asl #8
+ 325              	.LVL24:
+  56:../firmware/hardware.c ****   tmp = tmp >> 3;
+ 326              		.loc 1 56 0
+ 327 01dc 0008A0E1 		mov	r0, r0, asl #16
+ 328              	.LVL25:
+  58:../firmware/hardware.c **** }
+ 329              		.loc 1 58 0
+ 330 01e0 C009A0E1 		mov	r0, r0, asr #19
+ 331 01e4 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 332 01e8 1EFF2FE1 		bx	lr
+ 333              		.cfi_endproc
+ 334              	.LFE5:
+ 336              		.align	2
+ 337              		.global	get_ext_voltage
+ 339              	get_ext_voltage:
+ 340              	.LFB6:
+  61:../firmware/hardware.c **** {
+ 341              		.loc 1 61 0
+ 342              		.cfi_startproc
+ 343              		@ Function supports interworking.
+ 344              		@ args = 0, pretend = 0, frame = 0
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 346 01ec 08402DE9 		stmfd	sp!, {r3, lr}
+ 347              	.LCFI4:
+ 348              		.cfi_def_cfa_offset 8
+ 349              		.cfi_offset 3, -8
+ 350              		.cfi_offset 14, -4
+  62:../firmware/hardware.c ****   return adc_read_ch(0);
+ 351              		.loc 1 62 0
+ 352 01f0 0000A0E3 		mov	r0, #0
+ 353 01f4 FEFFFFEB 		bl	adc_read_ch
+ 354              	.LVL26:
+  63:../firmware/hardware.c **** }
+ 355              		.loc 1 63 0
+ 356 01f8 0840BDE8 		ldmfd	sp!, {r3, lr}
+ 357 01fc 1EFF2FE1 		bx	lr
+ 358              		.cfi_endproc
+ 359              	.LFE6:
+ 361              		.align	2
+ 362              		.global	get_batt_current_acc
+ 364              	get_batt_current_acc:
+ 365              	.LFB7:
+  66:../firmware/hardware.c **** {
+ 366              		.loc 1 66 0
+ 367              		.cfi_startproc
+ 368              		@ Function supports interworking.
+ 369              		@ args = 0, pretend = 0, frame = 0
+ 370              		@ frame_needed = 0, uses_anonymous_args = 0
+ 371 0200 10402DE9 		stmfd	sp!, {r4, lr}
+ 372              	.LCFI5:
+ 373              		.cfi_def_cfa_offset 8
+ 374              		.cfi_offset 4, -8
+ 375              		.cfi_offset 14, -4
+  67:../firmware/hardware.c ****   return ((int16_t) i2c_get(BATT_ADDR, 0x10) << 8) | i2c_get(BATT_ADDR, 0x11);
+ 376              		.loc 1 67 0
+ 377 0204 1010A0E3 		mov	r1, #16
+ 378 0208 3400A0E3 		mov	r0, #52
+ 379 020c FEFFFFEB 		bl	i2c_get
+ 380              	.LVL27:
+ 381 0210 1110A0E3 		mov	r1, #17
+ 382 0214 0040A0E1 		mov	r4, r0
+ 383 0218 3400A0E3 		mov	r0, #52
+ 384 021c FEFFFFEB 		bl	i2c_get
+ 385              	.LVL28:
+ 386 0220 040480E1 		orr	r0, r0, r4, asl #8
+ 387 0224 0008A0E1 		mov	r0, r0, asl #16
+  68:../firmware/hardware.c **** }
+ 388              		.loc 1 68 0
+ 389 0228 4008A0E1 		mov	r0, r0, asr #16
+ 390 022c 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 391 0230 1EFF2FE1 		bx	lr
+ 392              		.cfi_endproc
+ 393              	.LFE7:
+ 395              		.align	2
+ 396              		.global	get_temperature
+ 398              	get_temperature:
+ 399              	.LFB8:
+  71:../firmware/hardware.c **** {
+ 400              		.loc 1 71 0
+ 401              		.cfi_startproc
+ 402              		@ Function supports interworking.
+ 403              		@ args = 0, pretend = 0, frame = 0
+ 404              		@ frame_needed = 0, uses_anonymous_args = 0
+ 405 0234 10402DE9 		stmfd	sp!, {r4, lr}
+ 406              	.LCFI6:
+ 407              		.cfi_def_cfa_offset 8
+ 408              		.cfi_offset 4, -8
+ 409              		.cfi_offset 14, -4
+  72:../firmware/hardware.c ****   return (((int16_t) i2c_get(BATT_ADDR, 0x18) << 8) | i2c_get(BATT_ADDR, 0x19)) >> 5;
+ 410              		.loc 1 72 0
+ 411 0238 1810A0E3 		mov	r1, #24
+ 412 023c 3400A0E3 		mov	r0, #52
+ 413 0240 FEFFFFEB 		bl	i2c_get
+ 414              	.LVL29:
+ 415 0244 1910A0E3 		mov	r1, #25
+ 416 0248 0040A0E1 		mov	r4, r0
+ 417 024c 3400A0E3 		mov	r0, #52
+ 418 0250 FEFFFFEB 		bl	i2c_get
+ 419              	.LVL30:
+ 420 0254 040480E1 		orr	r0, r0, r4, asl #8
+ 421 0258 8005A0E1 		mov	r0, r0, asl #11
+  73:../firmware/hardware.c **** }
+ 422              		.loc 1 73 0
+ 423 025c 4008A0E1 		mov	r0, r0, asr #16
+ 424 0260 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 425 0264 1EFF2FE1 		bx	lr
+ 426              		.cfi_endproc
+ 427              	.LFE8:
+ 429              		.align	2
+ 430              		.global	uc_init
+ 432              	uc_init:
+ 433              	.LFB10:
+ 123:../firmware/hardware.c **** 
+ 124:../firmware/hardware.c **** void uc_init()
+ 125:../firmware/hardware.c **** {
+ 434              		.loc 1 125 0
+ 435              		.cfi_startproc
+ 436              		@ Function supports interworking.
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439              		@ link register save eliminated.
+ 126:../firmware/hardware.c ****   PLLCFG = PLLCFG_MSEL | PLLCFG_PSEL;    // configure the PLL
+ 440              		.loc 1 126 0
+ 441 0268 9C309FE5 		ldr	r3, .L30
+ 442 026c 2220A0E3 		mov	r2, #34
+ 443 0270 8420C3E5 		strb	r2, [r3, #132]
+ 127:../firmware/hardware.c ****   PLLCON = PLLCON_PLLE;                  // enable the PLL
+ 444              		.loc 1 127 0
+ 445 0274 0120A0E3 		mov	r2, #1
+ 446 0278 8020C3E5 		strb	r2, [r3, #128]
+ 128:../firmware/hardware.c ****   PLLFEED = 0xAA;
+ 447              		.loc 1 128 0
+ 448 027c 5520E0E3 		mvn	r2, #85
+ 449 0280 8C20C3E5 		strb	r2, [r3, #140]
+ 129:../firmware/hardware.c ****   PLLFEED = 0x55;
+ 450              		.loc 1 129 0
+ 451 0284 5520A0E3 		mov	r2, #85
+ 452 0288 8C20C3E5 		strb	r2, [r3, #140]
+ 130:../firmware/hardware.c ****   IO0CLR = 0xFFFFFFFF;                   // clear all outputs
+ 453              		.loc 1 130 0
+ 454 028c 7C209FE5 		ldr	r2, .L30+4
+ 455 0290 0010E0E3 		mvn	r1, #0
+ 456 0294 0C1082E5 		str	r1, [r2, #12]
+ 131:../firmware/hardware.c ****   IO0DIR = BIT(12);                      // setup I/O pin directions
+ 457              		.loc 1 131 0
+ 458 0298 011AA0E3 		mov	r1, #4096
+ 459 029c 081082E5 		str	r1, [r2, #8]
+ 132:../firmware/hardware.c ****   while (!(PLLSTAT & PLLSTAT_LOCK));     // wait for PLL locking
+ 460              		.loc 1 132 0
+ 461 02a0 0310A0E1 		mov	r1, r3
+ 462              	.L25:
+ 463              		.loc 1 132 0 is_stmt 0 discriminator 1
+ 464 02a4 B828D1E1 		ldrh	r2, [r1, #136]
+ 465 02a8 010B12E3 		tst	r2, #1024
+ 466 02ac 58309FE5 		ldr	r3, .L30
+ 467 02b0 FBFFFF0A 		beq	.L25
+ 133:../firmware/hardware.c ****   PLLCON = PLLCON_PLLE | PLLCON_PLLC;    // connect the now enabled & locked PLL
+ 468              		.loc 1 133 0 is_stmt 1
+ 469 02b4 0320A0E3 		mov	r2, #3
+ 134:../firmware/hardware.c ****   PLLFEED = 0xAA;
+ 470              		.loc 1 134 0
+ 471 02b8 5510E0E3 		mvn	r1, #85
+ 133:../firmware/hardware.c ****   PLLCON = PLLCON_PLLE | PLLCON_PLLC;    // connect the now enabled & locked PLL
+ 472              		.loc 1 133 0
+ 473 02bc 8020C3E5 		strb	r2, [r3, #128]
+ 474              		.loc 1 134 0
+ 475 02c0 8C10C3E5 		strb	r1, [r3, #140]
+ 135:../firmware/hardware.c ****   PLLFEED = 0x55;
+ 476              		.loc 1 135 0
+ 477 02c4 5510A0E3 		mov	r1, #85
+ 478 02c8 8C10C3E5 		strb	r1, [r3, #140]
+ 136:../firmware/hardware.c ****   PINSEL2 = 0x30;                        // GPIO on TRACEPKT / JTAG
+ 479              		.loc 1 136 0
+ 480 02cc 40109FE5 		ldr	r1, .L30+8
+ 481 02d0 3000A0E3 		mov	r0, #48
+ 482 02d4 140081E5 		str	r0, [r1, #20]
+ 137:../firmware/hardware.c ****   MAMTIM = MAMTIM_CYCLES;                // configure and enable the MAM
+ 483              		.loc 1 137 0
+ 484 02d8 0420C3E5 		strb	r2, [r3, #4]
+ 138:../firmware/hardware.c ****   MAMCR = MAMCR_FULL;
+ 485              		.loc 1 138 0
+ 486 02dc 0220A0E3 		mov	r2, #2
+ 487 02e0 0020C3E5 		strb	r2, [r3, #0]
+ 139:../firmware/hardware.c ****   VPBDIV = VPBDIV_VALUE;                 // set the peripheral bus clock speed
+ 488              		.loc 1 139 0
+ 489 02e4 0021C3E5 		strb	r2, [r3, #256]
+ 140:../firmware/hardware.c ****   MEMMAP = MEMMAP_FLASH;                 // map interrupt vectors space in flash
+ 490              		.loc 1 140 0
+ 491 02e8 0120A0E3 		mov	r2, #1
+ 492 02ec 4020C3E5 		strb	r2, [r3, #64]
+ 141:../firmware/hardware.c ****   VICIntEnClear = 0xFFFFFFFF;            // clear all interrupts
+ 493              		.loc 1 141 0
+ 494 02f0 0030E0E3 		mvn	r3, #0
+ 142:../firmware/hardware.c ****   VICIntSelect = 0x00000000;             // clear all FIQ selections
+ 495              		.loc 1 142 0
+ 496 02f4 0020A0E3 		mov	r2, #0
+ 141:../firmware/hardware.c ****   VICIntEnClear = 0xFFFFFFFF;            // clear all interrupts
+ 497              		.loc 1 141 0
+ 498 02f8 EB3F03E5 		str	r3, [r3, #-4075]
+ 499              		.loc 1 142 0
+ 500 02fc F32F03E5 		str	r2, [r3, #-4083]
+ 143:../firmware/hardware.c ****   VICDefVectAddr = (uint32_t) reset;     // point unvectored IRQs to reset()
+ 501              		.loc 1 143 0
+ 502 0300 10209FE5 		ldr	r2, .L30+12
+ 503 0304 CB2F03E5 		str	r2, [r3, #-4043]
+ 504 0308 1EFF2FE1 		bx	lr
+ 505              	.L31:
+ 506              		.align	2
+ 507              	.L30:
+ 508 030c 00C01FE0 		.word	-534790144
+ 509 0310 008002E0 		.word	-536707072
+ 510 0314 00C002E0 		.word	-536690688
+ 511 0318 00000000 		.word	reset
+ 512              		.cfi_endproc
+ 513              	.LFE10:
+ 515              		.align	2
+ 516              		.global	hardware_init
+ 518              	hardware_init:
+ 519              	.LFB11:
+ 144:../firmware/hardware.c **** }
+ 145:../firmware/hardware.c **** 
+ 146:../firmware/hardware.c **** void hardware_init()
+ 147:../firmware/hardware.c **** {
+ 520              		.loc 1 147 0
+ 521              		.cfi_startproc
+ 522              		@ Function supports interworking.
+ 523              		@ args = 0, pretend = 0, frame = 0
+ 524              		@ frame_needed = 0, uses_anonymous_args = 0
+ 525 031c 08402DE9 		stmfd	sp!, {r3, lr}
+ 526              	.LCFI7:
+ 527              		.cfi_def_cfa_offset 8
+ 528              		.cfi_offset 3, -8
+ 529              		.cfi_offset 14, -4
+ 148:../firmware/hardware.c ****   uc_init();
+ 530              		.loc 1 148 0
+ 531 0320 FEFFFFEB 		bl	uc_init
+ 532              	.LVL31:
+ 149:../firmware/hardware.c ****   initSysTime();
+ 533              		.loc 1 149 0
+ 534 0324 FEFFFFEB 		bl	initSysTime
+ 535              	.LVL32:
+ 150:../firmware/hardware.c ****   i2c_init();
+ 536              		.loc 1 150 0
+ 537 0328 FEFFFFEB 		bl	i2c_init
+ 538              	.LVL33:
+ 151:../firmware/hardware.c **** 
+ 152:../firmware/hardware.c **** #if defined(HARDWARE_V3)
+ 153:../firmware/hardware.c ****   init_rgb_led();
+ 539              		.loc 1 153 0
+ 540 032c FEFFFFEB 		bl	init_rgb_led
+ 541              	.LVL34:
+ 154:../firmware/hardware.c **** #elif defined(HARDWARE_V2)
+ 155:../firmware/hardware.c ****   IO0DIR = IO0DIR | BIT_EXTLED;   // external LED output
+ 156:../firmware/hardware.c ****   IO1DIR = IO1DIR | BIT_CHG_EN;   // battery charger enable
+ 157:../firmware/hardware.c ****   IO0CLR = BIT_EXTLED;
+ 158:../firmware/hardware.c ****   IO1CLR = BIT_CHG_EN;
+ 159:../firmware/hardware.c **** #endif
+ 160:../firmware/hardware.c **** 
+ 161:../firmware/hardware.c ****   registers_init();
+ 542              		.loc 1 161 0
+ 543 0330 FEFFFFEB 		bl	registers_init
+ 544              	.LVL35:
+ 162:../firmware/hardware.c ****   radio_init();
+ 545              		.loc 1 162 0
+ 546 0334 FEFFFFEB 		bl	radio_init
+ 547              	.LVL36:
+ 163:../firmware/hardware.c ****   adc_init();
+ 548              		.loc 1 163 0
+ 549 0338 FEFFFFEB 		bl	adc_init
+ 550              	.LVL37:
+ 164:../firmware/hardware.c **** 
+ 165:../firmware/hardware.c ****   timer1_init(TIMER1_PERIOD);
+ 551              		.loc 1 165 0
+ 552 033c 20009FE5 		ldr	r0, .L33
+ 553 0340 FEFFFFEB 		bl	timer1_init
+ 554              	.LVL38:
+ 166:../firmware/hardware.c ****   timer1_init_isr();
+ 555              		.loc 1 166 0
+ 556 0344 FEFFFFEB 		bl	timer1_init_isr
+ 557              	.LVL39:
+ 167:../firmware/hardware.c ****   timer1_add_user_function(led_timer_isr, 1);
+ 558              		.loc 1 167 0
+ 559 0348 0110A0E3 		mov	r1, #1
+ 560 034c 14009FE5 		ldr	r0, .L33+4
+ 561 0350 FEFFFFEB 		bl	timer1_add_user_function
+ 562              	.LVL40:
+ 168:../firmware/hardware.c **** 
+ 169:../firmware/hardware.c **** #ifdef HARDWARE_V3
+ 170:../firmware/hardware.c ****   can_head_init();
+ 563              		.loc 1 170 0
+ 564 0354 FEFFFFEB 		bl	can_head_init
+ 565              	.LVL41:
+ 171:../firmware/hardware.c **** #endif
+ 172:../firmware/hardware.c **** 
+ 173:../firmware/hardware.c ****   enableIRQ();
+ 566              		.loc 1 173 0
+ 567 0358 FEFFFFEB 		bl	enableIRQ
+ 568              	.LVL42:
+ 174:../firmware/hardware.c **** 
+ 175:../firmware/hardware.c **** }
+ 569              		.loc 1 175 0
+ 570 035c 0840BDE8 		ldmfd	sp!, {r3, lr}
+ 571 0360 1EFF2FE1 		bx	lr
+ 572              	.L34:
+ 573              		.align	2
+ 574              	.L33:
+ 575 0364 50C30000 		.word	50000
+ 576 0368 00000000 		.word	led_timer_isr
+ 577              		.cfi_endproc
+ 578              	.LFE11:
+ 580              		.section	.rodata
+ 581              		.set	.LANCHOR1,. + 0
+ 584              	colors_r:
+ 585 0000 00       		.byte	0
+ 586 0001 00       		.byte	0
+ 587 0002 00       		.byte	0
+ 588 0003 00       		.byte	0
+ 589 0004 02       		.byte	2
+ 590 0005 02       		.byte	2
+ 591 0006 02       		.byte	2
+ 592 0007 02       		.byte	2
+ 593 0008 02       		.byte	2
+ 594 0009 01       		.byte	1
+ 595 000a 00       		.byte	0
+ 596 000b 00       		.byte	0
+ 597 000c 02       		.byte	2
+ 598 000d 01       		.byte	1
+ 601              	colors_g:
+ 602 000e 00       		.byte	0
+ 603 000f 00       		.byte	0
+ 604 0010 02       		.byte	2
+ 605 0011 02       		.byte	2
+ 606 0012 00       		.byte	0
+ 607 0013 00       		.byte	0
+ 608 0014 02       		.byte	2
+ 609 0015 02       		.byte	2
+ 610 0016 01       		.byte	1
+ 611 0017 02       		.byte	2
+ 612 0018 01       		.byte	1
+ 613 0019 02       		.byte	2
+ 614 001a 00       		.byte	0
+ 615 001b 00       		.byte	0
+ 618              	colors_b:
+ 619 001c 00       		.byte	0
+ 620 001d 02       		.byte	2
+ 621 001e 00       		.byte	0
+ 622 001f 02       		.byte	2
+ 623 0020 00       		.byte	0
+ 624 0021 02       		.byte	2
+ 625 0022 00       		.byte	0
+ 626 0023 02       		.byte	2
+ 627 0024 00       		.byte	0
+ 628 0025 00       		.byte	0
+ 629 0026 02       		.byte	2
+ 630 0027 01       		.byte	1
+ 631 0028 01       		.byte	1
+ 632 0029 02       		.byte	2
+ 633              		.bss
+ 634              		.set	.LANCHOR0,. + 0
+ 637              	ctr.4561:
+ 638 0000 00       		.space	1
+ 641              	st.4562:
+ 642 0001 00       		.space	1
+ 645              	led_int:
+ 646 0002 00       		.space	1
+ 647              		.text
+ 648              	.Letext0:
+ 649              		.file 2 "../firmware/lpcGPIO.h"
+ 650              		.file 3 "../firmware/lpcPIN.h"
+ 651              		.file 4 "../firmware/lpcSCB.h"
+ 652              		.file 5 "../firmware/lpcVIC.h"
+ 653              		.file 6 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 654              		.file 7 "../firmware/timerISR.h"
+ 655              		.file 8 "../firmware/i2c.h"
+ 656              		.file 9 "../firmware/adc.h"
+ 657              		.file 10 "../firmware/sysTime.h"
+ 658              		.file 11 "../firmware/registers.h"
+ 659              		.file 12 "../firmware/radio.h"
+ 660              		.file 13 "../firmware/can.h"
+ 661              		.file 14 "../../common/regdefs.h"
+ 662              		.file 15 "../firmware/armVIC.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 hardware.c
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:19     .text:00000000 set_rgb
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:68     .text:00000048 led_timer_isr
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:136    .text:000000c8 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:143    .text:000000d0 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:146    .text:000000d0 init_rgb_led
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:199    .text:00000128 set_color
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:233    .text:00000168 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:239    .text:00000174 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:242    .text:00000174 set_color_i
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:261    .text:00000180 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:265    .text:00000184 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:268    .text:00000184 get_batt_voltage
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:302    .text:000001b8 get_batt_current
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:339    .text:000001ec get_ext_voltage
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:364    .text:00000200 get_batt_current_acc
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:398    .text:00000234 get_temperature
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:432    .text:00000268 uc_init
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:508    .text:0000030c $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:515    .text:0000031c $a
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:518    .text:0000031c hardware_init
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:575    .text:00000364 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:584    .rodata:00000000 colors_r
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:601    .rodata:0000000e colors_g
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:618    .rodata:0000001c colors_b
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:637    .bss:00000000 ctr.4561
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:638    .bss:00000000 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:641    .bss:00000001 st.4562
+C:\Users\ncmorand\AppData\Local\Temp\ccMBQYCf.s:645    .bss:00000002 led_int
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+i2c_set
+reg32_table
+i2c_get
+adc_read_ch
+reset
+initSysTime
+i2c_init
+registers_init
+radio_init
+adc_init
+timer1_init
+timer1_init_isr
+timer1_add_user_function
+can_head_init
+enableIRQ

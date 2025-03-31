@@ -1,0 +1,529 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"timerISR.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  18              	timer1ISR:
+  19              	.LFB2:
+  20              		.file 1 "../firmware/timerISR.c"
+   1:../firmware/timerISR.c **** #include <stdint.h>
+   2:../firmware/timerISR.c **** #include "LPC21xx.h"
+   3:../firmware/timerISR.c **** #include "timerISR.h"
+   4:../firmware/timerISR.c **** #include "armVIC.h"
+   5:../firmware/timerISR.c **** #include "registers.h"
+   6:../firmware/timerISR.c **** 
+   7:../firmware/timerISR.c **** static void timer1ISR(void) __attribute__ ((interrupt));
+   8:../firmware/timerISR.c **** 
+   9:../firmware/timerISR.c **** struct FunctionEntry {
+  10:../firmware/timerISR.c ****   TimerFunction ptr;
+  11:../firmware/timerISR.c ****   uint16_t counter;
+  12:../firmware/timerISR.c ****   uint16_t period;
+  13:../firmware/timerISR.c **** };
+  14:../firmware/timerISR.c **** 
+  15:../firmware/timerISR.c **** static struct FunctionEntry function_table[MAX_TIMER1_USER_FUNCTIONS];
+  16:../firmware/timerISR.c **** 
+  17:../firmware/timerISR.c **** // Uses IRQ1
+  18:../firmware/timerISR.c **** void timer1_init_isr()
+  19:../firmware/timerISR.c **** {
+  20:../firmware/timerISR.c ****   disable_timer1_irq();
+  21:../firmware/timerISR.c ****   VICIntSelect &= ~VIC_BIT(VIC_TIMER1);
+  22:../firmware/timerISR.c ****   VICIntEnable = VIC_BIT(VIC_TIMER1);
+  23:../firmware/timerISR.c ****   VICVectCntl1 = VIC_ENABLE | VIC_TIMER1;
+  24:../firmware/timerISR.c ****   VICVectAddr1 = (uint32_t) timer1ISR;
+  25:../firmware/timerISR.c ****   enable_timer1_irq();
+  26:../firmware/timerISR.c **** }
+  27:../firmware/timerISR.c **** 
+  28:../firmware/timerISR.c **** void timer1_init(uint32_t match_count)
+  29:../firmware/timerISR.c **** {
+  30:../firmware/timerISR.c ****   uint8_t i;
+  31:../firmware/timerISR.c **** 
+  32:../firmware/timerISR.c ****   for (i=0; i<MAX_TIMER1_USER_FUNCTIONS; i++) {
+  33:../firmware/timerISR.c ****     function_table[i].ptr = 0;
+  34:../firmware/timerISR.c ****   }
+  35:../firmware/timerISR.c ****   T1TCR = TCR_RESET;  // timer in reset mode
+  36:../firmware/timerISR.c ****   T1MR0 = match_count;
+  37:../firmware/timerISR.c ****   T1MCR = TMCR_MR0_R;
+  38:../firmware/timerISR.c ****   T1PR = 29;  // 1 microsecond resolution at pclk = 30 MHz
+  39:../firmware/timerISR.c ****   T1CCR = 0;
+  40:../firmware/timerISR.c ****   T1EMR = 0;
+  41:../firmware/timerISR.c ****   T1TCR = TCR_ENABLE;  // start counting
+  42:../firmware/timerISR.c **** }
+  43:../firmware/timerISR.c **** 
+  44:../firmware/timerISR.c **** static void timer1ISR()
+  45:../firmware/timerISR.c **** {
+  21              		.loc 1 45 0
+  22              		.cfi_startproc
+  23              		@ Interrupt Service Routine.
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              	.LVL0:
+  27 0000 04E04EE2 		sub	lr, lr, #4
+  28 0004 3F502DE9 		stmfd	sp!, {r0, r1, r2, r3, r4, r5, ip, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 32
+  31              		.cfi_offset 0, -32
+  32              		.cfi_offset 1, -28
+  33              		.cfi_offset 2, -24
+  34              		.cfi_offset 3, -20
+  35              		.cfi_offset 4, -16
+  36              		.cfi_offset 5, -12
+  37              		.cfi_offset 12, -8
+  38              		.cfi_offset 14, -4
+  46:../firmware/timerISR.c ****   uint8_t l;
+  47:../firmware/timerISR.c **** 
+  48:../firmware/timerISR.c ****   // Call user timer functions
+  49:../firmware/timerISR.c ****   for (l=0; l<MAX_TIMER1_USER_FUNCTIONS; l++) {
+  50:../firmware/timerISR.c ****     if (function_table[l].ptr) {
+  39              		.loc 1 50 0
+  40 0008 68509FE5 		ldr	r5, .L7
+  45:../firmware/timerISR.c **** {
+  41              		.loc 1 45 0
+  42 000c 0040A0E3 		mov	r4, #0
+  43              	.LVL1:
+  44              	.L5:
+  45              		.loc 1 50 0
+  46 0010 053094E7 		ldr	r3, [r4, r5]
+  47 0014 000053E3 		cmp	r3, #0
+  48 0018 0B00000A 		beq	.L3
+  44:../firmware/timerISR.c **** static void timer1ISR()
+  49              		.loc 1 44 0
+  50 001c 043085E0 		add	r3, r5, r4
+  51:../firmware/timerISR.c ****       function_table[l].counter--;
+  51              		.loc 1 51 0
+  52 0020 B420D3E1 		ldrh	r2, [r3, #4]
+  53 0024 012042E2 		sub	r2, r2, #1
+  54 0028 0228A0E1 		mov	r2, r2, asl #16
+  55 002c 2228A0E1 		mov	r2, r2, lsr #16
+  52:../firmware/timerISR.c ****       if (function_table[l].counter==0) {
+  56              		.loc 1 52 0
+  57 0030 000052E3 		cmp	r2, #0
+  51:../firmware/timerISR.c ****       function_table[l].counter--;
+  58              		.loc 1 51 0
+  59 0034 B420C3E1 		strh	r2, [r3, #4]	@ movhi
+  60              		.loc 1 52 0
+  53:../firmware/timerISR.c ****         function_table[l].counter = function_table[l].period;
+  61              		.loc 1 53 0
+  62 0038 B620D301 		ldreqh	r2, [r3, #6]
+  63 003c B420C301 		streqh	r2, [r3, #4]	@ movhi
+  54:../firmware/timerISR.c ****         function_table[l].ptr();
+  64              		.loc 1 54 0
+  65 0040 04C09507 		ldreq	ip, [r5, r4]
+  66 0044 0FE0A001 		moveq	lr, pc
+  67 0048 1CFF2F01 		bxeq	ip
+  68              	.LVL2:
+  69              	.L3:
+  70 004c 084084E2 		add	r4, r4, #8
+  49:../firmware/timerISR.c ****   for (l=0; l<MAX_TIMER1_USER_FUNCTIONS; l++) {
+  71              		.loc 1 49 0
+  72 0050 200054E3 		cmp	r4, #32
+  73 0054 EDFFFF1A 		bne	.L5
+  55:../firmware/timerISR.c ****       }
+  56:../firmware/timerISR.c ****     }
+  57:../firmware/timerISR.c ****   }
+  58:../firmware/timerISR.c **** 
+  59:../firmware/timerISR.c ****   T1IR |= 1;
+  74              		.loc 1 59 0
+  75 0058 1C309FE5 		ldr	r3, .L7+4
+  76 005c 002093E5 		ldr	r2, [r3, #0]
+  77 0060 012082E3 		orr	r2, r2, #1
+  78 0064 002083E5 		str	r2, [r3, #0]
+  60:../firmware/timerISR.c ****   VICVectAddr = 0x00000000;
+  79              		.loc 1 60 0
+  80 0068 0020A0E3 		mov	r2, #0
+  81 006c 0030E0E3 		mvn	r3, #0
+  82 0070 CF2F03E5 		str	r2, [r3, #-4047]
+  83 0074 3F90FDE8 		ldmfd	sp!, {r0, r1, r2, r3, r4, r5, ip, pc}^
+  84              	.L8:
+  85              		.align	2
+  86              	.L7:
+  87 0078 00000000 		.word	.LANCHOR0
+  88 007c 008000E0 		.word	-536838144
+  89              		.cfi_endproc
+  90              	.LFE2:
+  92              		.align	2
+  93              		.global	timer1_init
+  95              	timer1_init:
+  96              	.LFB1:
+  29:../firmware/timerISR.c **** {
+  97              		.loc 1 29 0
+  98              		.cfi_startproc
+  99              		@ Function supports interworking.
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102              		@ link register save eliminated.
+ 103              	.LVL3:
+  33:../firmware/timerISR.c ****     function_table[i].ptr = 0;
+ 104              		.loc 1 33 0
+ 105 0080 40309FE5 		ldr	r3, .L10
+ 106 0084 0020A0E3 		mov	r2, #0
+ 107 0088 182083E5 		str	r2, [r3, #24]
+ 108 008c 002083E5 		str	r2, [r3, #0]
+ 109              	.LVL4:
+ 110 0090 082083E5 		str	r2, [r3, #8]
+ 111              	.LVL5:
+ 112 0094 102083E5 		str	r2, [r3, #16]
+ 113              	.LVL6:
+  35:../firmware/timerISR.c ****   T1TCR = TCR_RESET;  // timer in reset mode
+ 114              		.loc 1 35 0
+ 115 0098 2C309FE5 		ldr	r3, .L10+4
+ 116 009c 0210A0E3 		mov	r1, #2
+ 117 00a0 041083E5 		str	r1, [r3, #4]
+  36:../firmware/timerISR.c ****   T1MR0 = match_count;
+ 118              		.loc 1 36 0
+ 119 00a4 180083E5 		str	r0, [r3, #24]
+  37:../firmware/timerISR.c ****   T1MCR = TMCR_MR0_R;
+ 120              		.loc 1 37 0
+ 121 00a8 141083E5 		str	r1, [r3, #20]
+  38:../firmware/timerISR.c ****   T1PR = 29;  // 1 microsecond resolution at pclk = 30 MHz
+ 122              		.loc 1 38 0
+ 123 00ac 1D10A0E3 		mov	r1, #29
+ 124 00b0 0C1083E5 		str	r1, [r3, #12]
+  39:../firmware/timerISR.c ****   T1CCR = 0;
+ 125              		.loc 1 39 0
+ 126 00b4 282083E5 		str	r2, [r3, #40]
+  40:../firmware/timerISR.c ****   T1EMR = 0;
+ 127              		.loc 1 40 0
+ 128 00b8 3C2083E5 		str	r2, [r3, #60]
+  41:../firmware/timerISR.c ****   T1TCR = TCR_ENABLE;  // start counting
+ 129              		.loc 1 41 0
+ 130 00bc 0120A0E3 		mov	r2, #1
+ 131 00c0 042083E5 		str	r2, [r3, #4]
+ 132 00c4 1EFF2FE1 		bx	lr
+ 133              	.L11:
+ 134              		.align	2
+ 135              	.L10:
+ 136 00c8 00000000 		.word	.LANCHOR0
+ 137 00cc 008000E0 		.word	-536838144
+ 138              		.cfi_endproc
+ 139              	.LFE1:
+ 141              		.align	2
+ 142              		.global	disable_timer1_irq
+ 144              	disable_timer1_irq:
+ 145              	.LFB3:
+  61:../firmware/timerISR.c **** }
+  62:../firmware/timerISR.c **** 
+  63:../firmware/timerISR.c **** uint32_t disable_timer1_irq()
+  64:../firmware/timerISR.c **** {
+ 146              		.loc 1 64 0
+ 147              		.cfi_startproc
+ 148              		@ Function supports interworking.
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+  65:../firmware/timerISR.c ****   uint32_t old = T1MCR;
+ 152              		.loc 1 65 0
+ 153 00d0 10309FE5 		ldr	r3, .L13
+ 154 00d4 140093E5 		ldr	r0, [r3, #20]
+ 155              	.LVL7:
+  66:../firmware/timerISR.c ****   T1MCR &= ~(TMCR_MR0_I);
+ 156              		.loc 1 66 0
+ 157 00d8 142093E5 		ldr	r2, [r3, #20]
+ 158 00dc 0120C2E3 		bic	r2, r2, #1
+ 159 00e0 142083E5 		str	r2, [r3, #20]
+  67:../firmware/timerISR.c ****   return old;
+  68:../firmware/timerISR.c **** }
+ 160              		.loc 1 68 0
+ 161 00e4 1EFF2FE1 		bx	lr
+ 162              	.L14:
+ 163              		.align	2
+ 164              	.L13:
+ 165 00e8 008000E0 		.word	-536838144
+ 166              		.cfi_endproc
+ 167              	.LFE3:
+ 169              		.align	2
+ 170              		.global	enable_timer1_irq
+ 172              	enable_timer1_irq:
+ 173              	.LFB4:
+  69:../firmware/timerISR.c **** 
+  70:../firmware/timerISR.c **** uint32_t enable_timer1_irq()
+  71:../firmware/timerISR.c **** {
+ 174              		.loc 1 71 0
+ 175              		.cfi_startproc
+ 176              		@ Function supports interworking.
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179              		@ link register save eliminated.
+  72:../firmware/timerISR.c ****   uint32_t old = T1MCR;
+ 180              		.loc 1 72 0
+ 181 00ec 10309FE5 		ldr	r3, .L16
+ 182 00f0 140093E5 		ldr	r0, [r3, #20]
+ 183              	.LVL8:
+  73:../firmware/timerISR.c ****   T1MCR |= TMCR_MR0_I;
+ 184              		.loc 1 73 0
+ 185 00f4 142093E5 		ldr	r2, [r3, #20]
+ 186 00f8 012082E3 		orr	r2, r2, #1
+ 187 00fc 142083E5 		str	r2, [r3, #20]
+  74:../firmware/timerISR.c ****   return old;
+  75:../firmware/timerISR.c **** }
+ 188              		.loc 1 75 0
+ 189 0100 1EFF2FE1 		bx	lr
+ 190              	.L17:
+ 191              		.align	2
+ 192              	.L16:
+ 193 0104 008000E0 		.word	-536838144
+ 194              		.cfi_endproc
+ 195              	.LFE4:
+ 197              		.align	2
+ 198              		.global	timer1_init_isr
+ 200              	timer1_init_isr:
+ 201              	.LFB0:
+  19:../firmware/timerISR.c **** {
+ 202              		.loc 1 19 0
+ 203              		.cfi_startproc
+ 204              		@ Function supports interworking.
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207 0108 08402DE9 		stmfd	sp!, {r3, lr}
+ 208              	.LCFI1:
+ 209              		.cfi_def_cfa_offset 8
+ 210              		.cfi_offset 3, -8
+ 211              		.cfi_offset 14, -4
+  20:../firmware/timerISR.c ****   disable_timer1_irq();
+ 212              		.loc 1 20 0
+ 213 010c FEFFFFEB 		bl	disable_timer1_irq
+ 214              	.LVL9:
+  21:../firmware/timerISR.c ****   VICIntSelect &= ~VIC_BIT(VIC_TIMER1);
+ 215              		.loc 1 21 0
+ 216 0110 0030E0E3 		mvn	r3, #0
+ 217 0114 F32F13E5 		ldr	r2, [r3, #-4083]
+ 218 0118 2020C2E3 		bic	r2, r2, #32
+ 219 011c F32F03E5 		str	r2, [r3, #-4083]
+  22:../firmware/timerISR.c ****   VICIntEnable = VIC_BIT(VIC_TIMER1);
+ 220              		.loc 1 22 0
+ 221 0120 2020A0E3 		mov	r2, #32
+ 222 0124 EF2F03E5 		str	r2, [r3, #-4079]
+  23:../firmware/timerISR.c ****   VICVectCntl1 = VIC_ENABLE | VIC_TIMER1;
+ 223              		.loc 1 23 0
+ 224 0128 2520A0E3 		mov	r2, #37
+ 225 012c FB2D03E5 		str	r2, [r3, #-3579]
+  24:../firmware/timerISR.c ****   VICVectAddr1 = (uint32_t) timer1ISR;
+ 226              		.loc 1 24 0
+ 227 0130 08209FE5 		ldr	r2, .L19
+ 228 0134 FB2E03E5 		str	r2, [r3, #-3835]
+  26:../firmware/timerISR.c **** }
+ 229              		.loc 1 26 0
+ 230 0138 0840BDE8 		ldmfd	sp!, {r3, lr}
+  25:../firmware/timerISR.c ****   enable_timer1_irq();
+ 231              		.loc 1 25 0
+ 232 013c FEFFFFEA 		b	enable_timer1_irq
+ 233              	.LVL10:
+ 234              	.L20:
+ 235              		.align	2
+ 236              	.L19:
+ 237 0140 00000000 		.word	timer1ISR
+ 238              		.cfi_endproc
+ 239              	.LFE0:
+ 241              		.align	2
+ 242              		.global	restore_timer1_irq
+ 244              	restore_timer1_irq:
+ 245              	.LFB5:
+  76:../firmware/timerISR.c **** 
+  77:../firmware/timerISR.c **** uint32_t restore_timer1_irq(uint32_t flag)
+  78:../firmware/timerISR.c **** {
+ 246              		.loc 1 78 0
+ 247              		.cfi_startproc
+ 248              		@ Function supports interworking.
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+ 252              	.LVL11:
+  79:../firmware/timerISR.c ****   uint32_t old = T1MCR;
+ 253              		.loc 1 79 0
+ 254 0144 18209FE5 		ldr	r2, .L22
+ 255 0148 143092E5 		ldr	r3, [r2, #20]
+ 256              	.LVL12:
+  80:../firmware/timerISR.c ****   T1MCR = (old & ~TMCR_MR0_I) | (flag & TMCR_MR0_I);
+ 257              		.loc 1 80 0
+ 258 014c 010000E2 		and	r0, r0, #1
+ 259              	.LVL13:
+ 260 0150 0110C3E3 		bic	r1, r3, #1
+ 261 0154 010080E1 		orr	r0, r0, r1
+ 262 0158 140082E5 		str	r0, [r2, #20]
+  81:../firmware/timerISR.c ****   return old;
+  82:../firmware/timerISR.c **** }
+ 263              		.loc 1 82 0
+ 264 015c 0300A0E1 		mov	r0, r3
+ 265 0160 1EFF2FE1 		bx	lr
+ 266              	.L23:
+ 267              		.align	2
+ 268              	.L22:
+ 269 0164 008000E0 		.word	-536838144
+ 270              		.cfi_endproc
+ 271              	.LFE5:
+ 273              		.align	2
+ 274              		.global	timer1_add_user_function
+ 276              	timer1_add_user_function:
+ 277              	.LFB6:
+  83:../firmware/timerISR.c **** 
+  84:../firmware/timerISR.c **** void timer1_add_user_function(TimerFunction tf, uint16_t period)
+  85:../firmware/timerISR.c **** {
+ 278              		.loc 1 85 0
+ 279              		.cfi_startproc
+ 280              		@ Function supports interworking.
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 0, uses_anonymous_args = 0
+ 283              		@ link register save eliminated.
+ 284              	.LVL14:
+ 285 0168 30002DE9 		stmfd	sp!, {r4, r5}
+ 286              	.LCFI2:
+ 287              		.cfi_def_cfa_offset 8
+ 288              		.cfi_offset 4, -8
+ 289              		.cfi_offset 5, -4
+  86:../firmware/timerISR.c ****   uint8_t i;
+  87:../firmware/timerISR.c **** 
+  88:../firmware/timerISR.c ****   for (i=0; i<MAX_TIMER1_USER_FUNCTIONS; i++) {
+  89:../firmware/timerISR.c ****     if (function_table[i].ptr == 0) {
+ 290              		.loc 1 89 0
+ 291 016c 38C09FE5 		ldr	ip, .L29
+  85:../firmware/timerISR.c **** {
+ 292              		.loc 1 85 0
+ 293 0170 0030A0E3 		mov	r3, #0
+ 294              	.LVL15:
+ 295              	.L27:
+ 296              		.loc 1 89 0
+ 297 0174 83519CE7 		ldr	r5, [ip, r3, asl #3]
+ 298 0178 000055E3 		cmp	r5, #0
+ 299 017c 28209FE5 		ldr	r2, .L29
+  84:../firmware/timerISR.c **** void timer1_add_user_function(TimerFunction tf, uint16_t period)
+ 300              		.loc 1 84 0
+ 301 0180 8341A0E1 		mov	r4, r3, asl #3
+ 302              		.loc 1 89 0
+  90:../firmware/timerISR.c ****       function_table[i].ptr = tf;
+ 303              		.loc 1 90 0
+ 304 0184 83018207 		streq	r0, [r2, r3, asl #3]
+  91:../firmware/timerISR.c ****       function_table[i].counter = period;
+ 305              		.loc 1 91 0
+ 306 0188 04308200 		addeq	r3, r2, r4
+ 307 018c B410C301 		streqh	r1, [r3, #4]	@ movhi
+  92:../firmware/timerISR.c ****       function_table[i].period = period;
+ 308              		.loc 1 92 0
+ 309 0190 B610C301 		streqh	r1, [r3, #6]	@ movhi
+  93:../firmware/timerISR.c ****       break;
+ 310              		.loc 1 93 0
+ 311 0194 0200000A 		beq	.L24
+ 312              	.L25:
+ 313 0198 013083E2 		add	r3, r3, #1
+  88:../firmware/timerISR.c ****   for (i=0; i<MAX_TIMER1_USER_FUNCTIONS; i++) {
+ 314              		.loc 1 88 0
+ 315 019c 040053E3 		cmp	r3, #4
+ 316 01a0 F3FFFF1A 		bne	.L27
+ 317              	.L24:
+  94:../firmware/timerISR.c ****     }
+  95:../firmware/timerISR.c ****   }
+  96:../firmware/timerISR.c **** }
+ 318              		.loc 1 96 0
+ 319 01a4 3000BDE8 		ldmfd	sp!, {r4, r5}
+ 320 01a8 1EFF2FE1 		bx	lr
+ 321              	.L30:
+ 322              		.align	2
+ 323              	.L29:
+ 324 01ac 00000000 		.word	.LANCHOR0
+ 325              		.cfi_endproc
+ 326              	.LFE6:
+ 328              		.align	2
+ 329              		.global	timer1_remove_user_function
+ 331              	timer1_remove_user_function:
+ 332              	.LFB7:
+  97:../firmware/timerISR.c **** 
+  98:../firmware/timerISR.c **** void timer1_remove_user_function(TimerFunction tf)
+  99:../firmware/timerISR.c **** {
+ 333              		.loc 1 99 0
+ 334              		.cfi_startproc
+ 335              		@ Function supports interworking.
+ 336              		@ args = 0, pretend = 0, frame = 0
+ 337              		@ frame_needed = 0, uses_anonymous_args = 0
+ 338              		@ link register save eliminated.
+ 339              	.LVL16:
+ 100:../firmware/timerISR.c ****   uint8_t i;
+ 101:../firmware/timerISR.c **** 
+ 102:../firmware/timerISR.c ****   for (i=0; i<MAX_TIMER1_USER_FUNCTIONS; i++) {
+ 103:../firmware/timerISR.c ****     if (function_table[i].ptr == tf) {
+ 340              		.loc 1 103 0
+ 341 01b0 2C209FE5 		ldr	r2, .L36
+  99:../firmware/timerISR.c **** {
+ 342              		.loc 1 99 0
+ 343 01b4 0030A0E3 		mov	r3, #0
+ 344              	.LVL17:
+ 345              	.L34:
+ 346              		.loc 1 103 0
+ 347 01b8 831192E7 		ldr	r1, [r2, r3, asl #3]
+ 348 01bc 000051E1 		cmp	r1, r0
+ 349 01c0 0300001A 		bne	.L32
+ 104:../firmware/timerISR.c ****       function_table[i].ptr = 0;
+ 350              		.loc 1 104 0
+ 351 01c4 18209FE5 		ldr	r2, .L36
+ 352 01c8 0010A0E3 		mov	r1, #0
+ 353 01cc 831182E7 		str	r1, [r2, r3, asl #3]
+ 105:../firmware/timerISR.c ****       break;
+ 354              		.loc 1 105 0
+ 355 01d0 1EFF2FE1 		bx	lr
+ 356              	.L32:
+ 357 01d4 013083E2 		add	r3, r3, #1
+ 102:../firmware/timerISR.c ****   for (i=0; i<MAX_TIMER1_USER_FUNCTIONS; i++) {
+ 358              		.loc 1 102 0
+ 359 01d8 040053E3 		cmp	r3, #4
+ 360 01dc F5FFFF1A 		bne	.L34
+ 361 01e0 1EFF2FE1 		bx	lr
+ 362              	.L37:
+ 363              		.align	2
+ 364              	.L36:
+ 365 01e4 00000000 		.word	.LANCHOR0
+ 366              		.cfi_endproc
+ 367              	.LFE7:
+ 369              		.bss
+ 370              		.align	2
+ 371              		.set	.LANCHOR0,. + 0
+ 374              	function_table:
+ 375 0000 00000000 		.space	32
+ 375      00000000 
+ 375      00000000 
+ 375      00000000 
+ 375      00000000 
+ 376              		.text
+ 377              	.Letext0:
+ 378              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 379              		.file 3 "../firmware/lpcTMR.h"
+ 380              		.file 4 "../firmware/lpcVIC.h"
+ 381              		.file 5 "../firmware/timerISR.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 timerISR.c
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:18     .text:00000000 timer1ISR
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:87     .text:00000078 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:92     .text:00000080 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:95     .text:00000080 timer1_init
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:136    .text:000000c8 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:141    .text:000000d0 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:144    .text:000000d0 disable_timer1_irq
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:165    .text:000000e8 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:169    .text:000000ec $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:172    .text:000000ec enable_timer1_irq
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:193    .text:00000104 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:197    .text:00000108 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:200    .text:00000108 timer1_init_isr
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:237    .text:00000140 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:241    .text:00000144 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:244    .text:00000144 restore_timer1_irq
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:269    .text:00000164 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:273    .text:00000168 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:276    .text:00000168 timer1_add_user_function
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:324    .text:000001ac $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:328    .text:000001b0 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:331    .text:000001b0 timer1_remove_user_function
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:365    .text:000001e4 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:370    .bss:00000000 $d
+C:\Users\ncmorand\AppData\Local\Temp\ccd37pEs.s:374    .bss:00000000 function_table
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,7 +1,7 @@
 SRC_SUBDIR = ../firmware/
 
 # Target file name (without extension).
-TARGET = main
+TARGET = main_with_radio
 
 # List C source files here. (C dependencies are automatically generated.)
 # use file-extension c for "c-only"-files

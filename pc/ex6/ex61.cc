@@ -2,6 +2,7 @@
 #include "robot.h"
 #include "trkcli.h"
 #include "utils.h"
+#include "regdefs.h"
 #include <cstdlib>
 #include <iostream>
 #include <stdint.h>
@@ -9,7 +10,7 @@
 
 using namespace std;
 
-const char *TRACKING_PC_NAME = "biorobpc11"; ///< host name of the tracking PC
+const char *TRACKING_PC_NAME = "biorobpc6"; ///< host name of the tracking PC
 const uint16_t TRACKING_PORT = 10502;        ///< port number of the tracking PC
 const uint8_t RADIO_CHANNEL = 201;           ///< robot radio channel
 const char *INTERFACE = "COM1";              ///< robot radio interface

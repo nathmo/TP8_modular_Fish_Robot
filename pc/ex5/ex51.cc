@@ -3,11 +3,9 @@
 #include "robot.h"
 #include "utils.h"
 #include <cmath>
-#include <conio.h> // For kbhit() and getch()
 #include <iostream>
 
 #define IMODE_IDLE 0
-#define IMODE_MOTOR_DEMO 1
 #define IMODE_SINE_DEMO 2
 
 // Constants
@@ -40,8 +38,7 @@ int main() {
   while (!exitProgram) {
     cout << "\n=====================================\n";
     cout << "Select an option:\n";
-    cout << "1. Motor Demo Mode\n";
-    cout << "2. Sine Wave Control Mode\n";
+    cout << "1. Sine Wave Control Mode\n";
     cout << "q. Quit\n";
     cout << "Enter your choice: ";
 
@@ -51,17 +48,6 @@ int main() {
 
     switch (choice) {
     case '1': {
-      cout << "\nStarting Motor Demo Mode..." << endl;
-      regs.set_reg_b(REG8_MODE, IMODE_MOTOR_DEMO);
-      cout << "Press Enter to stop motor demo." << endl;
-      cin.get();
-      regs.set_reg_b(REG8_MODE, IMODE_IDLE);
-      cout << "Motor demo stopped. Waiting for motor to return to zero..."
-           << endl;
-      Sleep(2000); // Give time for the motor to settle
-      break;
-    }
-    case '2': {
       cout << "\nStarting Sine Wave Control Mode..." << endl;
       regs.set_reg_b(REG8_MODE, IMODE_SINE_DEMO);
       cout << "Press Enter to stop sine wave motor control mode." << endl;
@@ -69,6 +55,7 @@ int main() {
       regs.set_reg_b(REG8_MODE, IMODE_IDLE);
       cout << "Motor demo stopped. Waiting for motor to return to zero..."
            << endl;
+      
       Sleep(2000); // Give time for the motor to settle
       break;
     }

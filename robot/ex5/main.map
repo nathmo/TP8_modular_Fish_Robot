@@ -1,0 +1,1336 @@
+Archive member included because of file (symbol)
+
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+                              modes52.o (sin)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o) (__ieee754_rem_pio2)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o) (__kernel_cos)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o) (__kernel_rem_pio2)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o) (__kernel_sin)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o) (fabs)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o) (floor)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o) (scalbn)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o) (copysign)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+                              ../firmware/printf.o (__aeabi_uidiv)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                              ../firmware/lutmath.o (__aeabi_dsub)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+                              ../firmware/lutmath.o (__aeabi_dmul)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o) (__aeabi_dcmpeq)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o) (__aeabi_d2iz)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+                              ../firmware/lutmath.o (__aeabi_d2uiz)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+                              ../firmware/lutmath.o (__aeabi_d2f)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+                              modes52.o (__aeabi_fadd)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+                              modes52.o (__aeabi_fmul)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+                              ../firmware/lutmath.o (__aeabi_fcmplt)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+                              modes52.o (__aeabi_f2iz)
+c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+                              modes52.o (__aeabi_f2uiz)
+
+Allocating common symbols
+Common symbol       size              file
+
+reg32_table         0x4               ../firmware/radio.o
+mRxCAN              0x190             ../firmware/LPC_CANAll.o
+mRxIN               0x2               ../firmware/LPC_CANAll.o
+reg8_table          0x1               ../firmware/radio.o
+mRxOUT              0x2               ../firmware/LPC_CANAll.o
+reg16_table         0x2               ../firmware/radio.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x00000000         0x0003e000         xr
+RAM              0x40000000         0x00004000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD ../firmware/crt0.o
+LOAD ../firmware/uartISR.o
+LOAD ../firmware/armVIC.o
+LOAD ../firmware/radio.o
+LOAD ../firmware/LPC_CANAll.o
+LOAD ../firmware/sysTime.o
+LOAD ../firmware/uart.o
+LOAD ../firmware/i2c.o
+LOAD ../firmware/can.o
+LOAD ../firmware/hardware.o
+LOAD ../firmware/timerISR.o
+LOAD ../firmware/adc.o
+LOAD ../firmware/printf.o
+LOAD ../firmware/utils.o
+LOAD ../firmware/lutmath.o
+LOAD ../firmware/registers.o
+LOAD ../firmware/robot.o
+LOAD modes52.o
+LOAD main.o
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libc.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libc.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libstdc++.a
+START GROUP
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libg.a
+LOAD c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libc.a
+END GROUP
+                0x00000400                STACK_SIZE = 0x400
+
+.text           0x00000000     0x637f
+ *(.init)
+ .init          0x00000000      0x13c ../firmware/crt0.o
+                0x00000000                _boot
+                0x00000050                _mainCRTStartup
+                0x00000050                _start
+                0x00000050                start
+                0x00000114                _reset
+                0x00000114                exit
+                0x00000114                abort
+                0x00000114                reset
+ *(.text .text.*)
+ .text          0x0000013c        0x0 ../firmware/crt0.o
+ .text          0x0000013c       0xe0 ../firmware/uartISR.o
+                0x0000013c                uart0ISR
+                0x000001bc                init_uart0_isr
+                0x000001fc                uart0_waitch
+ .text          0x0000021c       0x78 ../firmware/armVIC.o
+                0x0000021c                disableIRQ
+                0x0000022c                restoreIRQ
+                0x00000248                enableIRQ
+                0x00000258                disableFIQ
+                0x00000268                restoreFIQ
+                0x00000284                enableFIQ
+ .text          0x00000294      0x3e8 ../firmware/radio.o
+                0x00000344                radio_add_reg_callback
+                0x00000378                radio_del_reg_callback
+                0x000003b0                process_UART_in
+                0x0000060c                radio_init
+ .text          0x0000067c      0x26c ../firmware/LPC_CANAll.o
+                0x0000067c                CANAll_CANISR_Err
+                0x00000694                CANAll_CANISR_Rx1
+                0x00000710                CANAll_Init
+                0x000007b4                CANAll_SetErrIRQ
+                0x000007f0                CANAll_PushMessage
+                0x00000858                CANAll_PullMessage
+ .text          0x000008e8       0xa8 ../firmware/sysTime.o
+                0x000008e8                initSysTime
+                0x00000924                getSysTICs
+                0x00000950                getElapsedSysTICs
+                0x00000968                pause
+ .text          0x00000990      0x158 ../firmware/uart.o
+                0x00000990                uart0Init
+                0x000009e8                uart0Putch
+                0x00000a0c                uart0Space
+                0x00000a18                uart0Puts
+                0x00000a48                uart0Write
+                0x00000a90                uart0TxEmpty
+                0x00000ab0                uart0TxFlush
+                0x00000ac8                uart0Getch
+ .text          0x00000ae8      0x2d0 ../firmware/i2c.o
+                0x00000ae8                i2c_reset
+                0x00000b04                i2c_init
+                0x00000b38                i2c_set
+                0x00000c44                i2c_get
+ .text          0x00000db8      0x464 ../firmware/can.o
+                0x00000db8                can_head_init
+                0x00000ddc                set_reg_value_b
+                0x00000e80                set_reg_value_w
+                0x00000f34                set_reg_value_dw
+                0x00000fe8                get_reg_value_b
+                0x000010a0                get_reg_value_w
+                0x00001160                get_reg_value_dw
+ .text          0x0000121c      0x36c ../firmware/hardware.o
+                0x0000121c                set_rgb
+                0x000012ec                init_rgb_led
+                0x00001344                set_color
+                0x00001390                set_color_i
+                0x000013a0                get_batt_voltage
+                0x000013d4                get_batt_current
+                0x00001408                get_ext_voltage
+                0x0000141c                get_batt_current_acc
+                0x00001450                get_temperature
+                0x00001484                uc_init
+                0x00001538                hardware_init
+ .text          0x00001588      0x1e8 ../firmware/timerISR.o
+                0x00001608                timer1_init
+                0x00001658                disable_timer1_irq
+                0x00001674                enable_timer1_irq
+                0x00001690                timer1_init_isr
+                0x000016cc                restore_timer1_irq
+                0x000016f0                timer1_add_user_function
+                0x00001738                timer1_remove_user_function
+ .text          0x00001770       0xdc ../firmware/adc.o
+                0x00001770                adc_init
+                0x000017a4                adc_set_channel
+                0x000017cc                adc_read
+                0x00001810                adc_read_ch
+ .text          0x0000184c      0x4ac ../firmware/printf.o
+                0x00001c90                set_printf_uart
+                0x00001ca0                uart_printf
+                0x00001cc8                sprintf
+ .text          0x00001cf8       0x90 ../firmware/utils.o
+                0x00001cf8                unaligned_read_16
+                0x00001d18                unaligned_read_32
+                0x00001d48                unaligned_write_16
+                0x00001d60                unaligned_write_32
+ .text          0x00001d88       0xcc ../firmware/lutmath.o
+                0x00001d88                sinlut
+                0x00001e2c                coslut
+ .text          0x00001e54       0x2c ../firmware/registers.o
+                0x00001e54                registers_init
+ .text          0x00001e80      0x2c8 ../firmware/robot.o
+                0x00001e80                bus_get
+                0x00001e90                bus_set
+                0x00001ea0                safe_bus_set
+                0x00001f9c                safe_bus_setw
+                0x00001fe8                start_pid
+                0x00002040                reset_pos
+                0x00002070                set_leg_setpoint
+                0x00002098                init_body_module
+                0x000020d8                init_limb_module
+ .text          0x00002148      0x3a0 modes52.o
+                0x00002204                init_sine_params
+                0x00002220                sine_demo_mode
+                0x000024a4                main_mode_loop
+ .text          0x000024e8        0x0 main.o
+ .text.startup  0x000024e8       0x28 main.o
+                0x000024e8                main
+ .text          0x00002510      0x100 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+                0x00002510                sin
+ .text          0x00002610      0x658 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                0x00002610                __ieee754_rem_pio2
+ .text          0x00002c68      0x348 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                0x00002c68                __kernel_cos
+ .text          0x00002fb0      0xba0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                0x00002fb0                __kernel_rem_pio2
+ .text          0x00003b50      0x220 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                0x00003b50                __kernel_sin
+ .text          0x00003d70        0x8 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+                0x00003d70                fabs
+ .text          0x00003d78      0x198 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+                0x00003d78                floor
+ .text          0x00003f10      0x198 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                0x00003f10                scalbn
+ .text          0x000040a8       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+                0x000040a8                copysign
+ .text          0x000040c8      0x114 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+                0x000040c8                __aeabi_uidiv
+                0x000040c8                __udivsi3
+                0x000041bc                __aeabi_uidivmod
+ .text          0x000041dc        0x4 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+                0x000041dc                __aeabi_idiv0
+                0x000041dc                __aeabi_ldiv0
+ .text          0x000041e0      0x41c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                0x000041e0                __aeabi_drsub
+                0x000041e8                __aeabi_dsub
+                0x000041e8                __subdf3
+                0x000041ec                __aeabi_dadd
+                0x000041ec                __adddf3
+                0x000044fc                __floatunsidf
+                0x000044fc                __aeabi_ui2d
+                0x00004520                __floatsidf
+                0x00004520                __aeabi_i2d
+                0x00004548                __aeabi_f2d
+                0x00004548                __extendsfdf2
+                0x00004588                __floatundidf
+                0x00004588                __aeabi_ul2d
+                0x0000459c                __floatdidf
+                0x0000459c                __aeabi_l2d
+ .text          0x000045fc      0x49c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+                0x000045fc                __aeabi_dmul
+                0x000045fc                __muldf3
+                0x0000488c                __divdf3
+                0x0000488c                __aeabi_ddiv
+ .text          0x00004a98      0x144 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+                0x00004a98                __gtdf2
+                0x00004a98                __gedf2
+                0x00004aa0                __ltdf2
+                0x00004aa0                __ledf2
+                0x00004aa8                __nedf2
+                0x00004aa8                __eqdf2
+                0x00004aa8                __cmpdf2
+                0x00004b30                __aeabi_cdrcmple
+                0x00004b4c                __aeabi_cdcmpeq
+                0x00004b4c                __aeabi_cdcmple
+                0x00004b64                __aeabi_dcmpeq
+                0x00004b7c                __aeabi_dcmplt
+                0x00004b94                __aeabi_dcmple
+                0x00004bac                __aeabi_dcmpge
+                0x00004bc4                __aeabi_dcmpgt
+ .text          0x00004bdc       0x5c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+                0x00004bdc                __aeabi_d2iz
+                0x00004bdc                __fixdfsi
+ .text          0x00004c38       0x54 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+                0x00004c38                __aeabi_d2uiz
+                0x00004c38                __fixunsdfsi
+ .text          0x00004c8c       0xa0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+                0x00004c8c                __truncdfsf2
+                0x00004c8c                __aeabi_d2f
+ .text          0x00004d2c      0x2ac c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+                0x00004d2c                __aeabi_frsub
+                0x00004d34                __subsf3
+                0x00004d34                __aeabi_fsub
+                0x00004d38                __aeabi_fadd
+                0x00004d38                __addsf3
+                0x00004ef4                __aeabi_ui2f
+                0x00004ef4                __floatunsisf
+                0x00004efc                __aeabi_i2f
+                0x00004efc                __floatsisf
+                0x00004f1c                __aeabi_ul2f
+                0x00004f1c                __floatundisf
+                0x00004f2c                __aeabi_l2f
+                0x00004f2c                __floatdisf
+ .text          0x00004fd8      0x2f8 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+                0x00004fd8                __mulsf3
+                0x00004fd8                __aeabi_fmul
+                0x00005170                __aeabi_fdiv
+                0x00005170                __divsf3
+ .text          0x000052d0      0x114 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+                0x000052d0                __gesf2
+                0x000052d0                __gtsf2
+                0x000052d8                __lesf2
+                0x000052d8                __ltsf2
+                0x000052e0                __nesf2
+                0x000052e0                __eqsf2
+                0x000052e0                __cmpsf2
+                0x00005344                __aeabi_cfrcmple
+                0x00005354                __aeabi_cfcmpeq
+                0x00005354                __aeabi_cfcmple
+                0x0000536c                __aeabi_fcmpeq
+                0x00005384                __aeabi_fcmplt
+                0x0000539c                __aeabi_fcmple
+                0x000053b4                __aeabi_fcmpge
+                0x000053cc                __aeabi_fcmpgt
+ .text          0x000053e4       0x5c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+                0x000053e4                __aeabi_f2iz
+                0x000053e4                __fixsfsi
+ .text          0x00005440       0x54 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+                0x00005440                __fixunssfsi
+                0x00005440                __aeabi_f2uiz
+ *(.gnu.linkonce.t.*)
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.gcc_except_table)
+ *(.rodata)
+ .rodata        0x00005494       0x2a ../firmware/hardware.o
+ *fill*         0x000054be        0x2 
+ .rodata        0x000054c0      0xc94 ../firmware/lutmath.o
+ .rodata        0x00006154       0x46 ../firmware/robot.o
+ .rodata        0x0000619a        0x1 modes52.o
+                0x0000619a                MOTOR_ADDR
+ *fill*         0x0000619b        0x1 
+ .rodata        0x0000619c      0x188 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ *fill*         0x00006324        0x4 
+ .rodata        0x00006328       0x50 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ *(.rodata*)
+ .rodata.str1.1
+                0x00006378        0x7 ../firmware/printf.o
+ *(.gnu.linkonce.r.*)
+
+.vfp11_veneer   0x00006380        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00006380        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00006380        0x0
+ .iplt          0x00000000        0x0 ../firmware/crt0.o
+
+.rel.dyn        0x00006380        0x0
+ .rel.iplt      0x00000000        0x0 ../firmware/crt0.o
+                0x00006380                . = ALIGN (0x4)
+
+.ctors          0x0000637f        0x0
+                0x0000637f                PROVIDE (__ctors_start__, .)
+ *(SORT(.ctors.*))
+ *(.ctors)
+                0x0000637f                PROVIDE (__ctors_end__, .)
+
+.dtors          0x0000637f        0x0
+                0x0000637f                PROVIDE (__dtors_start__, .)
+ *(SORT(.dtors.*))
+ *(.dtors)
+                0x0000637f                PROVIDE (__dtors_end__, .)
+                0x00006380                . = ALIGN (0x4)
+                0x00006380                _etext = .
+                0x00006380                PROVIDE (etext, .)
+
+.data           0x40000000        0x4 load address 0x00006380
+                0x40000000                _data = .
+ *(.data)
+ .data          0x40000000        0x0 ../firmware/crt0.o
+ .data          0x40000000        0x0 ../firmware/uartISR.o
+ .data          0x40000000        0x0 ../firmware/armVIC.o
+ .data          0x40000000        0x0 ../firmware/radio.o
+ .data          0x40000000        0x0 ../firmware/LPC_CANAll.o
+ .data          0x40000000        0x0 ../firmware/sysTime.o
+ .data          0x40000000        0x0 ../firmware/uart.o
+ .data          0x40000000        0x0 ../firmware/i2c.o
+ .data          0x40000000        0x0 ../firmware/can.o
+ .data          0x40000000        0x0 ../firmware/hardware.o
+ .data          0x40000000        0x0 ../firmware/timerISR.o
+ .data          0x40000000        0x0 ../firmware/adc.o
+ .data          0x40000000        0x0 ../firmware/printf.o
+ .data          0x40000000        0x0 ../firmware/utils.o
+ .data          0x40000000        0x0 ../firmware/lutmath.o
+ .data          0x40000000        0x0 ../firmware/registers.o
+ .data          0x40000000        0x0 ../firmware/robot.o
+ .data          0x40000000        0x2 modes52.o
+                0x40000000                freq_enc
+                0x40000001                amp_enc
+ .data          0x40000002        0x0 main.o
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .data          0x40000002        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+ *(.data.*)
+ *(.gnu.linkonce.d*)
+                0x40000004                . = ALIGN (0x4)
+ *fill*         0x40000002        0x2 
+ *(.fastrun)
+
+.igot.plt       0x40000004        0x0 load address 0x00006384
+ .igot.plt      0x00000000        0x0 ../firmware/crt0.o
+                0x40000004                . = ALIGN (0x4)
+                0x40000004                _edata = .
+                0x40000004                PROVIDE (edata, .)
+
+.bss            0x40000004      0x22c load address 0x00006384
+                0x40000004                __bss_start = .
+                0x40000004                __bss_start__ = .
+ *(.bss)
+ .bss           0x40000004        0x0 ../firmware/crt0.o
+ .bss           0x40000004        0x0 ../firmware/uartISR.o
+ .bss           0x40000004        0x0 ../firmware/armVIC.o
+ .bss           0x40000004       0x60 ../firmware/radio.o
+ .bss           0x40000064        0x0 ../firmware/LPC_CANAll.o
+ .bss           0x40000064        0x8 ../firmware/sysTime.o
+ .bss           0x4000006c        0x0 ../firmware/uart.o
+ .bss           0x4000006c        0x0 ../firmware/i2c.o
+ .bss           0x4000006c        0x0 ../firmware/can.o
+ .bss           0x4000006c        0x3 ../firmware/hardware.o
+ *fill*         0x4000006f        0x1 
+ .bss           0x40000070       0x20 ../firmware/timerISR.o
+ .bss           0x40000090        0x0 ../firmware/adc.o
+ .bss           0x40000090        0x1 ../firmware/printf.o
+ .bss           0x40000091        0x0 ../firmware/utils.o
+ .bss           0x40000091        0x0 ../firmware/lutmath.o
+ .bss           0x40000091        0x0 ../firmware/registers.o
+ .bss           0x40000091        0x0 ../firmware/robot.o
+ .bss           0x40000091        0x0 modes52.o
+ .bss           0x40000091        0x0 main.o
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .bss           0x40000091        0x0 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+ *(.gnu.linkonce.b*)
+ *(COMMON)
+ *fill*         0x40000091        0x3 
+ COMMON         0x40000094        0x8 ../firmware/radio.o
+                0x40000094                reg32_table
+                0x40000098                reg8_table
+                0x4000009a                reg16_table
+ COMMON         0x4000009c      0x194 ../firmware/LPC_CANAll.o
+                0x4000009c                mRxCAN
+                0x4000022c                mRxIN
+                0x4000022e                mRxOUT
+                0x40000230                . = ALIGN (0x4)
+                0x40000230                . = ALIGN (0x4)
+                0x40000230                __bss_end__ = .
+                0x40000230                PROVIDE (__bss_end, .)
+
+.stack          0x40000300      0x400 load address 0x00006680
+                0x40000700                . = (. + STACK_SIZE)
+ *fill*         0x40000300      0x400 
+                0x40000700                PROVIDE (_stack, .)
+                0x40000700                _end = .
+                0x40000700                PROVIDE (end, .)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x11
+ *(.comment)
+ .comment       0x00000000       0x11 ../firmware/uartISR.o
+                                 0x12 (size before relaxing)
+ .comment       0x00000000       0x12 ../firmware/armVIC.o
+ .comment       0x00000000       0x12 ../firmware/radio.o
+ .comment       0x00000000       0x12 ../firmware/LPC_CANAll.o
+ .comment       0x00000000       0x12 ../firmware/sysTime.o
+ .comment       0x00000000       0x12 ../firmware/uart.o
+ .comment       0x00000000       0x12 ../firmware/i2c.o
+ .comment       0x00000000       0x12 ../firmware/can.o
+ .comment       0x00000000       0x12 ../firmware/hardware.o
+ .comment       0x00000000       0x12 ../firmware/timerISR.o
+ .comment       0x00000000       0x12 ../firmware/adc.o
+ .comment       0x00000000       0x12 ../firmware/printf.o
+ .comment       0x00000000       0x12 ../firmware/utils.o
+ .comment       0x00000000       0x12 ../firmware/lutmath.o
+ .comment       0x00000000       0x12 ../firmware/registers.o
+ .comment       0x00000000       0x12 ../firmware/robot.o
+ .comment       0x00000000       0x12 modes52.o
+ .comment       0x00000000       0x12 main.o
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .comment       0x00000000       0x12 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x22 ../firmware/crt0.o
+ .ARM.attributes
+                0x00000022       0x32 ../firmware/uartISR.o
+ .ARM.attributes
+                0x00000054       0x32 ../firmware/armVIC.o
+ .ARM.attributes
+                0x00000086       0x32 ../firmware/radio.o
+ .ARM.attributes
+                0x000000b8       0x32 ../firmware/LPC_CANAll.o
+ .ARM.attributes
+                0x000000ea       0x32 ../firmware/sysTime.o
+ .ARM.attributes
+                0x0000011c       0x32 ../firmware/uart.o
+ .ARM.attributes
+                0x0000014e       0x32 ../firmware/i2c.o
+ .ARM.attributes
+                0x00000180       0x32 ../firmware/can.o
+ .ARM.attributes
+                0x000001b2       0x32 ../firmware/hardware.o
+ .ARM.attributes
+                0x000001e4       0x32 ../firmware/timerISR.o
+ .ARM.attributes
+                0x00000216       0x32 ../firmware/adc.o
+ .ARM.attributes
+                0x00000248       0x32 ../firmware/printf.o
+ .ARM.attributes
+                0x0000027a       0x32 ../firmware/utils.o
+ .ARM.attributes
+                0x000002ac       0x32 ../firmware/lutmath.o
+ .ARM.attributes
+                0x000002de       0x32 ../firmware/registers.o
+ .ARM.attributes
+                0x00000310       0x32 ../firmware/robot.o
+ .ARM.attributes
+                0x00000342       0x32 modes52.o
+ .ARM.attributes
+                0x00000374       0x32 main.o
+ .ARM.attributes
+                0x000003a6       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .ARM.attributes
+                0x000003d6       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .ARM.attributes
+                0x00000406       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .ARM.attributes
+                0x00000436       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .ARM.attributes
+                0x00000466       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .ARM.attributes
+                0x00000496       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .ARM.attributes
+                0x000004c6       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .ARM.attributes
+                0x000004f6       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .ARM.attributes
+                0x00000526       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .ARM.attributes
+                0x00000556       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x0000056e       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x00000586       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .ARM.attributes
+                0x0000059e       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .ARM.attributes
+                0x000005b6       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .ARM.attributes
+                0x000005ce       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .ARM.attributes
+                0x000005e6       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .ARM.attributes
+                0x000005fe       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .ARM.attributes
+                0x00000616       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .ARM.attributes
+                0x0000062e       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .ARM.attributes
+                0x00000646       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .ARM.attributes
+                0x0000065e       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .ARM.attributes
+                0x00000676       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000      0x520
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 ../firmware/crt0.o
+ .debug_aranges
+                0x00000020       0x20 ../firmware/uartISR.o
+ .debug_aranges
+                0x00000040       0x20 ../firmware/armVIC.o
+ .debug_aranges
+                0x00000060       0x20 ../firmware/radio.o
+ .debug_aranges
+                0x00000080       0x20 ../firmware/LPC_CANAll.o
+ .debug_aranges
+                0x000000a0       0x20 ../firmware/sysTime.o
+ .debug_aranges
+                0x000000c0       0x20 ../firmware/uart.o
+ .debug_aranges
+                0x000000e0       0x20 ../firmware/i2c.o
+ .debug_aranges
+                0x00000100       0x20 ../firmware/can.o
+ .debug_aranges
+                0x00000120       0x20 ../firmware/hardware.o
+ .debug_aranges
+                0x00000140       0x20 ../firmware/timerISR.o
+ .debug_aranges
+                0x00000160       0x20 ../firmware/adc.o
+ .debug_aranges
+                0x00000180       0x20 ../firmware/printf.o
+ .debug_aranges
+                0x000001a0       0x20 ../firmware/utils.o
+ .debug_aranges
+                0x000001c0       0x20 ../firmware/lutmath.o
+ .debug_aranges
+                0x000001e0       0x20 ../firmware/registers.o
+ .debug_aranges
+                0x00000200       0x20 ../firmware/robot.o
+ .debug_aranges
+                0x00000220       0x20 modes52.o
+ .debug_aranges
+                0x00000240       0x20 main.o
+ .debug_aranges
+                0x00000260       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_aranges
+                0x00000280       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_aranges
+                0x000002a0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_aranges
+                0x000002c0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_aranges
+                0x000002e0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_aranges
+                0x00000300       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .debug_aranges
+                0x00000320       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_aranges
+                0x00000340       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_aranges
+                0x00000360       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .debug_aranges
+                0x00000380       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_aranges
+                0x000003a0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_aranges
+                0x000003c0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .debug_aranges
+                0x000003e0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .debug_aranges
+                0x00000400       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .debug_aranges
+                0x00000420       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .debug_aranges
+                0x00000440       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .debug_aranges
+                0x00000460       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .debug_aranges
+                0x00000480       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .debug_aranges
+                0x000004a0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .debug_aranges
+                0x000004c0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .debug_aranges
+                0x000004e0       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .debug_aranges
+                0x00000500       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x00000000     0x7717
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000       0x76 ../firmware/crt0.o
+ .debug_info    0x00000076      0x57b ../firmware/uartISR.o
+ .debug_info    0x000005f1      0x31a ../firmware/armVIC.o
+ .debug_info    0x0000090b      0x826 ../firmware/radio.o
+ .debug_info    0x00001131      0x705 ../firmware/LPC_CANAll.o
+ .debug_info    0x00001836      0x2c6 ../firmware/sysTime.o
+ .debug_info    0x00001afc      0x3ec ../firmware/uart.o
+ .debug_info    0x00001ee8      0x381 ../firmware/i2c.o
+ .debug_info    0x00002269      0x83d ../firmware/can.o
+ .debug_info    0x00002aa6      0xd81 ../firmware/hardware.o
+ .debug_info    0x00003827      0x6c0 ../firmware/timerISR.o
+ .debug_info    0x00003ee7      0x249 ../firmware/adc.o
+ .debug_info    0x00004130      0x548 ../firmware/printf.o
+ .debug_info    0x00004678      0x1d9 ../firmware/utils.o
+ .debug_info    0x00004851      0x1b4 ../firmware/lutmath.o
+ .debug_info    0x00004a05      0x151 ../firmware/registers.o
+ .debug_info    0x00004b56      0x8fb ../firmware/robot.o
+ .debug_info    0x00005451      0x56b modes52.o
+ .debug_info    0x000059bc      0x10b main.o
+ .debug_info    0x00005ac7      0x24d c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_info    0x00005d14      0x408 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_info    0x0000611c      0x246 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_info    0x00006362      0x378 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_info    0x000066da      0x21a c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_info    0x000068f4      0x13a c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .debug_info    0x00006a2e      0x1aa c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_info    0x00006bd8      0x26b c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_info    0x00006e43      0x16c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .debug_info    0x00006faf       0x91 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_info    0x00007040       0x91 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_info    0x000070d1       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .debug_info    0x00007163       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .debug_info    0x000071f5       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .debug_info    0x00007287       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .debug_info    0x00007319       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .debug_info    0x000073ab       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .debug_info    0x0000743d       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .debug_info    0x000074cf       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .debug_info    0x00007561       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .debug_info    0x000075f3       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .debug_info    0x00007685       0x92 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+
+.debug_abbrev   0x00000000     0x261d
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0x14 ../firmware/crt0.o
+ .debug_abbrev  0x00000014      0x12d ../firmware/uartISR.o
+ .debug_abbrev  0x00000141       0xe8 ../firmware/armVIC.o
+ .debug_abbrev  0x00000229      0x291 ../firmware/radio.o
+ .debug_abbrev  0x000004ba      0x168 ../firmware/LPC_CANAll.o
+ .debug_abbrev  0x00000622      0x137 ../firmware/sysTime.o
+ .debug_abbrev  0x00000759      0x1a0 ../firmware/uart.o
+ .debug_abbrev  0x000008f9      0x17e ../firmware/i2c.o
+ .debug_abbrev  0x00000a77      0x18e ../firmware/can.o
+ .debug_abbrev  0x00000c05      0x26a ../firmware/hardware.o
+ .debug_abbrev  0x00000e6f      0x182 ../firmware/timerISR.o
+ .debug_abbrev  0x00000ff1      0x17f ../firmware/adc.o
+ .debug_abbrev  0x00001170      0x21f ../firmware/printf.o
+ .debug_abbrev  0x0000138f       0xd9 ../firmware/utils.o
+ .debug_abbrev  0x00001468      0x10b ../firmware/lutmath.o
+ .debug_abbrev  0x00001573       0x9c ../firmware/registers.o
+ .debug_abbrev  0x0000160f      0x1fc ../firmware/robot.o
+ .debug_abbrev  0x0000180b      0x262 modes52.o
+ .debug_abbrev  0x00001a6d       0xa4 main.o
+ .debug_abbrev  0x00001b11      0x15a c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_abbrev  0x00001c6b      0x184 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_abbrev  0x00001def       0xed c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_abbrev  0x00001edc      0x158 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_abbrev  0x00002034      0x100 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_abbrev  0x00002134       0xb9 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .debug_abbrev  0x000021ed       0xf8 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_abbrev  0x000022e5      0x138 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_abbrev  0x0000241d       0xfc c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .debug_abbrev  0x00002519       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_abbrev  0x0000252d       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_abbrev  0x00002541       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .debug_abbrev  0x00002555       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .debug_abbrev  0x00002569       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .debug_abbrev  0x0000257d       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .debug_abbrev  0x00002591       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .debug_abbrev  0x000025a5       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .debug_abbrev  0x000025b9       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .debug_abbrev  0x000025cd       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .debug_abbrev  0x000025e1       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .debug_abbrev  0x000025f5       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .debug_abbrev  0x00002609       0x14 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+
+.debug_line     0x00000000     0x2bac
+ *(.debug_line)
+ .debug_line    0x00000000       0x9b ../firmware/crt0.o
+ .debug_line    0x0000009b       0xdf ../firmware/uartISR.o
+ .debug_line    0x0000017a       0x91 ../firmware/armVIC.o
+ .debug_line    0x0000020b      0x184 ../firmware/radio.o
+ .debug_line    0x0000038f       0xfe ../firmware/LPC_CANAll.o
+ .debug_line    0x0000048d       0xb9 ../firmware/sysTime.o
+ .debug_line    0x00000546       0xf8 ../firmware/uart.o
+ .debug_line    0x0000063e      0x127 ../firmware/i2c.o
+ .debug_line    0x00000765      0x167 ../firmware/can.o
+ .debug_line    0x000008cc      0x1a1 ../firmware/hardware.o
+ .debug_line    0x00000a6d       0xf4 ../firmware/timerISR.o
+ .debug_line    0x00000b61       0xca ../firmware/adc.o
+ .debug_line    0x00000c2b      0x1fd ../firmware/printf.o
+ .debug_line    0x00000e28       0xa1 ../firmware/utils.o
+ .debug_line    0x00000ec9       0xa7 ../firmware/lutmath.o
+ .debug_line    0x00000f70       0xb0 ../firmware/registers.o
+ .debug_line    0x00001020      0x152 ../firmware/robot.o
+ .debug_line    0x00001172      0x144 modes52.o
+ .debug_line    0x000012b6       0xac main.o
+ .debug_line    0x00001362      0x16e c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_line    0x000014d0      0x219 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_line    0x000016e9      0x12e c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_line    0x00001817      0x397 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_line    0x00001bae      0x11e c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_line    0x00001ccc      0x149 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .debug_line    0x00001e15      0x172 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_line    0x00001f87      0x147 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_line    0x000020ce      0x11a c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .debug_line    0x000021e8       0x8a c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+ .debug_line    0x00002272       0x61 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+ .debug_line    0x000022d3      0x168 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+ .debug_line    0x0000243b      0x180 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+ .debug_line    0x000025bb       0xae c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+ .debug_line    0x00002669       0x78 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+ .debug_line    0x000026e1       0x76 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+ .debug_line    0x00002757       0x89 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+ .debug_line    0x000027e0      0x119 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+ .debug_line    0x000028f9      0x123 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+ .debug_line    0x00002a1c       0xa2 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+ .debug_line    0x00002abe       0x78 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+ .debug_line    0x00002b36       0x76 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+
+.debug_frame    0x00000000      0xcfc
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x40 ../firmware/uartISR.o
+ .debug_frame   0x00000040       0x70 ../firmware/armVIC.o
+ .debug_frame   0x000000b0       0xc8 ../firmware/radio.o
+ .debug_frame   0x00000178       0xa8 ../firmware/LPC_CANAll.o
+ .debug_frame   0x00000220       0x6c ../firmware/sysTime.o
+ .debug_frame   0x0000028c       0xb0 ../firmware/uart.o
+ .debug_frame   0x0000033c       0x78 ../firmware/i2c.o
+ .debug_frame   0x000003b4      0x10c ../firmware/can.o
+ .debug_frame   0x000004c0      0x134 ../firmware/hardware.o
+ .debug_frame   0x000005f4       0xc4 ../firmware/timerISR.o
+ .debug_frame   0x000006b8       0x60 ../firmware/adc.o
+ .debug_frame   0x00000718      0x128 ../firmware/printf.o
+ .debug_frame   0x00000840       0x60 ../firmware/utils.o
+ .debug_frame   0x000008a0       0x4c ../firmware/lutmath.o
+ .debug_frame   0x000008ec       0x20 ../firmware/registers.o
+ .debug_frame   0x0000090c      0x16c ../firmware/robot.o
+ .debug_frame   0x00000a78       0x7c modes52.o
+ .debug_frame   0x00000af4       0x2c main.o
+ .debug_frame   0x00000b20       0x2c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_frame   0x00000b4c       0x38 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_frame   0x00000b84       0x38 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_frame   0x00000bbc       0x3c c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_frame   0x00000bf8       0x38 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_frame   0x00000c30       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+ .debug_frame   0x00000c50       0x34 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_frame   0x00000c84       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_frame   0x00000cb4       0x28 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+ .debug_frame   0x00000cdc       0x20 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+
+.debug_str      0x00000000     0x1236
+ *(.debug_str)
+ .debug_str     0x00000000      0x2f4 ../firmware/uartISR.o
+                                0x331 (size before relaxing)
+ .debug_str     0x000002f4       0x7a ../firmware/armVIC.o
+                                0x14b (size before relaxing)
+ .debug_str     0x0000036e      0x263 ../firmware/radio.o
+                                0x38a (size before relaxing)
+ .debug_str     0x000005d1      0x13a ../firmware/LPC_CANAll.o
+                                0x3e6 (size before relaxing)
+ .debug_str     0x0000070b       0x76 ../firmware/sysTime.o
+                                0x153 (size before relaxing)
+ .debug_str     0x00000781       0x6a ../firmware/uart.o
+                                0x1d4 (size before relaxing)
+ .debug_str     0x000007eb       0x87 ../firmware/i2c.o
+                                0x1b9 (size before relaxing)
+ .debug_str     0x00000872      0x103 ../firmware/can.o
+                                0x265 (size before relaxing)
+ .debug_str     0x00000975      0x183 ../firmware/hardware.o
+                                0x52e (size before relaxing)
+ .debug_str     0x00000af8       0x87 ../firmware/timerISR.o
+                                0x3c8 (size before relaxing)
+ .debug_str     0x00000b7f       0x35 ../firmware/adc.o
+                                0x187 (size before relaxing)
+ .debug_str     0x00000bb4       0xaa ../firmware/printf.o
+                                0x1b1 (size before relaxing)
+ .debug_str     0x00000c5e       0x1b ../firmware/utils.o
+                                0x14a (size before relaxing)
+ .debug_str     0x00000c79       0x41 ../firmware/lutmath.o
+                                0x139 (size before relaxing)
+ .debug_str     0x00000cba       0x18 ../firmware/registers.o
+                                0x173 (size before relaxing)
+ .debug_str     0x00000cd2       0xc2 ../firmware/robot.o
+                                0x214 (size before relaxing)
+ .debug_str     0x00000d94       0xb5 modes52.o
+                                0x2a3 (size before relaxing)
+ .debug_str     0x00000e49        0xc main.o
+                                0x120 (size before relaxing)
+ .debug_str     0x00000e55       0xeb c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+                                0x19c (size before relaxing)
+ .debug_str     0x00000f40       0xbb c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                                0x207 (size before relaxing)
+ .debug_str     0x00000ffb       0x3b c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                0x181 (size before relaxing)
+ .debug_str     0x00001036       0x77 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                0x19a (size before relaxing)
+ .debug_str     0x000010ad       0x36 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                0x181 (size before relaxing)
+ .debug_str     0x000010e3       0x37 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+                                0x170 (size before relaxing)
+ .debug_str     0x0000111a       0x42 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+                                0x181 (size before relaxing)
+ .debug_str     0x0000115c       0x9d c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                                0x1a7 (size before relaxing)
+ .debug_str     0x000011f9       0x3d c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+                                0x17c (size before relaxing)
+
+.debug_loc      0x00000000     0x3ae6
+ *(.debug_loc)
+ .debug_loc     0x00000000       0x42 ../firmware/armVIC.o
+ .debug_loc     0x00000042      0x36f ../firmware/radio.o
+ .debug_loc     0x000003b1      0x3f8 ../firmware/LPC_CANAll.o
+ .debug_loc     0x000007a9       0x7c ../firmware/sysTime.o
+ .debug_loc     0x00000825      0x159 ../firmware/uart.o
+ .debug_loc     0x0000097e      0x141 ../firmware/i2c.o
+ .debug_loc     0x00000abf      0x428 ../firmware/can.o
+ .debug_loc     0x00000ee7      0x20b ../firmware/hardware.o
+ .debug_loc     0x000010f2       0xf5 ../firmware/timerISR.o
+ .debug_loc     0x000011e7       0x9b ../firmware/adc.o
+ .debug_loc     0x00001282      0x75a ../firmware/printf.o
+ .debug_loc     0x000019dc       0xe8 ../firmware/utils.o
+ .debug_loc     0x00001ac4       0xa0 ../firmware/lutmath.o
+ .debug_loc     0x00001b64       0x20 ../firmware/registers.o
+ .debug_loc     0x00001b84      0x5d0 ../firmware/robot.o
+ .debug_loc     0x00002154      0x285 modes52.o
+ .debug_loc     0x000023d9       0x20 main.o
+ .debug_loc     0x000023f9      0x121 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+ .debug_loc     0x0000251a      0x5b5 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_loc     0x00002acf      0x283 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+ .debug_loc     0x00002d52      0x7db c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+ .debug_loc     0x0000352d      0x14f c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+ .debug_loc     0x0000367c      0x1c2 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_loc     0x0000383e      0x248 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_loc     0x00003a86       0x60 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+OUTPUT(main.elf elf32-littlearm)
+
+.debug_ranges   0x00000000      0x210
+ .debug_ranges  0x00000000       0x48 ../firmware/radio.o
+ .debug_ranges  0x00000048       0x30 ../firmware/hardware.o
+ .debug_ranges  0x00000078       0x30 ../firmware/printf.o
+ .debug_ranges  0x000000a8       0xc0 ../firmware/robot.o
+ .debug_ranges  0x00000168       0x10 main.o
+ .debug_ranges  0x00000178       0x38 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+ .debug_ranges  0x000001b0       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+ .debug_ranges  0x000001c8       0x30 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+ .debug_ranges  0x000001f8       0x18 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+
+Cross Reference Table
+
+Symbol                                            File
+CANAll_CANISR_Err                                 ../firmware/LPC_CANAll.o
+CANAll_CANISR_Rx1                                 ../firmware/LPC_CANAll.o
+CANAll_Init                                       ../firmware/LPC_CANAll.o
+                                                  ../firmware/can.o
+CANAll_PullMessage                                ../firmware/LPC_CANAll.o
+                                                  ../firmware/can.o
+CANAll_PushMessage                                ../firmware/LPC_CANAll.o
+                                                  ../firmware/can.o
+CANAll_SetErrIRQ                                  ../firmware/LPC_CANAll.o
+                                                  ../firmware/can.o
+MOTOR_ADDR                                        modes52.o
+__adddf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__addsf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__aeabi_cdcmpeq                                   c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cdcmple                                   c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cdrcmple                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cfcmpeq                                   c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__aeabi_cfcmple                                   c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__aeabi_cfrcmple                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__aeabi_d2f                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+                                                  modes52.o
+                                                  ../firmware/lutmath.o
+__aeabi_d2iz                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+__aeabi_d2uiz                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+                                                  ../firmware/lutmath.o
+__aeabi_dadd                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                                                  modes52.o
+                                                  ../firmware/lutmath.o
+__aeabi_dcmpeq                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+__aeabi_dcmpge                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  ../firmware/lutmath.o
+__aeabi_dcmpgt                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+__aeabi_dcmple                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__aeabi_dcmplt                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__aeabi_ddiv                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+                                                  modes52.o
+                                                  ../firmware/lutmath.o
+__aeabi_dmul                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                                                  modes52.o
+                                                  ../firmware/lutmath.o
+__aeabi_drsub                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__aeabi_dsub                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+                                                  ../firmware/lutmath.o
+__aeabi_f2d                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                                                  modes52.o
+                                                  ../firmware/lutmath.o
+__aeabi_f2iz                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+                                                  modes52.o
+__aeabi_f2uiz                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+                                                  modes52.o
+__aeabi_fadd                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+                                                  modes52.o
+__aeabi_fcmpeq                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fcmpge                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+                                                  modes52.o
+__aeabi_fcmpgt                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+                                                  modes52.o
+__aeabi_fcmple                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fcmplt                                    c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+                                                  ../firmware/lutmath.o
+__aeabi_fdiv                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+                                                  modes52.o
+__aeabi_fmul                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+                                                  modes52.o
+__aeabi_frsub                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__aeabi_fsub                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__aeabi_i2d                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+__aeabi_i2f                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__aeabi_idiv0                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+__aeabi_l2d                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__aeabi_l2f                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__aeabi_ldiv0                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_dvmd_tls.o)
+__aeabi_ui2d                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__aeabi_ui2f                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+                                                  modes52.o
+__aeabi_uidiv                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+                                                  ../firmware/printf.o
+__aeabi_uidivmod                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+                                                  ../firmware/printf.o
+__aeabi_ul2d                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__aeabi_ul2f                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__bss_end__                                       ../firmware/crt0.o
+__bss_start                                       ../firmware/crt0.o
+__cmpdf2                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__cmpsf2                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__ctors_end__                                     ../firmware/crt0.o
+__ctors_start__                                   ../firmware/crt0.o
+__divdf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+__divsf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+__eqdf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__eqsf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__extendsfdf2                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__fixdfsi                                         c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixdfsi.o)
+__fixsfsi                                         c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixsfsi.o)
+__fixunsdfsi                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunsdfsi.o)
+__fixunssfsi                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_fixunssfsi.o)
+__floatdidf                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__floatdisf                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__floatsidf                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__floatsisf                                       c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__floatundidf                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__floatundisf                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__floatunsidf                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__floatunsisf                                     c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__gedf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__gesf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__gtdf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__gtsf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__ieee754_rem_pio2                                c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+__kernel_cos                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_cos.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+__kernel_rem_pio2                                 c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+__kernel_sin                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_sin.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+__ledf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__lesf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__ltdf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__ltsf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__muldf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivdf3.o)
+__mulsf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_muldivsf3.o)
+__nedf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpdf2.o)
+__nesf2                                           c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_cmpsf2.o)
+__subdf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubdf3.o)
+__subsf3                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_addsubsf3.o)
+__truncdfsf2                                      c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_arm_truncdfsf2.o)
+__udivsi3                                         c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2\libgcc.a(_udivsi3.o)
+_boot                                             ../firmware/crt0.o
+_data                                             ../firmware/crt0.o
+_edata                                            ../firmware/crt0.o
+_etext                                            ../firmware/crt0.o
+_mainCRTStartup                                   ../firmware/crt0.o
+_reset                                            ../firmware/crt0.o
+_stack                                            ../firmware/crt0.o
+_start                                            ../firmware/crt0.o
+abort                                             ../firmware/crt0.o
+adc_init                                          ../firmware/adc.o
+                                                  ../firmware/hardware.o
+adc_read                                          ../firmware/adc.o
+adc_read_ch                                       ../firmware/adc.o
+                                                  ../firmware/hardware.o
+adc_set_channel                                   ../firmware/adc.o
+amp_enc                                           modes52.o
+bus_get                                           ../firmware/robot.o
+bus_set                                           ../firmware/robot.o
+                                                  modes52.o
+can_head_init                                     ../firmware/can.o
+                                                  ../firmware/hardware.o
+copysign                                          c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_copysign.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+coslut                                            ../firmware/lutmath.o
+disableFIQ                                        ../firmware/armVIC.o
+disableIRQ                                        ../firmware/armVIC.o
+disable_timer1_irq                                ../firmware/timerISR.o
+                                                  ../firmware/adc.o
+                                                  ../firmware/i2c.o
+enableFIQ                                         ../firmware/armVIC.o
+enableIRQ                                         ../firmware/armVIC.o
+                                                  ../firmware/hardware.o
+enable_timer1_irq                                 ../firmware/timerISR.o
+exit                                              ../firmware/crt0.o
+fabs                                              c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_fabs.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-e_rem_pio2.o)
+floor                                             c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_floor.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+freq_enc                                          modes52.o
+getElapsedSysTICs                                 ../firmware/sysTime.o
+                                                  modes52.o
+getSysTICs                                        ../firmware/sysTime.o
+                                                  modes52.o
+get_batt_current                                  ../firmware/hardware.o
+get_batt_current_acc                              ../firmware/hardware.o
+get_batt_voltage                                  ../firmware/hardware.o
+get_ext_voltage                                   ../firmware/hardware.o
+get_reg_value_b                                   ../firmware/can.o
+                                                  ../firmware/robot.o
+get_reg_value_dw                                  ../firmware/can.o
+get_reg_value_w                                   ../firmware/can.o
+                                                  ../firmware/robot.o
+get_temperature                                   ../firmware/hardware.o
+hardware_init                                     ../firmware/hardware.o
+                                                  main.o
+i2c_get                                           ../firmware/i2c.o
+                                                  ../firmware/hardware.o
+i2c_init                                          ../firmware/i2c.o
+                                                  ../firmware/hardware.o
+i2c_reset                                         ../firmware/i2c.o
+i2c_set                                           ../firmware/i2c.o
+                                                  ../firmware/hardware.o
+initSysTime                                       ../firmware/sysTime.o
+                                                  ../firmware/hardware.o
+init_body_module                                  ../firmware/robot.o
+                                                  modes52.o
+init_limb_module                                  ../firmware/robot.o
+init_rgb_led                                      ../firmware/hardware.o
+init_sine_params                                  modes52.o
+init_uart0_isr                                    ../firmware/uartISR.o
+                                                  ../firmware/radio.o
+mRxCAN                                            ../firmware/LPC_CANAll.o
+mRxIN                                             ../firmware/LPC_CANAll.o
+mRxOUT                                            ../firmware/LPC_CANAll.o
+main                                              main.o
+                                                  ../firmware/crt0.o
+main_mode_loop                                    modes52.o
+                                                  main.o
+pause                                             ../firmware/sysTime.o
+                                                  modes52.o
+                                                  ../firmware/adc.o
+                                                  ../firmware/can.o
+process_UART_in                                   ../firmware/radio.o
+                                                  ../firmware/uartISR.o
+radio_add_reg_callback                            ../firmware/radio.o
+                                                  modes52.o
+radio_del_reg_callback                            ../firmware/radio.o
+radio_init                                        ../firmware/radio.o
+                                                  ../firmware/hardware.o
+reg16_table                                       ../firmware/registers.o
+                                                  ../firmware/radio.o
+reg32_table                                       ../firmware/registers.o
+                                                  ../firmware/hardware.o
+                                                  ../firmware/radio.o
+reg8_table                                        modes52.o
+                                                  ../firmware/registers.o
+                                                  ../firmware/radio.o
+registers_init                                    ../firmware/registers.o
+                                                  main.o
+                                                  ../firmware/hardware.o
+reset                                             ../firmware/crt0.o
+                                                  ../firmware/hardware.o
+reset_pos                                         ../firmware/robot.o
+restoreFIQ                                        ../firmware/armVIC.o
+restoreIRQ                                        ../firmware/armVIC.o
+restore_timer1_irq                                ../firmware/timerISR.o
+                                                  ../firmware/adc.o
+                                                  ../firmware/i2c.o
+safe_bus_set                                      ../firmware/robot.o
+safe_bus_setw                                     ../firmware/robot.o
+scalbn                                            c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_scalbn.o)
+                                                  c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-k_rem_pio2.o)
+set_color                                         ../firmware/hardware.o
+                                                  modes52.o
+set_color_i                                       ../firmware/hardware.o
+                                                  main.o
+set_leg_setpoint                                  ../firmware/robot.o
+set_printf_uart                                   ../firmware/printf.o
+set_reg_value_b                                   ../firmware/can.o
+                                                  ../firmware/robot.o
+set_reg_value_dw                                  ../firmware/can.o
+set_reg_value_w                                   ../firmware/can.o
+                                                  ../firmware/robot.o
+set_rgb                                           ../firmware/hardware.o
+                                                  modes52.o
+sin                                               c:/yagarto/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib\libm.a(lib_a-s_sin.o)
+                                                  modes52.o
+sine_demo_mode                                    modes52.o
+sinlut                                            ../firmware/lutmath.o
+sprintf                                           ../firmware/printf.o
+start                                             ../firmware/crt0.o
+start_pid                                         ../firmware/robot.o
+                                                  modes52.o
+timer1_add_user_function                          ../firmware/timerISR.o
+                                                  ../firmware/hardware.o
+timer1_init                                       ../firmware/timerISR.o
+                                                  ../firmware/hardware.o
+timer1_init_isr                                   ../firmware/timerISR.o
+                                                  ../firmware/hardware.o
+timer1_remove_user_function                       ../firmware/timerISR.o
+uart0Getch                                        ../firmware/uart.o
+uart0ISR                                          ../firmware/uartISR.o
+uart0Init                                         ../firmware/uart.o
+                                                  ../firmware/radio.o
+uart0Putch                                        ../firmware/uart.o
+                                                  ../firmware/printf.o
+                                                  ../firmware/radio.o
+uart0Puts                                         ../firmware/uart.o
+uart0Space                                        ../firmware/uart.o
+uart0TxEmpty                                      ../firmware/uart.o
+uart0TxFlush                                      ../firmware/uart.o
+uart0Write                                        ../firmware/uart.o
+uart0_waitch                                      ../firmware/uartISR.o
+                                                  ../firmware/radio.o
+uart_printf                                       ../firmware/printf.o
+uc_init                                           ../firmware/hardware.o
+unaligned_read_16                                 ../firmware/utils.o
+                                                  ../firmware/can.o
+unaligned_read_32                                 ../firmware/utils.o
+                                                  ../firmware/can.o
+unaligned_write_16                                ../firmware/utils.o
+                                                  ../firmware/can.o
+unaligned_write_32                                ../firmware/utils.o
+                                                  ../firmware/can.o

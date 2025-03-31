@@ -1,0 +1,121 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"main.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.startup,"ax",%progbits
+  17              		.align	2
+  18              		.global	main
+  20              	main:
+  21              	.LFB0:
+  22              		.file 1 "main.c"
+   1:main.c        **** #include "hardware.h"
+   2:main.c        **** #include "module.h"
+   3:main.c        **** #include "robot.h"
+   4:main.c        **** 
+   5:main.c        **** const uint8_t MOTOR_ADDR = 21;
+   6:main.c        **** 
+   7:main.c        **** int main(void)
+   8:main.c        **** {
+  23              		.loc 1 8 0
+  24              		.cfi_startproc
+  25              		@ Function supports interworking.
+  26              		@ args = 0, pretend = 0, frame = 0
+  27              		@ frame_needed = 0, uses_anonymous_args = 0
+  28 0000 08402DE9 		stmfd	sp!, {r3, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 3, -8
+  32              		.cfi_offset 14, -4
+   9:main.c        ****   int8_t pos;
+  10:main.c        **** 
+  11:main.c        ****   hardware_init();
+  33              		.loc 1 11 0
+  34 0004 FEFFFFEB 		bl	hardware_init
+  35              	.LVL0:
+  12:main.c        ****   
+  13:main.c        ****   // Changes the color of the led (red) to show the boot
+  14:main.c        ****   set_color_i(4, 0);
+  36              		.loc 1 14 0
+  37 0008 0400A0E3 		mov	r0, #4
+  38 000c 0010A0E3 		mov	r1, #0
+  39 0010 FEFFFFEB 		bl	set_color_i
+  40              	.LVL1:
+  15:main.c        **** 
+  16:main.c        ****   // Initialises the body module with the specified address (but do not start
+  17:main.c        ****   // the PD controller)
+  18:main.c        ****   init_body_module(MOTOR_ADDR);
+  41              		.loc 1 18 0
+  42 0014 1500A0E3 		mov	r0, #21
+  43 0018 FEFFFFEB 		bl	init_body_module
+  44              	.LVL2:
+  45              	.L5:
+  19:main.c        ****   
+  20:main.c        ****   // And then... do this
+  21:main.c        ****   while (1) {
+  22:main.c        ****     pos = bus_get(MOTOR_ADDR, MREG_POSITION);
+  46              		.loc 1 22 0
+  47 001c 3010A0E3 		mov	r1, #48
+  48 0020 1500A0E3 		mov	r0, #21
+  49 0024 FEFFFFEB 		bl	bus_get
+  50              	.LVL3:
+  23:main.c        ****     if (pos > 0) {
+  51              		.loc 1 23 0
+  52 0028 003CA0E1 		mov	r3, r0, asl #24
+  53 002c 000053E3 		cmp	r3, #0
+  22:main.c        ****     pos = bus_get(MOTOR_ADDR, MREG_POSITION);
+  54              		.loc 1 22 0
+  55 0030 0020A0E1 		mov	r2, r0
+  56              	.LVL4:
+  24:main.c        ****       set_rgb(pos, 32, 0);
+  25:main.c        ****     } else {
+  26:main.c        ****       pos = -pos;
+  27:main.c        ****       set_rgb(0, 32, pos);
+  57              		.loc 1 27 0
+  58 0034 002062D2 		rsble	r2, r2, #0
+  24:main.c        ****       set_rgb(pos, 32, 0);
+  59              		.loc 1 24 0
+  60 0038 2010A0C3 		movgt	r1, #32
+  61 003c 0020A0C3 		movgt	r2, #0
+  62              	.LVL5:
+  63              		.loc 1 27 0
+  64 0040 0000A0D3 		movle	r0, #0
+  65 0044 2010A0D3 		movle	r1, #32
+  66 0048 FF2002D2 		andle	r2, r2, #255
+  67 004c FEFFFFEB 		bl	set_rgb
+  68              	.LVL6:
+  69 0050 F1FFFFEA 		b	.L5
+  70              		.cfi_endproc
+  71              	.LFE0:
+  73              		.global	MOTOR_ADDR
+  74              		.section	.rodata
+  77              	MOTOR_ADDR:
+  78 0000 15       		.byte	21
+  79              		.text
+  80              	.Letext0:
+  81              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+  82              		.file 3 "../firmware/hardware.h"
+  83              		.file 4 "../firmware/robot.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\ncmorand\AppData\Local\Temp\ccZrrth0.s:17     .text.startup:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\ccZrrth0.s:20     .text.startup:00000000 main
+C:\Users\ncmorand\AppData\Local\Temp\ccZrrth0.s:77     .rodata:00000000 MOTOR_ADDR
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+hardware_init
+set_color_i
+init_body_module
+bus_get
+set_rgb

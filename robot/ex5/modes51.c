@@ -71,12 +71,11 @@ void sine_demo_mode() {
   bus_set(MOTOR_ADDR, MREG_MODE, MODE_IDLE);
 
   // Back to the "normal" green
-  set_color(2);
+  set_color(1);
 }
 
 void main_mode_loop() {
   reg8_table[REG8_MODE] = IMODE_IDLE;
-
   radio_add_reg_callback(register_handler);
 
   while (1) {

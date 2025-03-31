@@ -1,0 +1,948 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"can.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  17              		.global	can_head_init
+  19              	can_head_init:
+  20              	.LFB0:
+  21              		.file 1 "../firmware/can.c"
+   1:../firmware/can.c **** #include "sysTime.h"
+   2:../firmware/can.c **** #include "can.h"
+   3:../firmware/can.c **** #include "utils.h"
+   4:../firmware/can.c **** 
+   5:../firmware/can.c **** void can_head_init()
+   6:../firmware/can.c **** {
+  22              		.loc 1 6 0
+  23              		.cfi_startproc
+  24              		@ Function supports interworking.
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 08402DE9 		stmfd	sp!, {r3, lr}
+  28              	.LCFI0:
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 3, -8
+  31              		.cfi_offset 14, -4
+   7:../firmware/can.c ****   CANAll_Init(1, 2, 0x00000009);   // Init CAN port 1, IRQ 2, 1 Mbps @ PCLK 30 MHz
+  32              		.loc 1 7 0
+  33 0004 0210A0E3 		mov	r1, #2
+  34 0008 0920A0E3 		mov	r2, #9
+  35 000c 0100A0E3 		mov	r0, #1
+  36 0010 FEFFFFEB 		bl	CANAll_Init
+  37              	.LVL0:
+   8:../firmware/can.c ****   CANAll_SetErrIRQ(3);
+  38              		.loc 1 8 0
+  39 0014 0300A0E3 		mov	r0, #3
+  40 0018 FEFFFFEB 		bl	CANAll_SetErrIRQ
+  41              	.LVL1:
+   9:../firmware/can.c **** }
+  42              		.loc 1 9 0
+  43 001c 0840BDE8 		ldmfd	sp!, {r3, lr}
+  44 0020 1EFF2FE1 		bx	lr
+  45              		.cfi_endproc
+  46              	.LFE0:
+  48              		.align	2
+  49              		.global	set_reg_value_b
+  51              	set_reg_value_b:
+  52              	.LFB1:
+  10:../firmware/can.c **** 
+  11:../firmware/can.c **** uint8_t set_reg_value_b(uint8_t dest, uint8_t reg, uint8_t val)
+  12:../firmware/can.c **** {
+  53              		.loc 1 12 0
+  54              		.cfi_startproc
+  55              		@ Function supports interworking.
+  56              		@ args = 0, pretend = 0, frame = 16
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58              	.LVL2:
+  59 0024 1F402DE9 		stmfd	sp!, {r0, r1, r2, r3, r4, lr}
+  60              	.LCFI1:
+  61              		.cfi_def_cfa_offset 24
+  62              		.cfi_offset 0, -24
+  63              		.cfi_offset 1, -20
+  64              		.cfi_offset 2, -16
+  65              		.cfi_offset 3, -12
+  66              		.cfi_offset 4, -8
+  67              		.cfi_offset 14, -4
+  68              	.LVL3:
+  13:../firmware/can.c ****   CANALL_MSG buf;
+  14:../firmware/can.c ****   struct can_frame* tx;
+  15:../firmware/can.c ****   uint8_t cnt = 0;
+  16:../firmware/can.c **** 
+  17:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+  18:../firmware/can.c ****   buf.Frame = 0x00040000;   // 4 bytes
+  69              		.loc 1 18 0
+  70 0028 0137A0E3 		mov	r3, #262144
+  71 002c 00308DE5 		str	r3, [sp, #0]
+  19:../firmware/can.c ****   buf.MsgID = dest;
+  20:../firmware/can.c ****   tx->write = 1;
+  72              		.loc 1 20 0
+  73 0030 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+  21:../firmware/can.c ****   tx->size = 1;
+  22:../firmware/can.c ****   tx->reply = 0;
+  74              		.loc 1 22 0
+  75 0034 F03003E2 		and	r3, r3, #240
+  23:../firmware/can.c ****   tx->sendack = 1;
+  76              		.loc 1 23 0
+  77 0038 153083E3 		orr	r3, r3, #21
+  24:../firmware/can.c ****   tx->reg = reg;
+  25:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+  78              		.loc 1 25 0
+  79 003c 0040A0E3 		mov	r4, #0
+  19:../firmware/can.c ****   buf.MsgID = dest;
+  80              		.loc 1 19 0
+  81 0040 04008DE5 		str	r0, [sp, #4]
+  23:../firmware/can.c ****   tx->sendack = 1;
+  82              		.loc 1 23 0
+  83 0044 0830CDE5 		strb	r3, [sp, #8]
+  24:../firmware/can.c ****   tx->reg = reg;
+  84              		.loc 1 24 0
+  85 0048 0A10CDE5 		strb	r1, [sp, #10]
+  86              		.loc 1 25 0
+  87 004c 0940CDE5 		strb	r4, [sp, #9]
+  26:../firmware/can.c ****   tx->data[0] = val;
+  88              		.loc 1 26 0
+  89 0050 0B20CDE5 		strb	r2, [sp, #11]
+  90              	.LVL4:
+  91              	.L12:
+  27:../firmware/can.c **** 
+  28:../firmware/can.c ****   while (1) {
+  29:../firmware/can.c ****     if (CANAll_PushMessage(1, &buf)) {
+  92              		.loc 1 29 0
+  93 0054 0100A0E3 		mov	r0, #1
+  94 0058 0D10A0E1 		mov	r1, sp
+  95 005c FEFFFFEB 		bl	CANAll_PushMessage
+  96              	.LVL5:
+  97 0060 000050E3 		cmp	r0, #0
+  98 0064 0500001A 		bne	.L11
+  99 0068 0D0000EA 		b	.L4
+ 100              	.L7:
+  30:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+  31:../firmware/can.c ****         cnt++;
+ 101              		.loc 1 31 0
+ 102 006c 014084E2 		add	r4, r4, #1
+ 103              	.LVL6:
+  32:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 104              		.loc 1 32 0
+ 105 0070 FF4014E2 		ands	r4, r4, #255
+ 106              	.LVL7:
+ 107 0074 0D00000A 		beq	.L9
+  33:../firmware/can.c ****         pause(CAN_TIMEOUT);
+ 108              		.loc 1 33 0
+ 109 0078 7D0FA0E3 		mov	r0, #500
+ 110 007c FEFFFFEB 		bl	pause
+ 111              	.LVL8:
+ 112              	.L11:
+  30:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+ 113              		.loc 1 30 0 discriminator 1
+ 114 0080 0100A0E3 		mov	r0, #1
+ 115 0084 0D10A0E1 		mov	r1, sp
+ 116 0088 FEFFFFEB 		bl	CANAll_PullMessage
+ 117              	.LVL9:
+ 118 008c 000050E3 		cmp	r0, #0
+ 119 0090 F5FFFF0A 		beq	.L7
+  34:../firmware/can.c ****       }
+  35:../firmware/can.c ****       if (buf.MsgID==(LOCAL_ADDR | 0x100)) break;
+ 120              		.loc 1 35 0
+ 121 0094 04309DE5 		ldr	r3, [sp, #4]
+ 122 0098 010C53E3 		cmp	r3, #256
+ 123 009c ECFFFF1A 		bne	.L12
+ 124 00a0 040000EA 		b	.L10
+ 125              	.L4:
+  36:../firmware/can.c ****     } else pause(CAN_TIMEOUT);
+ 126              		.loc 1 36 0
+ 127 00a4 7D0FA0E3 		mov	r0, #500
+ 128 00a8 FEFFFFEB 		bl	pause
+ 129              	.LVL10:
+ 130 00ac E8FFFFEA 		b	.L12
+ 131              	.LVL11:
+ 132              	.L9:
+  32:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 133              		.loc 1 32 0
+ 134 00b0 0400A0E1 		mov	r0, r4
+ 135 00b4 000000EA 		b	.L6
+ 136              	.LVL12:
+ 137              	.L10:
+  37:../firmware/can.c ****   }
+  38:../firmware/can.c ****   return 1;
+ 138              		.loc 1 38 0
+ 139 00b8 0100A0E3 		mov	r0, #1
+ 140              	.LVL13:
+ 141              	.L6:
+  39:../firmware/can.c **** }
+ 142              		.loc 1 39 0
+ 143 00bc 10D08DE2 		add	sp, sp, #16
+ 144 00c0 1040BDE8 		ldmfd	sp!, {r4, lr}
+ 145 00c4 1EFF2FE1 		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE1:
+ 149              		.align	2
+ 150              		.global	set_reg_value_w
+ 152              	set_reg_value_w:
+ 153              	.LFB2:
+  40:../firmware/can.c **** 
+  41:../firmware/can.c **** uint8_t set_reg_value_w(uint8_t dest, uint8_t reg, uint16_t val)
+  42:../firmware/can.c **** {
+ 154              		.loc 1 42 0
+ 155              		.cfi_startproc
+ 156              		@ Function supports interworking.
+ 157              		@ args = 0, pretend = 0, frame = 16
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              	.LVL14:
+ 160 00c8 30402DE9 		stmfd	sp!, {r4, r5, lr}
+ 161              	.LCFI2:
+ 162              		.cfi_def_cfa_offset 12
+ 163              		.cfi_offset 4, -12
+ 164              		.cfi_offset 5, -8
+ 165              		.cfi_offset 14, -4
+  43:../firmware/can.c ****   CANALL_MSG buf;
+  44:../firmware/can.c ****   struct can_frame* tx;
+  45:../firmware/can.c ****   uint8_t cnt = 0;
+  46:../firmware/can.c **** 
+  47:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+  48:../firmware/can.c ****   buf.Frame = 0x00050000;   // 5 bytes
+ 166              		.loc 1 48 0
+ 167 00cc 0538A0E3 		mov	r3, #327680
+  42:../firmware/can.c **** {
+ 168              		.loc 1 42 0
+ 169 00d0 14D04DE2 		sub	sp, sp, #20
+ 170              	.LCFI3:
+ 171              		.cfi_def_cfa_offset 32
+ 172              	.LVL15:
+ 173              		.loc 1 48 0
+ 174 00d4 00308DE5 		str	r3, [sp, #0]
+  49:../firmware/can.c ****   buf.MsgID = dest;
+  50:../firmware/can.c ****   tx->write = 1;
+ 175              		.loc 1 50 0
+ 176 00d8 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+  51:../firmware/can.c ****   tx->size = 2;
+  52:../firmware/can.c ****   tx->reply = 0;
+ 177              		.loc 1 52 0
+ 178 00dc F03003E2 		and	r3, r3, #240
+  49:../firmware/can.c ****   buf.MsgID = dest;
+ 179              		.loc 1 49 0
+ 180 00e0 04008DE5 		str	r0, [sp, #4]
+  53:../firmware/can.c ****   tx->sendack = 1;
+ 181              		.loc 1 53 0
+ 182 00e4 193083E3 		orr	r3, r3, #25
+  54:../firmware/can.c ****   tx->reg = reg;
+ 183              		.loc 1 54 0
+ 184 00e8 0A10CDE5 		strb	r1, [sp, #10]
+  55:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 185              		.loc 1 55 0
+ 186 00ec 0040A0E3 		mov	r4, #0
+  56:../firmware/can.c ****   unaligned_write_16(tx->data, val);
+ 187              		.loc 1 56 0
+ 188 00f0 0B008DE2 		add	r0, sp, #11
+ 189              	.LVL16:
+ 190 00f4 0210A0E1 		mov	r1, r2
+ 191              	.LVL17:
+  53:../firmware/can.c ****   tx->sendack = 1;
+ 192              		.loc 1 53 0
+ 193 00f8 0830CDE5 		strb	r3, [sp, #8]
+  55:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 194              		.loc 1 55 0
+ 195 00fc 0940CDE5 		strb	r4, [sp, #9]
+ 196              		.loc 1 56 0
+ 197 0100 FEFFFFEB 		bl	unaligned_write_16
+ 198              	.LVL18:
+  57:../firmware/can.c **** 
+  58:../firmware/can.c ****   while (1) {
+  59:../firmware/can.c ****     if (CANAll_PushMessage(1, &buf)) {
+ 199              		.loc 1 59 0
+ 200 0104 0D50A0E1 		mov	r5, sp
+ 201              	.LVL19:
+ 202              	.L23:
+ 203 0108 0100A0E3 		mov	r0, #1
+ 204 010c 0D10A0E1 		mov	r1, sp
+ 205 0110 FEFFFFEB 		bl	CANAll_PushMessage
+ 206              	.LVL20:
+ 207 0114 000050E3 		cmp	r0, #0
+ 208 0118 0500001A 		bne	.L22
+ 209 011c 0D0000EA 		b	.L15
+ 210              	.L18:
+  60:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+  61:../firmware/can.c ****         cnt++;
+ 211              		.loc 1 61 0
+ 212 0120 014084E2 		add	r4, r4, #1
+ 213              	.LVL21:
+  62:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 214              		.loc 1 62 0
+ 215 0124 FF4014E2 		ands	r4, r4, #255
+ 216              	.LVL22:
+ 217 0128 0D00000A 		beq	.L20
+  63:../firmware/can.c ****         pause(CAN_TIMEOUT);
+ 218              		.loc 1 63 0
+ 219 012c 7D0FA0E3 		mov	r0, #500
+ 220 0130 FEFFFFEB 		bl	pause
+ 221              	.LVL23:
+ 222              	.L22:
+  60:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+ 223              		.loc 1 60 0 discriminator 1
+ 224 0134 0100A0E3 		mov	r0, #1
+ 225 0138 0D10A0E1 		mov	r1, sp
+ 226 013c FEFFFFEB 		bl	CANAll_PullMessage
+ 227              	.LVL24:
+ 228 0140 000050E3 		cmp	r0, #0
+ 229 0144 F5FFFF0A 		beq	.L18
+  64:../firmware/can.c ****       }
+  65:../firmware/can.c ****       if (buf.MsgID==(LOCAL_ADDR | 0x100)) break;
+ 230              		.loc 1 65 0
+ 231 0148 04309DE5 		ldr	r3, [sp, #4]
+ 232 014c 010C53E3 		cmp	r3, #256
+ 233 0150 ECFFFF1A 		bne	.L23
+ 234 0154 040000EA 		b	.L21
+ 235              	.L15:
+  66:../firmware/can.c ****     } else pause(CAN_TIMEOUT);
+ 236              		.loc 1 66 0
+ 237 0158 7D0FA0E3 		mov	r0, #500
+ 238 015c FEFFFFEB 		bl	pause
+ 239              	.LVL25:
+ 240 0160 E8FFFFEA 		b	.L23
+ 241              	.LVL26:
+ 242              	.L20:
+  62:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 243              		.loc 1 62 0
+ 244 0164 0400A0E1 		mov	r0, r4
+ 245 0168 000000EA 		b	.L17
+ 246              	.LVL27:
+ 247              	.L21:
+  67:../firmware/can.c ****   }
+  68:../firmware/can.c ****   return 1;
+ 248              		.loc 1 68 0
+ 249 016c 0100A0E3 		mov	r0, #1
+ 250              	.LVL28:
+ 251              	.L17:
+  69:../firmware/can.c **** }
+ 252              		.loc 1 69 0
+ 253 0170 14D08DE2 		add	sp, sp, #20
+ 254 0174 3040BDE8 		ldmfd	sp!, {r4, r5, lr}
+ 255 0178 1EFF2FE1 		bx	lr
+ 256              		.cfi_endproc
+ 257              	.LFE2:
+ 259              		.align	2
+ 260              		.global	set_reg_value_dw
+ 262              	set_reg_value_dw:
+ 263              	.LFB3:
+  70:../firmware/can.c **** 
+  71:../firmware/can.c **** uint8_t set_reg_value_dw(uint8_t dest, uint8_t reg, uint32_t val)
+  72:../firmware/can.c **** {
+ 264              		.loc 1 72 0
+ 265              		.cfi_startproc
+ 266              		@ Function supports interworking.
+ 267              		@ args = 0, pretend = 0, frame = 16
+ 268              		@ frame_needed = 0, uses_anonymous_args = 0
+ 269              	.LVL29:
+ 270 017c 30402DE9 		stmfd	sp!, {r4, r5, lr}
+ 271              	.LCFI4:
+ 272              		.cfi_def_cfa_offset 12
+ 273              		.cfi_offset 4, -12
+ 274              		.cfi_offset 5, -8
+ 275              		.cfi_offset 14, -4
+  73:../firmware/can.c ****   CANALL_MSG buf;
+  74:../firmware/can.c ****   struct can_frame* tx;
+  75:../firmware/can.c ****   uint8_t cnt = 0;
+  76:../firmware/can.c **** 
+  77:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+  78:../firmware/can.c ****   buf.Frame = 0x00070000;   // 7 bytes
+ 276              		.loc 1 78 0
+ 277 0180 0738A0E3 		mov	r3, #458752
+  72:../firmware/can.c **** {
+ 278              		.loc 1 72 0
+ 279 0184 14D04DE2 		sub	sp, sp, #20
+ 280              	.LCFI5:
+ 281              		.cfi_def_cfa_offset 32
+ 282              	.LVL30:
+ 283              		.loc 1 78 0
+ 284 0188 00308DE5 		str	r3, [sp, #0]
+  79:../firmware/can.c ****   buf.MsgID = dest;
+  80:../firmware/can.c ****   tx->write = 1;
+ 285              		.loc 1 80 0
+ 286 018c 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+  81:../firmware/can.c ****   tx->size = 3;
+  82:../firmware/can.c ****   tx->reply = 0;
+  83:../firmware/can.c ****   tx->sendack = 1;
+ 287              		.loc 1 83 0
+ 288 0190 E03003E2 		and	r3, r3, #224
+  79:../firmware/can.c ****   buf.MsgID = dest;
+ 289              		.loc 1 79 0
+ 290 0194 04008DE5 		str	r0, [sp, #4]
+ 291              		.loc 1 83 0
+ 292 0198 1D3083E3 		orr	r3, r3, #29
+  84:../firmware/can.c ****   tx->reg = reg;
+ 293              		.loc 1 84 0
+ 294 019c 0A10CDE5 		strb	r1, [sp, #10]
+  85:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 295              		.loc 1 85 0
+ 296 01a0 0040A0E3 		mov	r4, #0
+  86:../firmware/can.c ****   unaligned_write_32(tx->data, val);
+ 297              		.loc 1 86 0
+ 298 01a4 0B008DE2 		add	r0, sp, #11
+ 299              	.LVL31:
+ 300 01a8 0210A0E1 		mov	r1, r2
+ 301              	.LVL32:
+  83:../firmware/can.c ****   tx->sendack = 1;
+ 302              		.loc 1 83 0
+ 303 01ac 0830CDE5 		strb	r3, [sp, #8]
+  85:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 304              		.loc 1 85 0
+ 305 01b0 0940CDE5 		strb	r4, [sp, #9]
+ 306              		.loc 1 86 0
+ 307 01b4 FEFFFFEB 		bl	unaligned_write_32
+ 308              	.LVL33:
+  87:../firmware/can.c **** 
+  88:../firmware/can.c ****   while (1) {
+  89:../firmware/can.c ****     if (CANAll_PushMessage(1, &buf)) {
+ 309              		.loc 1 89 0
+ 310 01b8 0D50A0E1 		mov	r5, sp
+ 311              	.LVL34:
+ 312              	.L34:
+ 313 01bc 0100A0E3 		mov	r0, #1
+ 314 01c0 0D10A0E1 		mov	r1, sp
+ 315 01c4 FEFFFFEB 		bl	CANAll_PushMessage
+ 316              	.LVL35:
+ 317 01c8 000050E3 		cmp	r0, #0
+ 318 01cc 0500001A 		bne	.L33
+ 319 01d0 0D0000EA 		b	.L26
+ 320              	.L29:
+  90:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+  91:../firmware/can.c ****         cnt++;
+ 321              		.loc 1 91 0
+ 322 01d4 014084E2 		add	r4, r4, #1
+ 323              	.LVL36:
+  92:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 324              		.loc 1 92 0
+ 325 01d8 FF4014E2 		ands	r4, r4, #255
+ 326              	.LVL37:
+ 327 01dc 0D00000A 		beq	.L31
+  93:../firmware/can.c ****         pause(CAN_TIMEOUT);
+ 328              		.loc 1 93 0
+ 329 01e0 7D0FA0E3 		mov	r0, #500
+ 330 01e4 FEFFFFEB 		bl	pause
+ 331              	.LVL38:
+ 332              	.L33:
+  90:../firmware/can.c ****       while (!CANAll_PullMessage(1, &buf)) {
+ 333              		.loc 1 90 0 discriminator 1
+ 334 01e8 0100A0E3 		mov	r0, #1
+ 335 01ec 0D10A0E1 		mov	r1, sp
+ 336 01f0 FEFFFFEB 		bl	CANAll_PullMessage
+ 337              	.LVL39:
+ 338 01f4 000050E3 		cmp	r0, #0
+ 339 01f8 F5FFFF0A 		beq	.L29
+  94:../firmware/can.c ****       }
+  95:../firmware/can.c ****       if (buf.MsgID==(LOCAL_ADDR | 0x100)) break;
+ 340              		.loc 1 95 0
+ 341 01fc 04309DE5 		ldr	r3, [sp, #4]
+ 342 0200 010C53E3 		cmp	r3, #256
+ 343 0204 ECFFFF1A 		bne	.L34
+ 344 0208 040000EA 		b	.L32
+ 345              	.L26:
+  96:../firmware/can.c ****     } else pause(CAN_TIMEOUT);
+ 346              		.loc 1 96 0
+ 347 020c 7D0FA0E3 		mov	r0, #500
+ 348 0210 FEFFFFEB 		bl	pause
+ 349              	.LVL40:
+ 350 0214 E8FFFFEA 		b	.L34
+ 351              	.LVL41:
+ 352              	.L31:
+  92:../firmware/can.c ****         if (cnt==0x00) return 0;
+ 353              		.loc 1 92 0
+ 354 0218 0400A0E1 		mov	r0, r4
+ 355 021c 000000EA 		b	.L28
+ 356              	.LVL42:
+ 357              	.L32:
+  97:../firmware/can.c ****   }
+  98:../firmware/can.c ****   return 1;
+ 358              		.loc 1 98 0
+ 359 0220 0100A0E3 		mov	r0, #1
+ 360              	.LVL43:
+ 361              	.L28:
+  99:../firmware/can.c **** }
+ 362              		.loc 1 99 0
+ 363 0224 14D08DE2 		add	sp, sp, #20
+ 364 0228 3040BDE8 		ldmfd	sp!, {r4, r5, lr}
+ 365 022c 1EFF2FE1 		bx	lr
+ 366              		.cfi_endproc
+ 367              	.LFE3:
+ 369              		.align	2
+ 370              		.global	get_reg_value_b
+ 372              	get_reg_value_b:
+ 373              	.LFB4:
+ 100:../firmware/can.c **** 
+ 101:../firmware/can.c **** uint8_t get_reg_value_b(uint8_t dest, uint8_t reg)
+ 102:../firmware/can.c **** {
+ 374              		.loc 1 102 0
+ 375              		.cfi_startproc
+ 376              		@ Function supports interworking.
+ 377              		@ args = 0, pretend = 0, frame = 16
+ 378              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379              	.LVL44:
+ 380 0230 30402DE9 		stmfd	sp!, {r4, r5, lr}
+ 381              	.LCFI6:
+ 382              		.cfi_def_cfa_offset 12
+ 383              		.cfi_offset 4, -12
+ 384              		.cfi_offset 5, -8
+ 385              		.cfi_offset 14, -4
+ 103:../firmware/can.c ****   CANALL_MSG buf;
+ 104:../firmware/can.c ****   struct can_frame *tx;
+ 105:../firmware/can.c ****   struct can_frame_b *rx;
+ 106:../firmware/can.c ****   uint8_t cnt = 0;
+ 107:../firmware/can.c **** 
+ 108:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+ 109:../firmware/can.c ****   rx = (struct can_frame_b *)tx;
+ 110:../firmware/can.c ****   buf.Frame = 0x00030000;   // 3 bytes
+ 386              		.loc 1 110 0
+ 387 0234 0338A0E3 		mov	r3, #196608
+ 102:../firmware/can.c **** {
+ 388              		.loc 1 102 0
+ 389 0238 14D04DE2 		sub	sp, sp, #20
+ 390              	.LCFI7:
+ 391              		.cfi_def_cfa_offset 32
+ 392              	.LVL45:
+ 393              		.loc 1 110 0
+ 394 023c 00308DE5 		str	r3, [sp, #0]
+ 111:../firmware/can.c ****   buf.MsgID = dest;
+ 112:../firmware/can.c ****   tx->write = 0;
+ 395              		.loc 1 112 0
+ 396 0240 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 113:../firmware/can.c ****   tx->size = 1;
+ 114:../firmware/can.c ****   tx->reply = 0;
+ 397              		.loc 1 114 0
+ 398 0244 F03003E2 		and	r3, r3, #240
+ 399 0248 043083E3 		orr	r3, r3, #4
+ 115:../firmware/can.c ****   tx->reg = reg;
+ 116:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 400              		.loc 1 116 0
+ 401 024c 0040A0E3 		mov	r4, #0
+ 111:../firmware/can.c ****   buf.MsgID = dest;
+ 402              		.loc 1 111 0
+ 403 0250 04008DE5 		str	r0, [sp, #4]
+ 114:../firmware/can.c ****   tx->reply = 0;
+ 404              		.loc 1 114 0
+ 405 0254 0830CDE5 		strb	r3, [sp, #8]
+ 115:../firmware/can.c ****   tx->reg = reg;
+ 406              		.loc 1 115 0
+ 407 0258 0A10CDE5 		strb	r1, [sp, #10]
+ 408              		.loc 1 116 0
+ 409 025c 0940CDE5 		strb	r4, [sp, #9]
+ 117:../firmware/can.c **** 
+ 118:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 410              		.loc 1 118 0
+ 411 0260 0D50A0E1 		mov	r5, sp
+ 412 0264 060000EA 		b	.L36
+ 413              	.LVL46:
+ 414              	.L39:
+ 415 0268 014084E2 		add	r4, r4, #1
+ 119:../firmware/can.c ****     cnt++;
+ 120:../firmware/can.c ****     if (cnt == 0x00) return 0xFF;
+ 416              		.loc 1 120 0
+ 417 026c 010C54E3 		cmp	r4, #256
+ 418 0270 0100001A 		bne	.L37
+ 419              	.L41:
+ 420 0274 FF00A0E3 		mov	r0, #255
+ 421 0278 170000EA 		b	.L38
+ 422              	.L37:
+ 121:../firmware/can.c ****     pause(CAN_TIMEOUT);
+ 423              		.loc 1 121 0
+ 424 027c 7D0FA0E3 		mov	r0, #500
+ 425 0280 FEFFFFEB 		bl	pause
+ 426              	.LVL47:
+ 427              	.L36:
+ 118:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 428              		.loc 1 118 0 discriminator 1
+ 429 0284 0100A0E3 		mov	r0, #1
+ 430 0288 0D10A0E1 		mov	r1, sp
+ 431 028c FEFFFFEB 		bl	CANAll_PushMessage
+ 432              	.LVL48:
+ 433 0290 000050E3 		cmp	r0, #0
+ 434 0294 F3FFFF0A 		beq	.L39
+ 118:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 435              		.loc 1 118 0 is_stmt 0
+ 436 0298 0040A0E3 		mov	r4, #0
+ 122:../firmware/can.c ****   }
+ 123:../firmware/can.c ****   
+ 124:../firmware/can.c ****   cnt = 0;
+ 125:../firmware/can.c **** 
+ 126:../firmware/can.c ****   do {
+ 127:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 437              		.loc 1 127 0 is_stmt 1
+ 438 029c 0D50A0E1 		mov	r5, sp
+ 439 02a0 040000EA 		b	.L52
+ 440              	.LVL49:
+ 441              	.L42:
+ 128:../firmware/can.c ****       cnt++;
+ 442              		.loc 1 128 0
+ 443 02a4 014084E2 		add	r4, r4, #1
+ 444              	.LVL50:
+ 129:../firmware/can.c ****       if (cnt==0x00) return 0xFF;
+ 445              		.loc 1 129 0
+ 446 02a8 FF4014E2 		ands	r4, r4, #255
+ 447              	.LVL51:
+ 448 02ac F0FFFF0A 		beq	.L41
+ 130:../firmware/can.c ****       pause(CAN_TIMEOUT);
+ 449              		.loc 1 130 0
+ 450 02b0 7D0FA0E3 		mov	r0, #500
+ 451 02b4 FEFFFFEB 		bl	pause
+ 452              	.LVL52:
+ 453              	.L52:
+ 127:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 454              		.loc 1 127 0 discriminator 1
+ 455 02b8 0100A0E3 		mov	r0, #1
+ 456 02bc 0D10A0E1 		mov	r1, sp
+ 457 02c0 FEFFFFEB 		bl	CANAll_PullMessage
+ 458              	.LVL53:
+ 459 02c4 000050E3 		cmp	r0, #0
+ 460 02c8 F5FFFF0A 		beq	.L42
+ 131:../firmware/can.c ****     }
+ 132:../firmware/can.c ****   } while (!rx->reply);
+ 461              		.loc 1 132 0
+ 462 02cc 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 463 02d0 020013E3 		tst	r3, #2
+ 464 02d4 F7FFFF0A 		beq	.L52
+ 133:../firmware/can.c ****   return rx->data[0];
+ 465              		.loc 1 133 0
+ 466 02d8 0900DDE5 		ldrb	r0, [sp, #9]	@ zero_extendqisi2
+ 467              	.LVL54:
+ 468              	.L38:
+ 134:../firmware/can.c **** }
+ 469              		.loc 1 134 0
+ 470 02dc 14D08DE2 		add	sp, sp, #20
+ 471 02e0 3040BDE8 		ldmfd	sp!, {r4, r5, lr}
+ 472 02e4 1EFF2FE1 		bx	lr
+ 473              		.cfi_endproc
+ 474              	.LFE4:
+ 476              		.align	2
+ 477              		.global	get_reg_value_w
+ 479              	get_reg_value_w:
+ 480              	.LFB5:
+ 135:../firmware/can.c **** 
+ 136:../firmware/can.c **** uint16_t get_reg_value_w(uint8_t dest, uint8_t reg)
+ 137:../firmware/can.c **** {
+ 481              		.loc 1 137 0
+ 482              		.cfi_startproc
+ 483              		@ Function supports interworking.
+ 484              		@ args = 0, pretend = 0, frame = 16
+ 485              		@ frame_needed = 0, uses_anonymous_args = 0
+ 486              	.LVL55:
+ 487 02e8 7F402DE9 		stmfd	sp!, {r0, r1, r2, r3, r4, r5, r6, lr}
+ 488              	.LCFI8:
+ 489              		.cfi_def_cfa_offset 32
+ 490              		.cfi_offset 0, -32
+ 491              		.cfi_offset 1, -28
+ 492              		.cfi_offset 2, -24
+ 493              		.cfi_offset 3, -20
+ 494              		.cfi_offset 4, -16
+ 495              		.cfi_offset 5, -12
+ 496              		.cfi_offset 6, -8
+ 497              		.cfi_offset 14, -4
+ 498              	.LVL56:
+ 138:../firmware/can.c ****   CANALL_MSG buf;
+ 139:../firmware/can.c ****   struct can_frame *tx;
+ 140:../firmware/can.c ****   struct can_frame_b *rx;
+ 141:../firmware/can.c ****   uint8_t cnt = 0;
+ 142:../firmware/can.c **** 
+ 143:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+ 144:../firmware/can.c ****   rx = (struct can_frame_b*) tx;
+ 145:../firmware/can.c ****   buf.Frame = 0x00030000;   // 3 bytes
+ 499              		.loc 1 145 0
+ 500 02ec 0338A0E3 		mov	r3, #196608
+ 501 02f0 00308DE5 		str	r3, [sp, #0]
+ 146:../firmware/can.c ****   buf.MsgID = dest;
+ 147:../firmware/can.c ****   tx->write = 0;
+ 502              		.loc 1 147 0
+ 503 02f4 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 148:../firmware/can.c ****   tx->size = 2;
+ 149:../firmware/can.c ****   tx->reply = 0;
+ 504              		.loc 1 149 0
+ 505 02f8 F03003E2 		and	r3, r3, #240
+ 506 02fc 083083E3 		orr	r3, r3, #8
+ 150:../firmware/can.c ****   tx->reg = reg;
+ 151:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 507              		.loc 1 151 0
+ 508 0300 0040A0E3 		mov	r4, #0
+ 146:../firmware/can.c ****   buf.MsgID = dest;
+ 509              		.loc 1 146 0
+ 510 0304 04008DE5 		str	r0, [sp, #4]
+ 149:../firmware/can.c ****   tx->reply = 0;
+ 511              		.loc 1 149 0
+ 512 0308 0830CDE5 		strb	r3, [sp, #8]
+ 150:../firmware/can.c ****   tx->reg = reg;
+ 513              		.loc 1 150 0
+ 514 030c 0A10CDE5 		strb	r1, [sp, #10]
+ 515              		.loc 1 151 0
+ 516 0310 0940CDE5 		strb	r4, [sp, #9]
+ 152:../firmware/can.c **** 
+ 153:../firmware/can.c **** 
+ 154:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 517              		.loc 1 154 0
+ 518 0314 0D60A0E1 		mov	r6, sp
+ 519 0318 060000EA 		b	.L54
+ 520              	.LVL57:
+ 521              	.L57:
+ 522 031c 014084E2 		add	r4, r4, #1
+ 155:../firmware/can.c ****     cnt++;
+ 156:../firmware/can.c ****     if (cnt == 0x00) return 0xFFFF;
+ 523              		.loc 1 156 0
+ 524 0320 010C54E3 		cmp	r4, #256
+ 525 0324 0100001A 		bne	.L55
+ 526              	.L59:
+ 527 0328 74009FE5 		ldr	r0, .L72
+ 528 032c 190000EA 		b	.L56
+ 529              	.L55:
+ 157:../firmware/can.c ****     pause(CAN_TIMEOUT);
+ 530              		.loc 1 157 0
+ 531 0330 7D0FA0E3 		mov	r0, #500
+ 532 0334 FEFFFFEB 		bl	pause
+ 533              	.LVL58:
+ 534              	.L54:
+ 154:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 535              		.loc 1 154 0 discriminator 1
+ 536 0338 0100A0E3 		mov	r0, #1
+ 537 033c 0D10A0E1 		mov	r1, sp
+ 538 0340 FEFFFFEB 		bl	CANAll_PushMessage
+ 539              	.LVL59:
+ 540 0344 000050E3 		cmp	r0, #0
+ 541 0348 FF5004E2 		and	r5, r4, #255
+ 542 034c F2FFFF0A 		beq	.L57
+ 543 0350 050000EA 		b	.L71
+ 544              	.LVL60:
+ 545              	.L60:
+ 158:../firmware/can.c ****   }
+ 159:../firmware/can.c **** 
+ 160:../firmware/can.c ****   do {
+ 161:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 162:../firmware/can.c ****       cnt++;
+ 546              		.loc 1 162 0
+ 547 0354 015085E2 		add	r5, r5, #1
+ 548              	.LVL61:
+ 163:../firmware/can.c ****       if (cnt==0x00) return 0xFFFF;
+ 549              		.loc 1 163 0
+ 550 0358 FF5015E2 		ands	r5, r5, #255
+ 551              	.LVL62:
+ 552 035c F1FFFF0A 		beq	.L59
+ 164:../firmware/can.c ****       pause(CAN_TIMEOUT);
+ 553              		.loc 1 164 0
+ 554 0360 7D0FA0E3 		mov	r0, #500
+ 555 0364 FEFFFFEB 		bl	pause
+ 556              	.LVL63:
+ 557 0368 000000EA 		b	.L70
+ 558              	.L71:
+ 161:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 559              		.loc 1 161 0 discriminator 1
+ 560 036c 0D40A0E1 		mov	r4, sp
+ 561              	.L70:
+ 562              	.LVL64:
+ 563 0370 0100A0E3 		mov	r0, #1
+ 564 0374 0D10A0E1 		mov	r1, sp
+ 565 0378 FEFFFFEB 		bl	CANAll_PullMessage
+ 566              	.LVL65:
+ 567 037c 000050E3 		cmp	r0, #0
+ 568 0380 F3FFFF0A 		beq	.L60
+ 165:../firmware/can.c ****     }
+ 166:../firmware/can.c ****   } while (!rx->reply);
+ 569              		.loc 1 166 0
+ 570 0384 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 571 0388 020013E3 		tst	r3, #2
+ 572 038c F7FFFF0A 		beq	.L70
+ 167:../firmware/can.c ****   return unaligned_read_16(rx->data);
+ 573              		.loc 1 167 0
+ 574 0390 090084E2 		add	r0, r4, #9
+ 575 0394 FEFFFFEB 		bl	unaligned_read_16
+ 576              	.LVL66:
+ 577              	.L56:
+ 168:../firmware/can.c **** }
+ 578              		.loc 1 168 0
+ 579 0398 10D08DE2 		add	sp, sp, #16
+ 580 039c 7040BDE8 		ldmfd	sp!, {r4, r5, r6, lr}
+ 581 03a0 1EFF2FE1 		bx	lr
+ 582              	.L73:
+ 583              		.align	2
+ 584              	.L72:
+ 585 03a4 FFFF0000 		.word	65535
+ 586              		.cfi_endproc
+ 587              	.LFE5:
+ 589              		.align	2
+ 590              		.global	get_reg_value_dw
+ 592              	get_reg_value_dw:
+ 593              	.LFB6:
+ 169:../firmware/can.c **** 
+ 170:../firmware/can.c **** uint32_t get_reg_value_dw(uint8_t dest, uint8_t reg)
+ 171:../firmware/can.c **** {
+ 594              		.loc 1 171 0
+ 595              		.cfi_startproc
+ 596              		@ Function supports interworking.
+ 597              		@ args = 0, pretend = 0, frame = 16
+ 598              		@ frame_needed = 0, uses_anonymous_args = 0
+ 599              	.LVL67:
+ 600 03a8 7F402DE9 		stmfd	sp!, {r0, r1, r2, r3, r4, r5, r6, lr}
+ 601              	.LCFI9:
+ 602              		.cfi_def_cfa_offset 32
+ 603              		.cfi_offset 0, -32
+ 604              		.cfi_offset 1, -28
+ 605              		.cfi_offset 2, -24
+ 606              		.cfi_offset 3, -20
+ 607              		.cfi_offset 4, -16
+ 608              		.cfi_offset 5, -12
+ 609              		.cfi_offset 6, -8
+ 610              		.cfi_offset 14, -4
+ 611              	.LVL68:
+ 172:../firmware/can.c ****   CANALL_MSG buf;
+ 173:../firmware/can.c ****   struct can_frame *tx;
+ 174:../firmware/can.c ****   struct can_frame_b *rx;
+ 175:../firmware/can.c ****   uint8_t cnt = 0;
+ 176:../firmware/can.c **** 
+ 177:../firmware/can.c ****   tx = (struct can_frame*) &buf.DatA;
+ 178:../firmware/can.c ****   rx = (struct can_frame_b*) tx;
+ 179:../firmware/can.c ****   buf.Frame = 0x00030000;   // 3 bytes
+ 612              		.loc 1 179 0
+ 613 03ac 0338A0E3 		mov	r3, #196608
+ 614 03b0 00308DE5 		str	r3, [sp, #0]
+ 180:../firmware/can.c ****   buf.MsgID = dest;
+ 181:../firmware/can.c ****   tx->write = 0;
+ 615              		.loc 1 181 0
+ 616 03b4 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 182:../firmware/can.c ****   tx->size = 3;
+ 183:../firmware/can.c ****   tx->reply = 0;
+ 617              		.loc 1 183 0
+ 618 03b8 F03003E2 		and	r3, r3, #240
+ 619 03bc 0C3083E3 		orr	r3, r3, #12
+ 184:../firmware/can.c ****   tx->reg = reg;
+ 185:../firmware/can.c ****   tx->snd = LOCAL_ADDR;
+ 620              		.loc 1 185 0
+ 621 03c0 0040A0E3 		mov	r4, #0
+ 180:../firmware/can.c ****   buf.MsgID = dest;
+ 622              		.loc 1 180 0
+ 623 03c4 04008DE5 		str	r0, [sp, #4]
+ 183:../firmware/can.c ****   tx->reply = 0;
+ 624              		.loc 1 183 0
+ 625 03c8 0830CDE5 		strb	r3, [sp, #8]
+ 184:../firmware/can.c ****   tx->reg = reg;
+ 626              		.loc 1 184 0
+ 627 03cc 0A10CDE5 		strb	r1, [sp, #10]
+ 628              		.loc 1 185 0
+ 629 03d0 0940CDE5 		strb	r4, [sp, #9]
+ 186:../firmware/can.c **** 
+ 187:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 630              		.loc 1 187 0
+ 631 03d4 0D60A0E1 		mov	r6, sp
+ 632 03d8 060000EA 		b	.L75
+ 633              	.LVL69:
+ 634              	.L78:
+ 635 03dc 014084E2 		add	r4, r4, #1
+ 188:../firmware/can.c ****     cnt++;
+ 189:../firmware/can.c ****     if (cnt == 0x00) return 0xFFFFFFFF;
+ 636              		.loc 1 189 0
+ 637 03e0 010C54E3 		cmp	r4, #256
+ 638 03e4 0100001A 		bne	.L76
+ 639              	.L80:
+ 640 03e8 0000E0E3 		mvn	r0, #0
+ 641 03ec 190000EA 		b	.L77
+ 642              	.L76:
+ 190:../firmware/can.c ****     pause(CAN_TIMEOUT);
+ 643              		.loc 1 190 0
+ 644 03f0 7D0FA0E3 		mov	r0, #500
+ 645 03f4 FEFFFFEB 		bl	pause
+ 646              	.LVL70:
+ 647              	.L75:
+ 187:../firmware/can.c ****   while (!CANAll_PushMessage(1, &buf)) {
+ 648              		.loc 1 187 0 discriminator 1
+ 649 03f8 0100A0E3 		mov	r0, #1
+ 650 03fc 0D10A0E1 		mov	r1, sp
+ 651 0400 FEFFFFEB 		bl	CANAll_PushMessage
+ 652              	.LVL71:
+ 653 0404 000050E3 		cmp	r0, #0
+ 654 0408 FF5004E2 		and	r5, r4, #255
+ 655 040c F2FFFF0A 		beq	.L78
+ 656 0410 050000EA 		b	.L92
+ 657              	.LVL72:
+ 658              	.L81:
+ 191:../firmware/can.c ****   }
+ 192:../firmware/can.c **** 
+ 193:../firmware/can.c ****   do {
+ 194:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 195:../firmware/can.c ****       cnt++;
+ 659              		.loc 1 195 0
+ 660 0414 015085E2 		add	r5, r5, #1
+ 661              	.LVL73:
+ 196:../firmware/can.c ****       if (cnt==0x00) return 0xFFFFFFFF;
+ 662              		.loc 1 196 0
+ 663 0418 FF5015E2 		ands	r5, r5, #255
+ 664              	.LVL74:
+ 665 041c F1FFFF0A 		beq	.L80
+ 197:../firmware/can.c ****       pause(CAN_TIMEOUT);
+ 666              		.loc 1 197 0
+ 667 0420 7D0FA0E3 		mov	r0, #500
+ 668 0424 FEFFFFEB 		bl	pause
+ 669              	.LVL75:
+ 670 0428 000000EA 		b	.L91
+ 671              	.L92:
+ 194:../firmware/can.c ****     while (!CANAll_PullMessage(1, &buf)) {
+ 672              		.loc 1 194 0 discriminator 1
+ 673 042c 0D40A0E1 		mov	r4, sp
+ 674              	.L91:
+ 675              	.LVL76:
+ 676 0430 0100A0E3 		mov	r0, #1
+ 677 0434 0D10A0E1 		mov	r1, sp
+ 678 0438 FEFFFFEB 		bl	CANAll_PullMessage
+ 679              	.LVL77:
+ 680 043c 000050E3 		cmp	r0, #0
+ 681 0440 F3FFFF0A 		beq	.L81
+ 198:../firmware/can.c ****     }
+ 199:../firmware/can.c ****   } while (!rx->reply);
+ 682              		.loc 1 199 0
+ 683 0444 0830DDE5 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 684 0448 020013E3 		tst	r3, #2
+ 685 044c F7FFFF0A 		beq	.L91
+ 200:../firmware/can.c ****   return unaligned_read_32(rx->data);
+ 686              		.loc 1 200 0
+ 687 0450 090084E2 		add	r0, r4, #9
+ 688 0454 FEFFFFEB 		bl	unaligned_read_32
+ 689              	.LVL78:
+ 690              	.L77:
+ 201:../firmware/can.c **** }
+ 691              		.loc 1 201 0
+ 692 0458 10D08DE2 		add	sp, sp, #16
+ 693 045c 7040BDE8 		ldmfd	sp!, {r4, r5, r6, lr}
+ 694 0460 1EFF2FE1 		bx	lr
+ 695              		.cfi_endproc
+ 696              	.LFE6:
+ 698              	.Letext0:
+ 699              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 700              		.file 3 "../firmware/LPC_CANAll.h"
+ 701              		.file 4 "../firmware/can.h"
+ 702              		.file 5 "../firmware/sysTime.h"
+ 703              		.file 6 "../firmware/utils.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 can.c
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:19     .text:00000000 can_head_init
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:51     .text:00000024 set_reg_value_b
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:152    .text:000000c8 set_reg_value_w
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:262    .text:0000017c set_reg_value_dw
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:372    .text:00000230 get_reg_value_b
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:479    .text:000002e8 get_reg_value_w
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:585    .text:000003a4 $d
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:589    .text:000003a8 $a
+C:\Users\ncmorand\AppData\Local\Temp\cc8ycOxP.s:592    .text:000003a8 get_reg_value_dw
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+CANAll_Init
+CANAll_SetErrIRQ
+CANAll_PushMessage
+pause
+CANAll_PullMessage
+unaligned_write_16
+unaligned_write_32
+unaligned_read_16
+unaligned_read_32

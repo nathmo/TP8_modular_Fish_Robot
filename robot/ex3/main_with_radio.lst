@@ -1,0 +1,404 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.file	"main_with_radio.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.align	2
+  18              	register_handler:
+  19              	.LFB0:
+  20              		.file 1 "main_with_radio.c"
+   1:main_with_radio.c **** #include "hardware.h"
+   2:main_with_radio.c **** #include "registers.h"
+   3:main_with_radio.c **** #include "module.h"
+   4:main_with_radio.c **** #include "robot.h"
+   5:main_with_radio.c **** 
+   6:main_with_radio.c **** const uint8_t TAIL_MOTOR_ADDR = 21;
+   7:main_with_radio.c **** const uint8_t BODY_MOTOR_ADDR = 72;
+   8:main_with_radio.c **** const uint8_t BODY_MOTOR_FIN_LEFT = 73; // swap if not correct
+   9:main_with_radio.c **** const uint8_t BODY_MOTOR_FIN_RIGHT = 74;
+  10:main_with_radio.c **** 
+  11:main_with_radio.c **** static uint8_t motor_position = 0;
+  12:main_with_radio.c **** static uint8_t mb_buffer[4];
+  13:main_with_radio.c **** static uint8_t last_mb_size = 4;
+  14:main_with_radio.c **** 
+  15:main_with_radio.c **** /* Register callback function for 8-bit read/write operations */
+  16:main_with_radio.c **** static int8_t register_handler(uint8_t operation, uint8_t address, RadioData* radio_data)
+  17:main_with_radio.c **** {
+  21              		.loc 1 17 0
+  22              		.cfi_startproc
+  23              		@ Function supports interworking.
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27              	.LVL0:
+  28 0000 04402DE5 		str	r4, [sp, #-4]!
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 4
+  31              		.cfi_offset 4, -4
+  18:main_with_radio.c ****     uint8_t i;
+  19:main_with_radio.c ****     switch (operation) {
+  32              		.loc 1 19 0
+  33 0004 070050E3 		cmp	r0, #7
+  34 0008 00F19F97 		ldrls	pc, [pc, r0, asl #2]
+  35 000c 340000EA 		b	.L15
+  36              	.L7:
+  37 0010 30000000 		.word	.L3
+  38 0014 E4000000 		.word	.L15
+  39 0018 E4000000 		.word	.L15
+  40 001c 64000000 		.word	.L4
+  41 0020 48000000 		.word	.L5
+  42 0024 E4000000 		.word	.L15
+  43 0028 E4000000 		.word	.L15
+  44 002c A4000000 		.word	.L6
+  45              	.L3:
+  20:main_with_radio.c ****     case ROP_READ_8:
+  21:main_with_radio.c ****         if (address == 6) {
+  46              		.loc 1 21 0
+  47 0030 060051E3 		cmp	r1, #6
+  48 0034 0A00001A 		bne	.L4
+  22:main_with_radio.c ****             radio_data->byte = motor_position;
+  49              		.loc 1 22 0
+  50 0038 B0309FE5 		ldr	r3, .L17
+  51 003c 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+  52 0040 0030C2E5 		strb	r3, [r2, #0]
+  53 0044 040000EA 		b	.L16
+  54              	.L5:
+  23:main_with_radio.c ****             return TRUE;
+  24:main_with_radio.c ****         }
+  25:main_with_radio.c ****     case ROP_WRITE_8:
+  26:main_with_radio.c ****         if (address == 6) {
+  55              		.loc 1 26 0
+  56 0048 060051E3 		cmp	r1, #6
+  57 004c 0400001A 		bne	.L4
+  27:main_with_radio.c ****             motor_position = radio_data->byte;  // Allow writing to register
+  58              		.loc 1 27 0
+  59 0050 0020D2E5 		ldrb	r2, [r2, #0]	@ zero_extendqisi2
+  60              	.LVL1:
+  61 0054 94309FE5 		ldr	r3, .L17
+  62 0058 0020C3E5 		strb	r2, [r3, #0]
+  63              	.LVL2:
+  64              	.L16:
+  28:main_with_radio.c ****             return TRUE;
+  65              		.loc 1 28 0
+  66 005c 0100A0E3 		mov	r0, #1
+  67 0060 200000EA 		b	.L2
+  68              	.LVL3:
+  69              	.L4:
+  29:main_with_radio.c ****         }
+  30:main_with_radio.c ****     case ROP_READ_MB:
+  31:main_with_radio.c ****         if (address == 2) {
+  70              		.loc 1 31 0
+  71 0064 020051E3 		cmp	r1, #2
+  72 0068 1D00001A 		bne	.L15
+  32:main_with_radio.c ****             radio_data->multibyte.size = last_mb_size;
+  73              		.loc 1 32 0
+  74 006c 80309FE5 		ldr	r3, .L17+4
+  75 0070 0010D3E5 		ldrb	r1, [r3, #0]	@ zero_extendqisi2
+  76              	.LVL4:
+  33:main_with_radio.c ****             for (i = 0; i < last_mb_size; i++) {
+  34:main_with_radio.c ****             radio_data->multibyte.data[i] = mb_buffer[i];
+  77              		.loc 1 34 0
+  78 0074 7CC09FE5 		ldr	ip, .L17+8
+  32:main_with_radio.c ****             radio_data->multibyte.size = last_mb_size;
+  79              		.loc 1 32 0
+  80 0078 0010C2E5 		strb	r1, [r2, #0]
+  81              	.LVL5:
+  33:main_with_radio.c ****             for (i = 0; i < last_mb_size; i++) {
+  82              		.loc 1 33 0
+  83 007c 0030A0E3 		mov	r3, #0
+  84 0080 030000EA 		b	.L8
+  85              	.LVL6:
+  86              	.L9:
+  87              		.loc 1 34 0 discriminator 2
+  88 0084 0C40D3E7 		ldrb	r4, [r3, ip]	@ zero_extendqisi2
+  16:main_with_radio.c **** static int8_t register_handler(uint8_t operation, uint8_t address, RadioData* radio_data)
+  89              		.loc 1 16 0 discriminator 2
+  90 0088 030082E0 		add	r0, r2, r3
+  91              		.loc 1 34 0 discriminator 2
+  92 008c 0140C0E5 		strb	r4, [r0, #1]
+  93 0090 013083E2 		add	r3, r3, #1
+  94              	.L8:
+  33:main_with_radio.c ****             for (i = 0; i < last_mb_size; i++) {
+  95              		.loc 1 33 0 discriminator 1
+  96 0094 FF0003E2 		and	r0, r3, #255
+  97 0098 010050E1 		cmp	r0, r1
+  98 009c F8FFFF3A 		bcc	.L9
+  99 00a0 EDFFFFEA 		b	.L16
+ 100              	.LVL7:
+ 101              	.L6:
+  35:main_with_radio.c ****             }
+  36:main_with_radio.c ****             return TRUE;
+  37:main_with_radio.c ****         }
+  38:main_with_radio.c ****         break;
+  39:main_with_radio.c ****     case ROP_WRITE_MB:
+  40:main_with_radio.c ****         if (address == 2) {
+ 102              		.loc 1 40 0
+ 103 00a4 020051E3 		cmp	r1, #2
+ 104 00a8 0D00001A 		bne	.L15
+ 105              	.LVL8:
+ 106              	.LBB4:
+ 107              	.LBB5:
+  41:main_with_radio.c ****             last_mb_size = radio_data->multibyte.size;
+ 108              		.loc 1 41 0
+ 109 00ac 40309FE5 		ldr	r3, .L17+4
+ 110 00b0 0010D2E5 		ldrb	r1, [r2, #0]	@ zero_extendqisi2
+ 111              	.LVL9:
+  42:main_with_radio.c ****             for (i = 0; i < last_mb_size; i++) {
+  43:main_with_radio.c ****                 mb_buffer[i] = radio_data->multibyte.data[i];
+ 112              		.loc 1 43 0
+ 113 00b4 3CC09FE5 		ldr	ip, .L17+8
+  41:main_with_radio.c ****             last_mb_size = radio_data->multibyte.size;
+ 114              		.loc 1 41 0
+ 115 00b8 0010C3E5 		strb	r1, [r3, #0]
+ 116              	.LVL10:
+ 117 00bc 0030A0E3 		mov	r3, #0
+ 118 00c0 030000EA 		b	.L10
+ 119              	.LVL11:
+ 120              	.L11:
+  16:main_with_radio.c **** static int8_t register_handler(uint8_t operation, uint8_t address, RadioData* radio_data)
+ 121              		.loc 1 16 0
+ 122 00c4 030082E0 		add	r0, r2, r3
+ 123              		.loc 1 43 0
+ 124 00c8 0100D0E5 		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 125 00cc 0C00C3E7 		strb	r0, [r3, ip]
+ 126 00d0 013083E2 		add	r3, r3, #1
+ 127              	.L10:
+  42:main_with_radio.c ****             for (i = 0; i < last_mb_size; i++) {
+ 128              		.loc 1 42 0
+ 129 00d4 FF0003E2 		and	r0, r3, #255
+ 130 00d8 010050E1 		cmp	r0, r1
+ 131 00dc F8FFFF3A 		bcc	.L11
+ 132 00e0 DDFFFFEA 		b	.L16
+ 133              	.LVL12:
+ 134              	.L15:
+ 135              	.LBE5:
+ 136              	.LBE4:
+  44:main_with_radio.c ****             }
+  45:main_with_radio.c ****             return TRUE;
+  46:main_with_radio.c ****         }
+  47:main_with_radio.c ****         break;
+  48:main_with_radio.c ****     }
+  49:main_with_radio.c ****     return FALSE;
+ 137              		.loc 1 49 0
+ 138 00e4 0000A0E3 		mov	r0, #0
+ 139              	.LVL13:
+ 140              	.L2:
+  50:main_with_radio.c **** }
+ 141              		.loc 1 50 0
+ 142 00e8 1000BDE8 		ldmfd	sp!, {r4}
+ 143 00ec 1EFF2FE1 		bx	lr
+ 144              	.L18:
+ 145              		.align	2
+ 146              	.L17:
+ 147 00f0 00000000 		.word	.LANCHOR0
+ 148 00f4 00000000 		.word	.LANCHOR1
+ 149 00f8 01000000 		.word	.LANCHOR0+1
+ 150              		.cfi_endproc
+ 151              	.LFE0:
+ 153              		.section	.text.startup,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	main
+ 157              	main:
+ 158              	.LFB1:
+  51:main_with_radio.c **** 
+  52:main_with_radio.c **** int main(void)
+  53:main_with_radio.c **** {
+ 159              		.loc 1 53 0
+ 160              		.cfi_startproc
+ 161              		@ Function supports interworking.
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164 0000 10402DE9 		stmfd	sp!, {r4, lr}
+ 165              	.LCFI1:
+ 166              		.cfi_def_cfa_offset 8
+ 167              		.cfi_offset 4, -8
+ 168              		.cfi_offset 14, -4
+  54:main_with_radio.c ****    
+  55:main_with_radio.c ****     hardware_init();
+ 169              		.loc 1 55 0
+ 170 0004 FEFFFFEB 		bl	hardware_init
+ 171              	.LVL14:
+  56:main_with_radio.c ****     radio_add_reg_callback(register_handler); // Register the 8-bit handler
+ 172              		.loc 1 56 0
+ 173 0008 A8009FE5 		ldr	r0, .L21
+ 174 000c FEFFFFEB 		bl	radio_add_reg_callback
+ 175              	.LVL15:
+  57:main_with_radio.c ****     init_body_module(TAIL_MOTOR_ADDR);
+ 176              		.loc 1 57 0
+ 177 0010 1500A0E3 		mov	r0, #21
+ 178 0014 FEFFFFEB 		bl	init_body_module
+ 179              	.LVL16:
+  58:main_with_radio.c ****     init_body_module(BODY_MOTOR_ADDR);
+ 180              		.loc 1 58 0
+ 181 0018 4800A0E3 		mov	r0, #72
+ 182 001c FEFFFFEB 		bl	init_body_module
+ 183              	.LVL17:
+  59:main_with_radio.c ****     init_limb_module(BODY_MOTOR_FIN_LEFT);
+ 184              		.loc 1 59 0
+ 185 0020 4900A0E3 		mov	r0, #73
+ 186 0024 FEFFFFEB 		bl	init_limb_module
+ 187              	.LVL18:
+  60:main_with_radio.c ****     init_limb_module(BODY_MOTOR_FIN_RIGHT);
+ 188              		.loc 1 60 0
+ 189 0028 4A00A0E3 		mov	r0, #74
+ 190 002c FEFFFFEB 		bl	init_limb_module
+ 191              	.LVL19:
+  61:main_with_radio.c **** 
+  62:main_with_radio.c ****     // Indicate boot sequence
+  63:main_with_radio.c ****     set_color_i(4, 0);
+ 192              		.loc 1 63 0
+ 193 0030 0010A0E3 		mov	r1, #0
+ 194 0034 0400A0E3 		mov	r0, #4
+ 195 0038 FEFFFFEB 		bl	set_color_i
+ 196              	.LVL20:
+  64:main_with_radio.c ****     pause(ONE_SEC);
+ 197              		.loc 1 64 0
+ 198 003c 78009FE5 		ldr	r0, .L21+4
+ 199 0040 FEFFFFEB 		bl	pause
+ 200              	.LVL21:
+  65:main_with_radio.c ****     set_color_i(2, 0);
+ 201              		.loc 1 65 0
+ 202 0044 0200A0E3 		mov	r0, #2
+ 203 0048 0010A0E3 		mov	r1, #0
+ 204 004c FEFFFFEB 		bl	set_color_i
+ 205              	.LVL22:
+  66:main_with_radio.c ****     
+  67:main_with_radio.c ****     while (1) {
+  68:main_with_radio.c ****         motor_position = bus_get(TAIL_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 206              		.loc 1 68 0
+ 207 0050 68409FE5 		ldr	r4, .L21+8
+ 208              	.L20:
+ 209              		.loc 1 68 0 is_stmt 0 discriminator 1
+ 210 0054 3010A0E3 		mov	r1, #48
+ 211 0058 1500A0E3 		mov	r0, #21
+ 212 005c FEFFFFEB 		bl	bus_get
+ 213              	.LVL23:
+  69:main_with_radio.c ****         mb_buffer[0] = bus_get(TAIL_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 214              		.loc 1 69 0 is_stmt 1 discriminator 1
+ 215 0060 3010A0E3 		mov	r1, #48
+  68:main_with_radio.c ****         motor_position = bus_get(TAIL_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 216              		.loc 1 68 0 discriminator 1
+ 217 0064 0000C4E5 		strb	r0, [r4, #0]
+ 218              		.loc 1 69 0 discriminator 1
+ 219 0068 1500A0E3 		mov	r0, #21
+ 220 006c FEFFFFEB 		bl	bus_get
+ 221              	.LVL24:
+  70:main_with_radio.c ****         mb_buffer[1] = bus_get(BODY_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 222              		.loc 1 70 0 discriminator 1
+ 223 0070 3010A0E3 		mov	r1, #48
+  69:main_with_radio.c ****         mb_buffer[0] = bus_get(TAIL_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 224              		.loc 1 69 0 discriminator 1
+ 225 0074 0100C4E5 		strb	r0, [r4, #1]
+ 226              		.loc 1 70 0 discriminator 1
+ 227 0078 4800A0E3 		mov	r0, #72
+ 228 007c FEFFFFEB 		bl	bus_get
+ 229              	.LVL25:
+  71:main_with_radio.c ****         mb_buffer[2] = bus_get(BODY_MOTOR_FIN_LEFT, MREG_POSITION); // Store position in register
+ 230              		.loc 1 71 0 discriminator 1
+ 231 0080 3010A0E3 		mov	r1, #48
+  70:main_with_radio.c ****         mb_buffer[1] = bus_get(BODY_MOTOR_ADDR, MREG_POSITION); // Store position in register
+ 232              		.loc 1 70 0 discriminator 1
+ 233 0084 0200C4E5 		strb	r0, [r4, #2]
+ 234              		.loc 1 71 0 discriminator 1
+ 235 0088 4900A0E3 		mov	r0, #73
+ 236 008c FEFFFFEB 		bl	bus_get
+ 237              	.LVL26:
+  72:main_with_radio.c ****         mb_buffer[3] = bus_get(BODY_MOTOR_FIN_RIGHT, MREG_POSITION); // Store position in register
+ 238              		.loc 1 72 0 discriminator 1
+ 239 0090 3010A0E3 		mov	r1, #48
+  71:main_with_radio.c ****         mb_buffer[2] = bus_get(BODY_MOTOR_FIN_LEFT, MREG_POSITION); // Store position in register
+ 240              		.loc 1 71 0 discriminator 1
+ 241 0094 0300C4E5 		strb	r0, [r4, #3]
+ 242              		.loc 1 72 0 discriminator 1
+ 243 0098 4A00A0E3 		mov	r0, #74
+ 244 009c FEFFFFEB 		bl	bus_get
+ 245              	.LVL27:
+  73:main_with_radio.c ****         set_rgb((motor_position < 0) ? -motor_position : motor_position, 32, 0);
+ 246              		.loc 1 73 0 discriminator 1
+ 247 00a0 2010A0E3 		mov	r1, #32
+  72:main_with_radio.c ****         mb_buffer[3] = bus_get(BODY_MOTOR_FIN_RIGHT, MREG_POSITION); // Store position in register
+ 248              		.loc 1 72 0 discriminator 1
+ 249 00a4 0400C4E5 		strb	r0, [r4, #4]
+ 250              		.loc 1 73 0 discriminator 1
+ 251 00a8 0020A0E3 		mov	r2, #0
+ 252 00ac 0000D4E5 		ldrb	r0, [r4, #0]	@ zero_extendqisi2
+ 253 00b0 FEFFFFEB 		bl	set_rgb
+ 254              	.LVL28:
+ 255 00b4 E6FFFFEA 		b	.L20
+ 256              	.L22:
+ 257              		.align	2
+ 258              	.L21:
+ 259 00b8 00000000 		.word	register_handler
+ 260 00bc 80969800 		.word	10000000
+ 261 00c0 00000000 		.word	.LANCHOR0
+ 262              		.cfi_endproc
+ 263              	.LFE1:
+ 265              		.global	BODY_MOTOR_FIN_RIGHT
+ 266              		.global	BODY_MOTOR_FIN_LEFT
+ 267              		.global	BODY_MOTOR_ADDR
+ 268              		.global	TAIL_MOTOR_ADDR
+ 269              		.section	.rodata
+ 272              	BODY_MOTOR_FIN_RIGHT:
+ 273 0000 4A       		.byte	74
+ 276              	BODY_MOTOR_FIN_LEFT:
+ 277 0001 49       		.byte	73
+ 280              	BODY_MOTOR_ADDR:
+ 281 0002 48       		.byte	72
+ 284              	TAIL_MOTOR_ADDR:
+ 285 0003 15       		.byte	21
+ 286              		.data
+ 287              		.set	.LANCHOR1,. + 0
+ 290              	last_mb_size:
+ 291 0000 04       		.byte	4
+ 292              		.bss
+ 293              		.set	.LANCHOR0,. + 0
+ 296              	motor_position:
+ 297 0000 00       		.space	1
+ 300              	mb_buffer:
+ 301 0001 00000000 		.space	4
+ 302              		.text
+ 303              	.Letext0:
+ 304              		.file 2 "c:/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 305              		.file 3 "../firmware/radio.h"
+ 306              		.file 4 "../firmware/robot.h"
+ 307              		.file 5 "../firmware/hardware.h"
+ 308              		.file 6 "../firmware/sysTime.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main_with_radio.c
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:16     .text:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:18     .text:00000000 register_handler
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:37     .text:00000010 $d
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:47     .text:00000030 $a
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:147    .text:000000f0 $d
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:154    .text.startup:00000000 $a
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:157    .text.startup:00000000 main
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:259    .text.startup:000000b8 $d
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:272    .rodata:00000000 BODY_MOTOR_FIN_RIGHT
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:276    .rodata:00000001 BODY_MOTOR_FIN_LEFT
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:280    .rodata:00000002 BODY_MOTOR_ADDR
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:284    .rodata:00000003 TAIL_MOTOR_ADDR
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:290    .data:00000000 last_mb_size
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:296    .bss:00000000 motor_position
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:297    .bss:00000000 $d
+C:\Users\ncmorand\AppData\Local\Temp\cciAZTaW.s:300    .bss:00000001 mb_buffer
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+hardware_init
+radio_add_reg_callback
+init_body_module
+init_limb_module
+set_color_i
+pause
+bus_get
+set_rgb
