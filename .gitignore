@@ -1,2 +1,8 @@
 .DS_Store
 .clangd
+.o
+.hex
+.map
+.lst
+.elf
+.exe

@@ -10,7 +10,13 @@
 /// active swimming mode
 #define IMODE_SWIM     2
 
-/// The main loop for mode switching
+/// The IDLE mode switching
 void main_mode_loop(void);
+/// The swimming mode (active motor movement)
+void swim_mode(void);
+/// The ready mode (move to a safe state to prevent capsize)
+void ready_mode(void);
+
+void init_sine_params(void);
 
 #endif // __MODES_H

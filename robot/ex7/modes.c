@@ -70,7 +70,7 @@ static int8_t register_handler(uint8_t operation, uint8_t address,
         amp_enc = radio_data->byte; // Allow writing to register
         return TRUE;
       }
-    case DEFAULT_LAG:
+    case REG8_SINE_LAG:
       switch (operation) {
       case ROP_READ_8:
         radio_data->byte = lag_enc;
@@ -79,7 +79,7 @@ static int8_t register_handler(uint8_t operation, uint8_t address,
         lag_enc = radio_data->byte; // Allow writing to register
         return TRUE;
       }
-    case DEFAULT_OFF:
+    case REG8_SINE_OFF:
       switch (operation) {
       case ROP_READ_8:
         radio_data->byte = off_enc;
@@ -104,13 +104,22 @@ void init_sine_params(void) {
 
 void swim_mode(void) {
   uint32_t dt, cycletimer;
-  float my_time, delta_t, angle;
-  float freq, amplitude;
-  int8_t angle_rounded;
+  float my_time, delta_t, angle0, angle1, angle2, angle3, angle4;
+  float freq, amplitude, lag, offset;
+  int8_t angle0_rounded, angle1_rounded, angle2_rounded, angle3_rounded, angle4_rounded;
 
   // Initialize and start the motor's PID controller
-  init_body_module(MOTOR_ADDR);
-  start_pid(MOTOR_ADDR);
+  init_body_module(MOTOR_ADDR_HEAD);
+  init_body_module(MOTOR_ADDR_NECK);
+  init_body_module(MOTOR_ADDR_TORSO);
+  init_body_module(MOTOR_ADDR_HIP);
+  init_body_module(MOTOR_ADDR_TAIL);
+
+  start_pid(MOTOR_ADDR_HEAD);
+  start_pid(MOTOR_ADDR_NECK);
+  start_pid(MOTOR_ADDR_TORSO);
+  start_pid(MOTOR_ADDR_HIP);
+  start_pid(MOTOR_ADDR_TAIL);
 
   // Set visual indicator that motor is active
   set_color(4); // Set LED to red
@@ -119,26 +128,22 @@ void swim_mode(void) {
   cycletimer = getSysTICs();
   my_time = 0;
 
-  // Make sure parameters are initialized
-  if (freq_enc == 0)
-    freq_enc = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
-  if (amp_enc == 0)
-    amp_enc = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
-  if (lag_enc == 0)
-    lag_enc = ENCODE_PARAM_8(DEFAULT_LAG, 1.0f, MAX_LAG);
-  if (off_enc == 0)
-    off_enc = ENCODE_PARAM_8(DEFAULT_OFF, 1.0f, MAX_OFF);
-
   do {
     // Decode current parameters from registers
     freq = DECODE_PARAM_8(freq_enc, 0.1f, MAX_FREQ);
     amplitude = DECODE_PARAM_8(amp_enc, 1.0f, MAX_AMP);
+    lag = DECODE_PARAM_8(lag_enc, 1.0f, MAX_LAG);
+    offset = DECODE_PARAM_8(off_enc, 1.0f, MAX_OFF);
 
     // Apply limits to ensure safety
     if (freq > MAX_FREQ)
       freq = MAX_FREQ;
     if (amplitude > MAX_AMP)
       amplitude = MAX_AMP;
+    if (lag > MAX_LAG)
+      lag = MAX_LAG;
+    if (offset > MAX_OFF)
+      offset = MAX_OFF;
 
     // Calculate elapsed time
     dt = getElapsedSysTICs(cycletimer);
@@ -147,20 +152,31 @@ void swim_mode(void) {
     my_time += delta_t;
 
     // Calculate the sine wave for motor angle
-    angle = amplitude * sin(M_TWOPI * freq * my_time);
+    angle0 = amplitude * sin(M_TWOPI * ((freq * my_time)+(0*lag/5)+offset-180));
+    angle1 = amplitude * sin(M_TWOPI * ((freq * my_time)+(1*lag/5)+offset-180));
+    angle2 = amplitude * sin(M_TWOPI * ((freq * my_time)+(2*lag/5)+offset-180));
+    angle3 = amplitude * sin(M_TWOPI * ((freq * my_time)+(3*lag/5)+offset-180));
+    angle4 = amplitude * sin(M_TWOPI * ((freq * my_time)+(4*lag/5)+offset-180));
 
     // Convert angle to motor units
-    angle_rounded = DEG_TO_OUTPUT_BODY(angle);
+    angle0_rounded = DEG_TO_OUTPUT_BODY(angle0);
+    angle1_rounded = DEG_TO_OUTPUT_BODY(angle1);
+    angle2_rounded = DEG_TO_OUTPUT_BODY(angle2);
+    angle3_rounded = DEG_TO_OUTPUT_BODY(angle3);
+    angle4_rounded = DEG_TO_OUTPUT_BODY(angle4);
 
     // Send the angle to the motor
-    bus_set(MOTOR_ADDR, MREG_SETPOINT, angle_rounded);
+    bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, angle0_rounded);
+    bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, angle1_rounded);
+    bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, angle2_rounded);
+    bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, angle3_rounded);
+    bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, angle4_rounded);
 
-    // Update LED for visual feedback - color indicates frequency,
-    // brightness indicates amplitude
+    // Update LED for visual feedback
     uint8_t red = (uint8_t)(freq * 127.0f / MAX_FREQ);
     uint8_t green = (uint8_t)(amplitude * 127.0f / MAX_AMP);
 
-    if (angle >= 0) {
+    if (angle0_rounded >= 0) {
       // Positive angle - more green
       set_rgb(red, green + 20, 20);
     } else {
@@ -174,11 +190,20 @@ void swim_mode(void) {
   } while (reg8_table[REG8_MODE] == IMODE_SWIM);
 
   // Clean up: return motor to zero position
-  bus_set(MOTOR_ADDR, MREG_SETPOINT, 0);
+  bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, 0);
+  bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, 0);
+  bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, 0);
+  bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, 0);
+  bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, 0);
+
   pause(ONE_SEC); // Give the motor time to return to center
 
   // Stop the motor
-  bus_set(MOTOR_ADDR, MREG_MODE, MODE_IDLE);
+  bus_set(MOTOR_ADDR_HEAD, MREG_MODE, MODE_IDLE);
+  bus_set(MOTOR_ADDR_NECK, MREG_MODE, MODE_IDLE);
+  bus_set(MOTOR_ADDR_TORSO, MREG_MODE, MODE_IDLE);
+  bus_set(MOTOR_ADDR_HIP, MREG_MODE, MODE_IDLE);
+  bus_set(MOTOR_ADDR_TAIL, MREG_MODE, MODE_IDLE);
 
   // Return LED to normal state
   set_color(2);
@@ -201,22 +226,18 @@ void ready_mode(void) {
   // Set visual indicator that motor is active
   set_color(6); // Set LED to ...
 
-  // Convert angle to motor units
-  angle_right = DEG_TO_OUTPUT_BODY(MAX_AMP);
-  angle_left = DEG_TO_OUTPUT_BODY(-MAX_AMP);
-
   // Send the angle to the motor
-  bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, angle_right); // adopt a rigid S shape to prevent capsizing
-  bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, angle_right);
-  bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, angle_left);
-  bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, angle_left);
-  bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, angle_right);
+  bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP)); // adopt a rigid S shape to prevent capsizing
+  bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP));
+  bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-MAX_AMP));
+  bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-MAX_AMP));
+  bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP));
 
   do { // wait until we start swimming or revert to limp mode.
     // Small delay to ensure timer updates properly
     pause(ONE_MS);
 
-  } while (reg8_table[REG8_MODE] == IMODE_SWIM);
+  } while (reg8_table[REG8_MODE] == IMODE_READY);
 
   // Clean up: return motor to zero position
   bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, 0);
