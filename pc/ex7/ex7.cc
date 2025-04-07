@@ -82,7 +82,7 @@ void display_settings(CRemoteRegs &regs) {
 
 // Function to update a parameter
 void update_parameter(CRemoteRegs &regs, const char *name, uint8_t reg,
-                      float min_value, float max_value, float scale,
+                      float min_value, float max_value,
                       float current) {
   float new_value;
   cout << "Enter new " << name << " (" << min_value << " - " << max_value
@@ -106,7 +106,7 @@ void update_parameter(CRemoteRegs &regs, const char *name, uint8_t reg,
     }
 
     // Encode and set the register
-    uint8_t encoded = ENCODE_PARAM_8(new_value, scale, max_value);
+    uint8_t encoded = ENCODE_PARAM_8(new_value, min_value, max_value);
     regs.set_reg_b(reg, encoded);
 
     cout << name << " set to " << new_value << " (encoded: " << (int)encoded
@@ -117,7 +117,7 @@ void update_parameter(CRemoteRegs &regs, const char *name, uint8_t reg,
 }
 
 void update_parameter_force(CRemoteRegs &regs, uint8_t reg, float min_value,
-                            float max_value, float scale, float value) {
+                            float max_value, float value) {
   // Ensure value is within bounds
   if (value < min_value)
     value = min_value;
@@ -125,7 +125,7 @@ void update_parameter_force(CRemoteRegs &regs, uint8_t reg, float min_value,
     value = max_value;
 
   // Encode and set the register
-  uint8_t encoded = ENCODE_PARAM_8(value, scale, max_value);
+  uint8_t encoded = ENCODE_PARAM_8(value, min_value, max_value);
   regs.set_reg_b(reg, encoded);
 }
 
@@ -162,10 +162,10 @@ int main() {
   float offset = 0.0f;     // Default offset
 
   // Initialize the registers with default values
-  update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f, freq);
-  update_parameter_force(regs, REG8_SINE_AMP, MIN_AMP, MAX_AMP, 1.0f, amplitude);
-  update_parameter_force(regs, REG8_SINE_LAG, MIN_LAG, MAX_LAG, 0.1f, lag);
-  update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 0.1f, offset);
+  update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, freq);
+  update_parameter_force(regs, REG8_SINE_AMP, MIN_AMP, MAX_AMP, amplitude);
+  update_parameter_force(regs, REG8_SINE_LAG, MIN_LAG, MAX_LAG, lag);
+  update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, offset);
 
   while (!exitProgram) {
     // Get current parameter values
@@ -208,21 +208,21 @@ int main() {
 
     switch (choice) {
     case '1':
-      update_parameter(regs, "frequency", REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
+      update_parameter(regs, "frequency", REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ,
                        freq);
       break;
 
     case '2':
-      update_parameter(regs, "amplitude", REG8_SINE_AMP, MIN_AMP, MAX_AMP, 1.0f,
+      update_parameter(regs, "amplitude", REG8_SINE_AMP, MIN_AMP, MAX_AMP,
                        amplitude);
       break;
 
     case '3':
-      update_parameter(regs, "lag", REG8_SINE_LAG, MIN_LAG, MAX_LAG, 1.0f, lag);
+      update_parameter(regs, "lag", REG8_SINE_LAG, MIN_LAG, MAX_LAG, lag);
       break;
 
     case '4':
-      update_parameter(regs, "offset", REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
+      update_parameter(regs, "offset", REG8_SINE_OFF, MIN_OFF, MAX_OFF,
                        offset);
       break;
 
@@ -333,7 +333,7 @@ int main() {
           case 'w':
           case 'W':
             freq += 0.1f;
-            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
+            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ,
                                    freq);
             cout << "Frequency: " << freq << " Hz          \r";
             break;
@@ -341,27 +341,23 @@ int main() {
           case 's':
           case 'S':
             freq = max(0.1f, freq - 0.1f);
-            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
+            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ,
                                    freq);
             cout << "Frequency: " << freq << " Hz          \r";
             break;
 
           case 'a':
           case 'A':
-            offset += 10.0f;
-            if (offset < 0)
-              offset += 360.0f; // Wrap around
-            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
+            offset -= 0.1f;
+            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF,
                                    offset);
             cout << "Offset: " << offset << " degrees      \r";
             break;
 
           case 'd':
           case 'D':
-            offset -= 10.0f;
-            if (offset >= 360.0f)
-              offset -= 360.0f; // Wrap around
-            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
+            offset += 0.1f;
+            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF,
                                    offset);
             cout << "Offset: " << offset << " degrees      \r";
             break;

@@ -127,7 +127,7 @@ void swim_mode(void) {
   start_pid(MOTOR_ADDR_TAIL);
 
   set_reg_value_dw(MOTOR_ADDR_HEAD, MREG32_LED, 0);
-  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_NECK, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_HIP, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_TAIL, MREG32_LED, 0);
@@ -177,11 +177,11 @@ void swim_mode(void) {
     angle4_rounded = DEG_TO_OUTPUT_BODY(angle4);
 
     // Send the angle to the motor
-    bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, angle0_rounded);
-    bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, angle1_rounded);
+    bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, angle4_rounded);
+    bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, angle3_rounded);
     bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, angle2_rounded);
-    bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, angle3_rounded);
-    bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, angle4_rounded);
+    bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, angle1_rounded);
+    bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, angle0_rounded);
 
     set_rgb(255, 255, 255);
 
@@ -225,7 +225,7 @@ void ready_mode(void) {
   start_pid(MOTOR_ADDR_TAIL);
 
   set_reg_value_dw(MOTOR_ADDR_HEAD, MREG32_LED, 0);
-  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_NECK, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_HIP, MREG32_LED, 0);
   set_reg_value_dw(MOTOR_ADDR_TAIL, MREG32_LED, 0);
