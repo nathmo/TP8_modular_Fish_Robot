@@ -26,10 +26,15 @@ using namespace std;
 #define IMODE_SWIM 2
 
 // Define limits for frequency and amplitude
-#define MAX_FREQ 2.0f  // Maximum frequency in Hz
+#define MAX_FREQ 1.5f  // Maximum frequency in Hz
 #define MAX_AMP 60.0f  // Maximum amplitude in degrees
-#define MAX_LAG 360.0f // Maximum lag between elements in degrees
-#define MAX_OFF 360.0f // Maximum offset in degrees
+#define MAX_LAG 1.5f // Maximum lag between elements in degrees
+#define MAX_OFF 3.0f // Maximum offset in degrees
+
+#define MIN_FREQ 0.1f
+#define MIN_AMP 1.0f  // Min amplitude in degrees
+#define MIN_LAG 0.5f // Min lag between elements in degrees
+#define MIN_OFF -3.0f // Min offset in degrees
 
 // Define registers for frequency, lag, offset and amplitude control
 #define REG8_SINE_FREQ 10 // Register for sine wave frequency
@@ -39,8 +44,8 @@ using namespace std;
 
 const char *TRACKING_PC_NAME = "biorobpc6"; ///< host name of the tracking PC
 const uint16_t TRACKING_PORT = 10502;       ///< port number of the tracking PC
-const uint8_t RADIO_CHANNEL = 201;          ///< robot radio channel
-const char *INTERFACE = "COM1";             ///< robot radio interface
+const uint8_t RADIO_CHANNEL = 126;          ///< robot radio channel
+const char *INTERFACE = "COM3";             ///< robot radio interface
 
 // Aquarium dimensions in meters
 const double AQUARIUM_WIDTH = 6.0;
@@ -59,10 +64,10 @@ void display_settings(CRemoteRegs &regs) {
   uint8_t lag_reg = regs.get_reg_b(REG8_SINE_LAG);
   uint8_t off_reg = regs.get_reg_b(REG8_SINE_OFF);
 
-  float freq = DECODE_PARAM_8(freq_reg, 0.1f, MAX_FREQ);
-  float amplitude = DECODE_PARAM_8(amp_reg, 1.0f, MAX_AMP);
-  float lag = DECODE_PARAM_8(lag_reg, 1.0f, MAX_LAG);
-  float offset = DECODE_PARAM_8(off_reg, 1.0f, MAX_OFF);
+  float freq = DECODE_PARAM_8(freq_reg, MIN_FREQ, MAX_FREQ);
+  float amplitude = DECODE_PARAM_8(amp_reg, MIN_AMP, MAX_AMP);
+  float lag = DECODE_PARAM_8(lag_reg, MIN_LAG, MAX_LAG);
+  float offset = DECODE_PARAM_8(off_reg, MIN_OFF, MAX_OFF);
 
   cout << "Current settings:" << endl;
   cout << "  Frequency: " << freq << " Hz (encoded: " << (int)freq_reg << ")"
@@ -151,16 +156,16 @@ int main() {
   char choice = '\0';
 
   // Initialize parameters
-  float freq = 0.5f;       // Default frequency in Hz
+  float freq = 0.8f;       // Default frequency in Hz
   float amplitude = 40.0f; // Default amplitude
-  float lag = 60.0f;       // Default lag
+  float lag = 0.75f;       // Default lag
   float offset = 0.0f;     // Default offset
 
   // Initialize the registers with default values
-  update_parameter_force(regs, REG8_SINE_FREQ, 0.1f, MAX_FREQ, 0.1f, freq);
-  update_parameter_force(regs, REG8_SINE_AMP, 1.0f, MAX_AMP, 1.0f, amplitude);
-  update_parameter_force(regs, REG8_SINE_LAG, 1.0f, MAX_LAG, 1.0f, lag);
-  update_parameter_force(regs, REG8_SINE_OFF, 1.0f, MAX_OFF, 1.0f, offset);
+  update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f, freq);
+  update_parameter_force(regs, REG8_SINE_AMP, MIN_AMP, MAX_AMP, 1.0f, amplitude);
+  update_parameter_force(regs, REG8_SINE_LAG, MIN_LAG, MAX_LAG, 0.1f, lag);
+  update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 0.1f, offset);
 
   while (!exitProgram) {
     // Get current parameter values
@@ -170,10 +175,10 @@ int main() {
     uint8_t off_reg = regs.get_reg_b(REG8_SINE_OFF);
     uint8_t mode_reg = regs.get_reg_b(REG8_MODE);
 
-    freq = DECODE_PARAM_8(freq_reg, 0.1f, MAX_FREQ);
-    amplitude = DECODE_PARAM_8(amp_reg, 1.0f, MAX_AMP);
-    lag = DECODE_PARAM_8(lag_reg, 1.0f, MAX_LAG);
-    offset = DECODE_PARAM_8(off_reg, 1.0f, MAX_OFF);
+    freq = DECODE_PARAM_8(freq_reg, MIN_FREQ, MAX_FREQ);
+    amplitude = DECODE_PARAM_8(amp_reg, MIN_AMP, MAX_AMP);
+    lag = DECODE_PARAM_8(lag_reg, MIN_LAG, MAX_LAG);
+    offset = DECODE_PARAM_8(off_reg, MIN_OFF, MAX_OFF);
 
     cout << "\n=====================================\n";
     cout << "Current mode: "
@@ -203,21 +208,21 @@ int main() {
 
     switch (choice) {
     case '1':
-      update_parameter(regs, "frequency", REG8_SINE_FREQ, 0.1f, MAX_FREQ, 0.1f,
+      update_parameter(regs, "frequency", REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
                        freq);
       break;
 
     case '2':
-      update_parameter(regs, "amplitude", REG8_SINE_AMP, 1.0f, MAX_AMP, 1.0f,
+      update_parameter(regs, "amplitude", REG8_SINE_AMP, MIN_AMP, MAX_AMP, 1.0f,
                        amplitude);
       break;
 
     case '3':
-      update_parameter(regs, "lag", REG8_SINE_LAG, 1.0f, MAX_LAG, 1.0f, lag);
+      update_parameter(regs, "lag", REG8_SINE_LAG, MIN_LAG, MAX_LAG, 1.0f, lag);
       break;
 
     case '4':
-      update_parameter(regs, "offset", REG8_SINE_OFF, 1.0f, MAX_OFF, 1.0f,
+      update_parameter(regs, "offset", REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
                        offset);
       break;
 
@@ -241,7 +246,9 @@ int main() {
                         "_" + to_string(ltm->tm_mon + 1) + "_" +
                         to_string(ltm->tm_mday) + "_" +
                         to_string(ltm->tm_hour) + "_" + to_string(ltm->tm_min) +
-                        "_" + to_string(ltm->tm_sec) + ".csv";
+                        "_" + to_string(ltm->tm_sec) + "_freq_" + to_string(freq) + "_amp_" + 
+                        to_string(amplitude) + "_lag_" + to_string(lag) + "_off_" + 
+                        to_string(offset) +".csv";
 
       // Write header to CSV file
       ofstream file(filename);
@@ -264,14 +271,14 @@ int main() {
         }
 
         double x = 0, y = 0;
-        bool detected = false;
+        // bool detected = false;
 
         // Gets the ID of the first spot
         int id = trk.get_first_id();
 
         // Reads its coordinates (if (id == -1), then no spot is detected)
         if (id != -1 && trk.get_pos(id, x, y)) {
-          detected = true;
+          // detected = true;
 
           // Get the current time as milliseconds since epoch
           auto now_ms = chrono::duration_cast<chrono::milliseconds>(
@@ -326,7 +333,7 @@ int main() {
           case 'w':
           case 'W':
             freq += 0.1f;
-            update_parameter_force(regs, REG8_SINE_FREQ, 0.1f, MAX_FREQ, 0.1f,
+            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
                                    freq);
             cout << "Frequency: " << freq << " Hz          \r";
             break;
@@ -334,27 +341,27 @@ int main() {
           case 's':
           case 'S':
             freq = max(0.1f, freq - 0.1f);
-            update_parameter_force(regs, REG8_SINE_FREQ, 0.1f, MAX_FREQ, 0.1f,
+            update_parameter_force(regs, REG8_SINE_FREQ, MIN_FREQ, MAX_FREQ, 0.1f,
                                    freq);
             cout << "Frequency: " << freq << " Hz          \r";
             break;
 
           case 'a':
           case 'A':
-            offset -= 10.0f;
+            offset += 10.0f;
             if (offset < 0)
               offset += 360.0f; // Wrap around
-            update_parameter_force(regs, REG8_SINE_OFF, 1.0f, MAX_OFF, 1.0f,
+            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
                                    offset);
             cout << "Offset: " << offset << " degrees      \r";
             break;
 
           case 'd':
           case 'D':
-            offset += 10.0f;
+            offset -= 10.0f;
             if (offset >= 360.0f)
               offset -= 360.0f; // Wrap around
-            update_parameter_force(regs, REG8_SINE_OFF, 1.0f, MAX_OFF, 1.0f,
+            update_parameter_force(regs, REG8_SINE_OFF, MIN_OFF, MAX_OFF, 1.0f,
                                    offset);
             cout << "Offset: " << offset << " degrees      \r";
             break;

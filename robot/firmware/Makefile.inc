@@ -105,8 +105,8 @@ endif
 
 WLARMPROG = c:/utils/wlarmprog.exe
 WLARMPROG_OPTIONS = -v -n
-WLARMPROG_PORT = -p COM1
-WLARMPROG_CHANNEL = -c 201
+WLARMPROG_PORT = -p COM3
+WLARMPROG_CHANNEL = -c 126
 
 # ---------------------------------------------------------------------------
 

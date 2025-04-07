@@ -12,19 +12,24 @@
 #define REG8_SINE_OFF 13  // Register for sine wave offset 
 
 // Define limits for frequency and amplitude
-#define MAX_FREQ 2.0f // Maximum frequency in Hz
+#define MAX_FREQ 1.5f // Maximum frequency in Hz
 //#define MIN_FREQ 0.0f // Minimum frequency in Hz
 #define MAX_AMP 60.0f // Maximum amplitude in degrees
 //#define MIN_AMP 0.0f // Minimum amplitude in degrees
-#define MAX_LAG 360.0f // Maximum lag between elements in degrees
+#define MAX_LAG 1.5f // Maximum lag between elements in degrees
 //#define MIN_LAG 0.0f // Minimum lag between elements in degrees
-#define MAX_OFF 360.0f // Maximum lag between elements in degrees (180 mean straight for float conversion)
+#define MAX_OFF 3.0f // Maximum lag between elements in degrees (180 mean straight for float conversion)
 //#define MIN_OFF -180.0f // Minimum lag between elements in degrees
 
+#define MIN_FREQ 0.1f
+#define MIN_AMP 1.0f  // Min amplitude in degrees
+#define MIN_LAG 0.5f // Min lag between elements in degrees
+#define MIN_OFF -3.0f // Min offset in degrees
+
 // Default values
-#define DEFAULT_FREQ 0.5f // Default frequency in Hz
+#define DEFAULT_FREQ 0.8f // Default frequency in Hz
 #define DEFAULT_AMP 40.0f // Default amplitude in degrees
-#define DEFAULT_LAG 60.0f // Default amplitude in degrees
+#define DEFAULT_LAG 0.75f // Default amplitude in degrees
 #define DEFAULT_OFF 0.0f // Default amplitude in degrees
 
 
@@ -96,10 +101,10 @@ static int8_t register_handler(uint8_t operation, uint8_t address,
 // Function to initialize default parameters
 void init_sine_params(void) {
   // Set default values for frequency and amplitude
-  freq_enc = ENCODE_PARAM_8(DEFAULT_FREQ, 0.1f, MAX_FREQ);
-  amp_enc = ENCODE_PARAM_8(DEFAULT_AMP, 1.0f, MAX_AMP);
-  lag_enc = ENCODE_PARAM_8(DEFAULT_LAG, 1.0f, MAX_LAG);
-  off_enc = ENCODE_PARAM_8(DEFAULT_OFF, 1.0f, MAX_OFF);
+  freq_enc = ENCODE_PARAM_8(DEFAULT_FREQ, MIN_FREQ, MAX_FREQ);
+  amp_enc = ENCODE_PARAM_8(DEFAULT_AMP, MIN_AMP, MAX_AMP);
+  lag_enc = ENCODE_PARAM_8(DEFAULT_LAG, MIN_LAG, MAX_LAG);
+  off_enc = ENCODE_PARAM_8(DEFAULT_OFF, MIN_OFF, MAX_OFF);
 }
 
 void swim_mode(void) {
@@ -121,6 +126,12 @@ void swim_mode(void) {
   start_pid(MOTOR_ADDR_HIP);
   start_pid(MOTOR_ADDR_TAIL);
 
+  set_reg_value_dw(MOTOR_ADDR_HEAD, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_HIP, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TAIL, MREG32_LED, 0);
+
   // Set visual indicator that motor is active
   set_color(4); // Set LED to red
 
@@ -130,10 +141,10 @@ void swim_mode(void) {
 
   do {
     // Decode current parameters from registers
-    freq = DECODE_PARAM_8(freq_enc, 0.1f, MAX_FREQ);
-    amplitude = DECODE_PARAM_8(amp_enc, 1.0f, MAX_AMP);
-    lag = DECODE_PARAM_8(lag_enc, 1.0f, MAX_LAG);
-    offset = DECODE_PARAM_8(off_enc, 1.0f, MAX_OFF);
+    freq = DECODE_PARAM_8(freq_enc, MIN_FREQ, MAX_FREQ);
+    amplitude = DECODE_PARAM_8(amp_enc, MIN_AMP, MAX_AMP);
+    lag = DECODE_PARAM_8(lag_enc, MIN_LAG, MAX_LAG);
+    offset = DECODE_PARAM_8(off_enc, MIN_OFF, MAX_OFF);
 
     // Apply limits to ensure safety
     if (freq > MAX_FREQ)
@@ -152,11 +163,11 @@ void swim_mode(void) {
     my_time += delta_t;
 
     // Calculate the sine wave for motor angle
-    angle0 = amplitude * sin(M_TWOPI * ((freq * my_time)+(0*lag/5)+offset-180));
-    angle1 = amplitude * sin(M_TWOPI * ((freq * my_time)+(1*lag/5)+offset-180));
-    angle2 = amplitude * sin(M_TWOPI * ((freq * my_time)+(2*lag/5)+offset-180));
-    angle3 = amplitude * sin(M_TWOPI * ((freq * my_time)+(3*lag/5)+offset-180));
-    angle4 = amplitude * sin(M_TWOPI * ((freq * my_time)+(4*lag/5)+offset-180));
+    angle0 = amplitude * sin(M_TWOPI * ((freq * my_time)+(0*lag/5)+offset));
+    angle1 = amplitude * sin(M_TWOPI * ((freq * my_time)+(1*lag/5)+offset));
+    angle2 = amplitude * sin(M_TWOPI * ((freq * my_time)+(2*lag/5)+offset));
+    angle3 = amplitude * sin(M_TWOPI * ((freq * my_time)+(3*lag/5)+offset));
+    angle4 = amplitude * sin(M_TWOPI * ((freq * my_time)+(4*lag/5)+offset));
 
     // Convert angle to motor units
     angle0_rounded = DEG_TO_OUTPUT_BODY(angle0);
@@ -172,17 +183,7 @@ void swim_mode(void) {
     bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, angle3_rounded);
     bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, angle4_rounded);
 
-    // Update LED for visual feedback
-    uint8_t red = (uint8_t)(freq * 127.0f / MAX_FREQ);
-    uint8_t green = (uint8_t)(amplitude * 127.0f / MAX_AMP);
-
-    if (angle0_rounded >= 0) {
-      // Positive angle - more green
-      set_rgb(red, green + 20, 20);
-    } else {
-      // Negative angle - more red
-      set_rgb(red + 20, green, 20);
-    }
+    set_rgb(255, 255, 255);
 
     // Small delay to ensure timer updates properly
     pause(ONE_MS);
@@ -223,15 +224,20 @@ void ready_mode(void) {
   start_pid(MOTOR_ADDR_HIP);
   start_pid(MOTOR_ADDR_TAIL);
 
-  // Set visual indicator that motor is active
-  set_color(6); // Set LED to ...
+  set_reg_value_dw(MOTOR_ADDR_HEAD, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TORSO, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_HIP, MREG32_LED, 0);
+  set_reg_value_dw(MOTOR_ADDR_TAIL, MREG32_LED, 0);
+  set_rgb(255, 255, 255);
+
 
   // Send the angle to the motor
-  bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP)); // adopt a rigid S shape to prevent capsizing
-  bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP));
-  bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-MAX_AMP));
-  bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-MAX_AMP));
-  bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(MAX_AMP));
+  bus_set(MOTOR_ADDR_HEAD, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(40)); // adopt a rigid S shape to prevent capsizing
+  bus_set(MOTOR_ADDR_NECK, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(40));
+  bus_set(MOTOR_ADDR_TORSO, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-40));
+  bus_set(MOTOR_ADDR_HIP, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(-40));
+  bus_set(MOTOR_ADDR_TAIL, MREG_SETPOINT, DEG_TO_OUTPUT_BODY(40));
 
   do { // wait until we start swimming or revert to limp mode.
     // Small delay to ensure timer updates properly
