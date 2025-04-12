@@ -73,7 +73,7 @@ plt.ylim(0, 2)
 plt.legend(fontsize="small", loc="upper right")
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("test.png")
+plt.savefig("trajectory.svg", format="svg")
 plt.close()
 
 # --- Speed vs Lag Plot with error bars ---
@@ -117,7 +117,7 @@ if lag_speeds:
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.savefig("speed_with_std.png")
+    plt.savefig("speed_with_std.svg", format="svg")
     plt.close()
 else:
     print("⚠️ No valid speed data found for speed plot.")
